@@ -8,6 +8,8 @@
 #include "EnhancedInputSubsystemInterface.h"
 #include <Kismet/KismetSystemLibrary.h>
 #include "GameFramework/PlayerController.h"
+#include "AmHaeng/Interface/AHScannable.h"
+#include "AmHaeng/Interface/AHTargetNPC.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
@@ -53,21 +55,29 @@ void AAHVehiclePlayerController::Tick(float DeltaTime)
 			if (AActor* HitActor = HitResult.GetActor())
 			{
 				APawn* VehiclePawn = GetPawn();
-				check(VehiclePawn);
 				float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), HitActor->GetActorLocation());
-
 				if (Distance < ScanDistance) {
-					FString HitName = *HitActor->GetName();
-					if (HitName.Contains(TEXT("AH_VehicleAI")))
+					UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Name: %s"), *HitActor->GetActorLabel()), true, true,
+						FColor::Red, 1.0f, FName("HitName"));
+
+					IAHScannable *IsScannable = Cast<IAHScannable>(HitActor);
+					if (IsScannable!=nullptr)
 					{
-						UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Name: %s"), *HitActor->GetActorLabel()), true, true,
-							FColor::Red, 1.0f, FName(HitName));
-						/*GEngine->AddOnScreenDebugMessage(-1, 0.05f, FColor::Red, FString::Printf(TEXT("Hit Actor Name: %s"), *HitActor->GetActorLabel()));
-						UE_LOG(LogTemp, Warning, TEXT("%f, %f, %f"),
-							HitResult.ImpactPoint.X,
-							HitResult.ImpactPoint.Y,
-							HitResult.ImpactPoint.Z);*/
+						UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Is Scannable: %d"), IsScannable->GetIsScannable()), true, true,
+						FColor::Red, 1.0f, FName("IsScan"));
 					}
+					IAHTargetNPC *IsTargetNPC = Cast<IAHTargetNPC>(HitActor);
+					if (IsTargetNPC!=nullptr)
+					{
+						UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Is Targetable: %d"), IsTargetNPC->GetIsTargetNPC()), true, true,
+							FColor::Red, 1.0f, FName("IsTarget"));
+					}
+					//FString HitName = *HitActor->GetName();
+					//if (HitName.Contains(TEXT("AH_VehicleAI")))
+					//{
+					//	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Name: %s"), *HitActor->GetActorLabel()), true, true,
+					//		FColor::Red, 1.0f, FName(HitName));
+					//}
 				}
 
 				
