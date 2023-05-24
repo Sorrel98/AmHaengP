@@ -3,15 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleInfo.h"
+#include "Engine/World.h"
+#include "GameFramework/Actor.h"
+#include "AHNPCSpawner.generated.h"
+
 
 /**
  * 
  */
-class AMHAENG_API AHNPCSpawner
+UCLASS(Blueprintable, BlueprintType)
+class AMHAENG_API UAHNPCSpawner : public UObject
 {
+	GENERATED_BODY()
 public:
-	AHNPCSpawner();
-	~AHNPCSpawner();
+	UAHNPCSpawner();
+	~UAHNPCSpawner();
+
+	//Spawn될 위치 정하기
+	void SetSpawningRandomLocations();
+
+	//Delegate 수신하는 함수
+	UFUNCTION()
+	void GetDelegateFromWidget();
+
+
+
+protected:
+	//virtual void BeginPlay() override;
 private:
 	TArray<FVector> SpawnLocations;
+	TArray<FRotator> SpawnRotations;
+
+	void NPCVehicleSpawn();
+
 };
