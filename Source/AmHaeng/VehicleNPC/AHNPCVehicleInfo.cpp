@@ -8,10 +8,17 @@
 
 AAHNPCVehicleInfo::AAHNPCVehicleInfo()
 {
+	//Main Info Setting
 	bIsScannable = true;
 	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
 	bIsTargetNPC = (bIsTargetNPCPercentage<=3)? true:false;
+
+	//Detail Info Setting
 	DetailInfoSetting();
+
+	//Log
+	UE_LOG(LogTemp, Log, TEXT("IsTargetCar : %d, Car Owner : %s, LicenseNumber : %s, Min Speed : %d, Max Speed : %d, Vehicle Sway : %d"),
+								bIsTargetNPC, *NPCOwnerName, *NPCLicenseNumber, NPCMinSpeed, NPCMaxSpeed, NPCSway);
 }
 
 bool AAHNPCVehicleInfo::GetIsScannable()
@@ -36,14 +43,31 @@ void AAHNPCVehicleInfo::SetIsTargetNPC(const uint8& IsTargetNPC)
 
 void AAHNPCVehicleInfo::DetailInfoSetting()
 {
+	//NPCOwnerNameSetting
+	SetOwnerName();
+
+	//LicenseNumberSetting
+	SetLicenseNumber();
+
+	//NPCSpeedSetting
+	SetNPCSpeed();
+	
+	//NPCSwaySetting
+	SetNPCSway();
+	
+}
+
+void AAHNPCVehicleInfo::SetOwnerName()
+{
 	AHTypes MyTypes;
-	FString EnumName = "NPCLicenceNumbers";
+	FString EnumName = "NPCOwnerNames";
 	FString OwnerName = GetNPCEnumName(GetRandomEnumValue(MyTypes.GetNPCOwnerNameArray()), *EnumName);
 	NPCOwnerName = OwnerName;
+}
 
+void AAHNPCVehicleInfo::SetLicenseNumber()
+{
 	NPCLicenseNumber = CombineString(2);
-	UE_LOG(LogTemp, Log, TEXT("%s"), *NPCLicenseNumber);
-	
 }
 
 FString AAHNPCVehicleInfo::MakeRandString(int32 Length)
@@ -73,4 +97,20 @@ FString AAHNPCVehicleInfo::CombineString(int32 WordsNumber)
 		CombinedString.Append(MakeRandString(3));
 	}
 	return CombinedString;
+}
+
+int AAHNPCVehicleInfo::MakeRandInteger(int32 num1, int32 num2)
+{
+	return FMath::RandRange(num1, num2);
+}
+
+void AAHNPCVehicleInfo::SetNPCSpeed()
+{
+	NPCMinSpeed = MakeRandInteger(30, 50);
+	NPCMaxSpeed = MakeRandInteger(90, 110);
+}
+
+void AAHNPCVehicleInfo::SetNPCSway()
+{
+	NPCSway = MakeRandInteger(10, 50);
 }

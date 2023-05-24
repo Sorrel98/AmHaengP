@@ -72,12 +72,7 @@ void AAHVehiclePlayerController::Tick(float DeltaTime)
 						UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Is Targetable: %d"), IsTargetNPC->GetIsTargetNPC()), true, true,
 							FColor::Red, 1.0f, FName("IsTarget"));
 					}
-					//FString HitName = *HitActor->GetName();
-					//if (HitName.Contains(TEXT("AH_VehicleAI")))
-					//{
-					//	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("Hit Actor Name: %s"), *HitActor->GetActorLabel()), true, true,
-					//		FColor::Red, 1.0f, FName(HitName));
-					//}
+					
 				}
 
 				

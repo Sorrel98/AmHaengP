@@ -29,9 +29,22 @@ public:
 
 	void DetailInfoSetting();
 
+	//NPC info - OwnerName
+	void SetOwnerName();
+	
 	//NPC info - LicenseNumber
+	void SetLicenseNumber();
 	FString MakeRandString(int32 Length);
 	FString CombineString(int32 WordsNumber);
+	
+
+	int MakeRandInteger(int32 num1, int32 num2);
+
+	//NPC info - NPCSpeed
+	void SetNPCSpeed();
+
+	//NPC info - NPCSway
+	void SetNPCSway();
 
 	
 private:
@@ -42,6 +55,7 @@ private:
 	//NPC info - Detail
 	FString NPCOwnerName;
 	FString NPCLicenseNumber;
-	uint32 NPCSpeed;
+	uint32 NPCMaxSpeed;
+	uint32 NPCMinSpeed;
 	uint32 NPCSway;
 };
