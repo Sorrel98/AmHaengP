@@ -24,5 +24,5 @@ class AMHAENG_API IAHScannable
 public:
 	virtual bool GetIsScannable() { return true; }
 
-	virtual void SetIsScannable(uint8 IsScannable) {}
+	virtual void SetIsScannable(const uint8& IsScannable) {}
 };

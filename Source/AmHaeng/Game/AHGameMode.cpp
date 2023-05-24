@@ -33,7 +33,7 @@ AAHGameMode::AAHGameMode()
 	}
 
 	bIsNPCSpawning = false;
-	UE_LOG(LogTemp, Log, TEXT("Spawn Function Stated : %u"), bIsNPCSpawning);
+	//UE_LOG(LogTemp, Log, TEXT("Spawn Function Stated : %u"), bIsNPCSpawning);
 }
 
 void AAHGameMode::BeginPlay()
@@ -86,5 +86,5 @@ void AAHGameMode::HandleMatchIsWaitingToStart()
 void AAHGameMode::SetNPCSpawningState()
 {
 	bIsNPCSpawning = true;
-	UE_LOG(LogTemp, Log, TEXT("[GameMode] Spawn Function Stated : %u"), bIsNPCSpawning);
+	//UE_LOG(LogTemp, Log, TEXT("[GameMode] Spawn Function Stated : %u"), bIsNPCSpawning);
 }

@@ -46,7 +46,7 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	{
 		//UE_LOG(LogTemp, Log, TEXT("%s"), *GetOuter()->GetName());
 	}
-	FStringAssetReference NPCBPRef(TEXT("/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI"));
+	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI"));
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
 
 	if(NPCBPObj)
@@ -69,7 +69,6 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 						if(SpawnedNPCController)
 						{
 							SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
-							UE_LOG(LogTemp, Log, TEXT("Spawn Controller : %s"), *SpawnedNPCController->GetName());
 						}
 					}
 				}
