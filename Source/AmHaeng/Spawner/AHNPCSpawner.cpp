@@ -10,8 +10,6 @@ UAHNPCSpawner::UAHNPCSpawner()
 {
 	SetSpawningRandomLocations();
 }
-	
-
 
 
 void UAHNPCSpawner::SetSpawningRandomLocations()
@@ -48,31 +46,26 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	}
 	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI"));
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
+	if (NPCBPObj == nullptr) return;
+	
+	UClass* NPCBPClass = NPCBPObj->GeneratedClass;
+	if (NPCBPClass == nullptr) return;
+	
+	UWorld* World = GetWorld();
+	if (World == nullptr) return;
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	if(NPCBPObj)
+	for (int32 ix = 0; ix < SpawnLocations.Num(); ++ix)
 	{
-		UClass* NPCBPClass = NPCBPObj->GeneratedClass;
-		if(NPCBPClass)
+		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
+		if (NPCVehicleSpawnActor)
 		{
-			UWorld* World = GetWorld();
-			if(World)
+			AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+			if (SpawnedNPCController)
 			{
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-				for(int32 ix = 0; ix < SpawnLocations.Num(); ++ix)
-				{
-					AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
-					if(NPCVehicleSpawnActor)
-					{
-						AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
-						if(SpawnedNPCController)
-						{
-							SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
-						}
-					}
-				}
-				
+				SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 			}
 		}
 	}

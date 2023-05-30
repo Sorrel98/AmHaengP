@@ -63,15 +63,13 @@ void AAHGameMode::StartButtonOnViewport()
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingWithWidgetDelegate()
 {
-	WidgetDelegateClass = SpawnStartButton;
-	WidgetDelegateClass->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"));
+	SpawnStartButton->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"), bIsNPCSpawning);
 
 	Spawner = NewObject<UAHNPCSpawner>();
-	WidgetDelegateClass->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
-	//WidgetDelegateClass->TextButtonCallback();
+	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 }
 
-void AAHGameMode::HandleMatchIsWaitingToStart()
+/*void AAHGameMode::HandleMatchIsWaitingToStart()
 {
 	auto FirstPlayer = GetGameInstance()->GetFirstLocalPlayerController()->GetPawn();
 
@@ -80,11 +78,11 @@ void AAHGameMode::HandleMatchIsWaitingToStart()
 	//spawner는 동적 생성한 애를 가리키는 포인터
 	Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
 	//Spawner->Rename(TEXT("SpawnerOuter"), FirstPlayer);
-}
+}*/
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
-void AAHGameMode::SetNPCSpawningState()
+void AAHGameMode::SetNPCSpawningState(uint8 NowState)
 {
-	bIsNPCSpawning = true;
+	bIsNPCSpawning = !NowState;
 	//UE_LOG(LogTemp, Log, TEXT("[GameMode] Spawn Function Stated : %u"), bIsNPCSpawning);
 }

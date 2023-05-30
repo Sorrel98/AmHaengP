@@ -21,14 +21,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UButton* SpawnStartBtn;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	class UButton* SpawnFinBtn;
+	//나중에 사용
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//class UButton* SpawnFinBtn;
 
 
 public:
 	virtual void NativeOnInitialized() override;
 public:
-	//Delegate를 누르면 실행되는 함수
 	UFUNCTION(BlueprintCallable)
 	void TextButtonCallback();
 };

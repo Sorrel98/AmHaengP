@@ -53,9 +53,14 @@ private:
 	uint8 bIsTargetNPC : 1;
 
 	//NPC info - Detail
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))
 	FString NPCOwnerName;
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))
 	FString NPCLicenseNumber;
-	uint32 NPCMaxSpeed;
-	uint32 NPCMinSpeed;
-	uint32 NPCSway;
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))
+	int32 NPCMaxSpeed;
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))
+	int32 NPCMinSpeed;
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess="true"))
+	int32 NPCSway;
 };
