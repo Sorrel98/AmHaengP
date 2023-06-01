@@ -17,14 +17,43 @@ class AMHAENG_API UAHNPCInfoWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	//UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
+	UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
 
 public:
 	//OwnerName
 	void SetTextOwnerName(FString NewOwnerName){}
+
+	//Set Stats
+	FORCEINLINE void SetNPCOwnerName(const FString NewName){ TB_Owner->SetText(FText::FromString(NewName)); }
+	FORCEINLINE void SetNPCLicenseNumber(const FString NewLicenseNumber){ TB_License->SetText(FText::FromString(NewLicenseNumber)); }
+	FORCEINLINE void SetNPCMaxSpeed(const int32 NewMaxSpeed){ TB_MinSpeed->SetText(FText::FromString(FString::FromInt(NewMaxSpeed))); }
+	FORCEINLINE void SetNPCMinSpeed(const int32 NewMinSpeed){ TB_MaxSpeed->SetText(FText::FromString(FString::FromInt(NewMinSpeed))); }
+	FORCEINLINE void SetNPCSway(const int32 NewSway){ TB_Sway->SetText(FText::FromString(FString::FromInt(NewSway))); }
+
+	
+protected:
+	//이 함수가 실행될 때는 거의 모든 값이 초기화 된 상태
+	virtual void NativeConstruct() override;
+
+
+	
 private:
-	UPROPERTY()
-	TObjectPtr<class UTextBlock> TB_OwnerName;
+	
+	
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TB_Owner;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TB_License;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TB_MinSpeed;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TB_MaxSpeed;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TB_Sway;
 	
 	UPROPERTY()
 	FString NPCOwnerName;

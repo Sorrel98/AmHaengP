@@ -31,9 +31,7 @@ void UAHNPCSpawner::SetSpawningRandomLocations()
 
 
 void UAHNPCSpawner::GetDelegateFromWidget()
-{
-	//UE_LOG(LogTemp, Log, TEXT("[Spawner Manager] Start Btn Delegate 받았습니다."));
-	//UE_LOG(LogTemp, Log, TEXT("%s"), *SpawnLocations[0].ToString());
+{\
 	NPCVehicleSpawn();
 }
 
@@ -44,7 +42,7 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	{
 		//UE_LOG(LogTemp, Log, TEXT("%s"), *GetOuter()->GetName());
 	}
-	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI"));
+	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/OffroadCar_Pawn.OffroadCar_Pawn"));
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
 	if (NPCBPObj == nullptr) return;
 	

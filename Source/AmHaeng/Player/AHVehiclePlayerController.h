@@ -25,7 +25,18 @@ public:
 	//Called every frame;
 	virtual void Tick(float DeltaTime) override;
 
+	void MouseScan();
+
+	void WidgetVisibleByMouseScan(AActor* HitActor);
+
+private:
 	UPROPERTY(EditAnywhere, Category = Scan)
 	float ScanDistance;
+
+	//FString MouseHitActorName;
+
+	bool VisibleWidgetOnce = false;
+
+	AActor* MousePrevActor;
 	
 };

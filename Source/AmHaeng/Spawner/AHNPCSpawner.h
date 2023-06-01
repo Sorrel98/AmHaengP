@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/VehicleNPC/AHNPCVehicleInfo.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "AHNPCSpawner.generated.h"
