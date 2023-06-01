@@ -24,6 +24,8 @@ protected:
 public:
 	//Called every frame;
 	virtual void Tick(float DeltaTime) override;
+	void InVisiblePrevWidget(AActor* PrevActor);
+	void DrawShpere(FHitResult HitResult);
 
 	void MouseScan();
 
@@ -35,8 +37,13 @@ private:
 
 	//FString MouseHitActorName;
 
-	bool VisibleWidgetOnce = false;
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
+	uint8 IsNPCScanning = false;
 
 	AActor* MousePrevActor;
+	
+	//Mouse Scan Timer
+	FTimerHandle ScanTimer;
+	AActor* NowHitActor;
 	
 };
