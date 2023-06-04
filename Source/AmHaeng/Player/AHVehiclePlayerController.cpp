@@ -4,6 +4,7 @@
 #include "AHVehiclePlayerController.h"
 #include "GameFramework/PlayerController.h"
 #include "AmHaeng/Interface/AHScannable.h"
+#include "EnhancedInputComponent.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
@@ -11,6 +12,21 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 	bShowMouseCursor = true;
 	ScanDistance = 2000.0f;
 	MousePrevActor = nullptr;
+
+	//Mouse Click Input Ref Find
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionClickRef(TEXT("/Script/EnhancedInput.InputAction'/Game/VehicleTemplate/Input/Actions/IA_Click.IA_Click'"));
+	if(InputActionClickRef.Object != nullptr)
+	{
+		ClickAction = InputActionClickRef.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionClickReleasedRef(TEXT("/Script/EnhancedInput.InputAction'/Game/VehicleTemplate/Input/Actions/IA_ClickReleased.IA_ClickReleased'"));
+	if(InputActionClickReleasedRef.Object != nullptr)
+	{
+		ClickReleasedAction = InputActionClickReleasedRef.Object;
+	}
+
+	//Mouse Click Input Ref Bingding with Function
 }
 
 void AAHVehiclePlayerController::BeginPlay()
@@ -64,16 +80,21 @@ void AAHVehiclePlayerController::MouseScan()
 			IAHScannable *IsScannable = Cast<IAHScannable>(NowHitActor);
 			if (IsScannable==nullptr)
 			{
-				IsNPCScanning = false;
+				if(IsNPCScanning) IsNPCScanning = false;
+				if(IsNPCClicking)
+				{
+					IsNPCClicking = false;
+					//add delegate and ShutDown Loading UI
+				}
 				InVisiblePrevWidget(MousePrevActor);
 				MousePrevActor = NowHitActor;
 				return;
 			}
-			IsNPCScanning = true;	
 			//이 Pawn은 현재 주인공 Pawn
 			APawn* VehiclePawn = GetPawn();
 			float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
 			if (Distance < ScanDistance) {
+				IsNPCScanning = true;	
 				WidgetVisibleByMouseScan(NowHitActor);
 			}
 			
@@ -102,4 +123,33 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(HitActor);
 	if(HitActorBase==nullptr)return;
 	HitActorBase->SetNPCInfoWidgetVisible(true);
+}
+
+void AAHVehiclePlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	if(InputComponent==nullptr) return;
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::MouseClick);
+	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::MouseClickReleased);
+}
+
+void AAHVehiclePlayerController::MouseClick()
+{
+	IsNPCClicking = true;
+	//add Delegate and Start Loading UI
+	if(IsNPCScanning)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Mouse Clicked"));
+	}
+}
+
+void AAHVehiclePlayerController::MouseClickReleased()
+{
+	IsNPCClicking = false;
+	//add delegate and ShutDown Loading UI
+	if(IsNPCScanning)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Mouse Click Released"));
+	}
 }
