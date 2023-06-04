@@ -28,9 +28,6 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 	{
 		ClickReleasedAction = InputActionClickReleasedRef.Object;
 	}
-	//NPCClickCPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("MouseClickCPWidgetComponent"));
-	//NPCClickCPWidgetComponent->SetupAttachment(GetRootComponent());
-
 }
 
 void AAHVehiclePlayerController::BeginPlay()
@@ -40,17 +37,12 @@ void AAHVehiclePlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Log, TEXT("NPC Click Widget is here"));
 	}
-	//Mouse Click CP Widget Setting
-	SettingCPWidget();
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//UE_LOG(LogTemp, Warning, TEXT("Is Clicking on NPC : %d"), IsNPCClicking);
 	MouseScan();
-
-	//NPCClickCPWidgetComponent->SetWorldLocation(FVector{0.0f, 0.0f, 0.0f});
 }
 
 void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
@@ -148,25 +140,7 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::MouseClickReleased);
 }
 
-void AAHVehiclePlayerController::SettingCPWidget()
-{
-	/*if(NPCClickCPWidgetComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NPC Click CP Widget Component"));
-		NPCClickCPWidgetComponent->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-		NPCClickCPWidgetComponent->RegisterComponent();
-		NPCClickCPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-		NPCClickCPWidgetComponent->SetVisibility(true);
-		
-		NPCClickWidget = Cast<UAHNPCClickCPWidget>(NPCClickCPWidgetComponent->GetUserWidgetObject());
-		if(NPCClickWidget==nullptr) return;
-	}*/
-}
 
-FVector AAHVehiclePlayerController::GetMouseLocation()
-{
-	return MousePosition;
-}
 
 void AAHVehiclePlayerController::MouseClick()
 {

@@ -38,12 +38,9 @@ public:
 
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
-
-	//Mouse Click CP Widget
-	void SettingCPWidget();
-
+	
 	UFUNCTION(BlueprintCallable)
-	FVector GetMouseLocation();
+	FVector GetMouseLocation(){return MousePosition;}
 
 	
 private:
@@ -79,6 +76,4 @@ private:
 	UWidgetComponent* NPCClickCPWidgetComponent;
 
 	FVector MousePosition;
-
-	class UAHNPCClickCPWidget* NPCClickWidget;
 };
