@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "InputActionValue.h"
+#include "Components/WidgetComponent.h"
 #include "AHVehiclePlayerController.generated.h"
 
 /**
@@ -38,6 +38,13 @@ public:
 
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
+
+	//Mouse Click CP Widget
+	void SettingCPWidget();
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetMouseLocation();
+
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
@@ -65,4 +72,13 @@ private:
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCClicking = false;
+
+
+	//click Circular Progressbar UI
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	UWidgetComponent* NPCClickCPWidgetComponent;
+
+	FVector MousePosition;
+
+	class UAHNPCClickCPWidget* NPCClickWidget;
 };

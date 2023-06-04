@@ -6,12 +6,15 @@
 #include "AmHaeng/Interface/AHScannable.h"
 #include "EnhancedInputComponent.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
+#include "AmHaeng/Widget/AHNPCClickCPWidget.h"
+#include "Components/WidgetComponent.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
 	bShowMouseCursor = true;
 	ScanDistance = 2000.0f;
 	MousePrevActor = nullptr;
+	
 
 	//Mouse Click Input Ref Find
 	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionClickRef(TEXT("/Script/EnhancedInput.InputAction'/Game/VehicleTemplate/Input/Actions/IA_Click.IA_Click'"));
@@ -25,19 +28,29 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 	{
 		ClickReleasedAction = InputActionClickReleasedRef.Object;
 	}
+	//NPCClickCPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("MouseClickCPWidgetComponent"));
+	//NPCClickCPWidgetComponent->SetupAttachment(GetRootComponent());
 
-	//Mouse Click Input Ref Bingding with Function
 }
 
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	if(NPCClickCPWidgetComponent)
+	{
+		UE_LOG(LogTemp, Log, TEXT("NPC Click Widget is here"));
+	}
+	//Mouse Click CP Widget Setting
+	SettingCPWidget();
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//UE_LOG(LogTemp, Warning, TEXT("Is Clicking on NPC : %d"), IsNPCClicking);
 	MouseScan();
+
+	//NPCClickCPWidgetComponent->SetWorldLocation(FVector{0.0f, 0.0f, 0.0f});
 }
 
 void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
@@ -45,7 +58,7 @@ void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
 	AAHNPCVehicleBase* HitPrevActor = Cast<AAHNPCVehicleBase>(PrevActor);
 	if(HitPrevActor!=nullptr)
 	{
-		UE_LOG(LogTemp, Log, TEXT("기존 Widget을 끕니다"));
+		//UE_LOG(LogTemp, Log, TEXT("기존 Widget을 끕니다"));
 		HitPrevActor->SetNPCInfoWidgetVisible(false);
 	}
 }
@@ -73,6 +86,7 @@ void AAHVehiclePlayerController::MouseScan()
 		if (HitResult.bBlockingHit)
 		{
 			DrawShpere(HitResult);
+			MousePosition = HitResult.Location;
 			NowHitActor = HitResult.GetActor();
 			if (NowHitActor==nullptr) return;
 			
@@ -134,12 +148,32 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::MouseClickReleased);
 }
 
+void AAHVehiclePlayerController::SettingCPWidget()
+{
+	/*if(NPCClickCPWidgetComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPC Click CP Widget Component"));
+		NPCClickCPWidgetComponent->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		NPCClickCPWidgetComponent->RegisterComponent();
+		NPCClickCPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+		NPCClickCPWidgetComponent->SetVisibility(true);
+		
+		NPCClickWidget = Cast<UAHNPCClickCPWidget>(NPCClickCPWidgetComponent->GetUserWidgetObject());
+		if(NPCClickWidget==nullptr) return;
+	}*/
+}
+
+FVector AAHVehiclePlayerController::GetMouseLocation()
+{
+	return MousePosition;
+}
+
 void AAHVehiclePlayerController::MouseClick()
 {
-	IsNPCClicking = true;
 	//add Delegate and Start Loading UI
 	if(IsNPCScanning)
 	{
+		IsNPCClicking = true;
 		UE_LOG(LogTemp, Warning, TEXT("Mouse Clicked"));
 	}
 }
