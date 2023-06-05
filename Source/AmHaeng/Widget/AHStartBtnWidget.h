@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "AHWidget.generated.h"
+#include "AHStartBtnWidget.generated.h"
 //AHTestWidget Delegate
 DECLARE_MULTICAST_DELEGATE(FStartButtonDelegate);
 /**
  * 
  */
 UCLASS()
-class AMHAENG_API UAHWidget : public UUserWidget
+class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:

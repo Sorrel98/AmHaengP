@@ -2,6 +2,7 @@
 
 
 #include "AHNPCClickCPWidget.h"
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "Engine/Classes/Components/StaticMeshComponent.h"
 
 void UAHNPCClickCPWidget::AHNPCClickCPWidget()
@@ -12,5 +13,15 @@ void UAHNPCClickCPWidget::AHNPCClickCPWidget()
 
 void UAHNPCClickCPWidget::SetPercent_Implementation(const float InPercentage)
 {
-	//Percent = InPercentage;
+}
+
+void UAHNPCClickCPWidget::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+}
+
+void UAHNPCClickCPWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	//ensure(CircularProgressBar);
 }

@@ -31,16 +31,16 @@ void UAHNPCSpawner::SetSpawningRandomLocations()
 
 
 void UAHNPCSpawner::GetDelegateFromWidget()
-{\
+{
 	NPCVehicleSpawn();
 }
 
 
 void UAHNPCSpawner::NPCVehicleSpawn()
 {
-	if (GetOuter())
+	if (GetOuter()==nullptr)
 	{
-		//UE_LOG(LogTemp, Log, TEXT("%s"), *GetOuter()->GetName());
+		return;
 	}
 	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/OffroadCar_Pawn.OffroadCar_Pawn"));
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());

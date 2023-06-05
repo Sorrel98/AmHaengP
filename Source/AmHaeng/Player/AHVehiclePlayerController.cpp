@@ -33,10 +33,6 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	if(NPCClickCPWidgetComponent)
-	{
-		UE_LOG(LogTemp, Log, TEXT("NPC Click Widget is here"));
-	}
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
@@ -140,8 +136,6 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::MouseClickReleased);
 }
 
-
-
 void AAHVehiclePlayerController::MouseClick()
 {
 	//add Delegate and Start Loading UI
@@ -149,6 +143,10 @@ void AAHVehiclePlayerController::MouseClick()
 	{
 		IsNPCClicking = true;
 		UE_LOG(LogTemp, Warning, TEXT("Mouse Clicked"));
+		if (MouseClickDelegate.IsBound())
+		{
+			MouseClickDelegate.Execute(true);
+		}
 	}
 }
 
@@ -159,5 +157,9 @@ void AAHVehiclePlayerController::MouseClickReleased()
 	if(IsNPCScanning)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Mouse Click Released"));
+		if (MouseClickDelegate.IsBound())
+		{
+			MouseClickDelegate.Execute(false);
+		}
 	}
 }

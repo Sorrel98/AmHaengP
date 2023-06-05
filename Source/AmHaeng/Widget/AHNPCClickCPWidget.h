@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 UCLASS()
 class AMHAENG_API UAHNPCClickCPWidget : public UUserWidget
 {
@@ -21,9 +22,12 @@ public:
 	void SetPercent(const float InPercentage);
 	virtual void SetPercent_Implementation(const float InPercentage);
 
-	//변수 값 변경
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 	
 
+protected:
+	//이 함수가 실행될 때는 거의 모든 값이 초기화 된 상태
+	virtual void NativeConstruct() override;
 	
 private:
 	//float Percent = 0.3f;

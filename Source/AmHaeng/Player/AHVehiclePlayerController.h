@@ -10,6 +10,7 @@
 /**
  * 
  */
+DECLARE_DELEGATE_OneParam( MouseClickDelegate, uint8 )
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 {
@@ -42,6 +43,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetMouseLocation(){return MousePosition;}
 
+	MouseClickDelegate MouseClickDelegate;
+
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
@@ -69,11 +72,7 @@ private:
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCClicking = false;
-
-
+	
 	//click Circular Progressbar UI
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
-	UWidgetComponent* NPCClickCPWidgetComponent;
-
 	FVector MousePosition;
 };
