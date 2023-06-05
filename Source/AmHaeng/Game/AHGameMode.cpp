@@ -73,5 +73,4 @@ void AAHGameMode::BindingWithWidgetDelegate()
 void AAHGameMode::SetNPCSpawningState(uint8 NowState)
 {
 	bIsNPCSpawning = !NowState;
-	//UE_LOG(LogTemp, Log, TEXT("[GameMode] Spawn Function Stated : %u"), bIsNPCSpawning);
 }
