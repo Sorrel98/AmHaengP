@@ -87,6 +87,7 @@ void AAHVehiclePlayerController::MouseScan()
 				{
 					IsNPCClicking = false;
 					//add delegate and ShutDown Loading UI
+					MouseClickDelegate.Execute(false);
 				}
 				InVisiblePrevWidget(MousePrevActor);
 				MousePrevActor = NowHitActor;
