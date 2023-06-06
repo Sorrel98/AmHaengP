@@ -50,16 +50,12 @@ void AAHMouseActor::SetCPWidget()
 void AAHMouseActor::SetBindDelegate()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if(PlayerController)
+	if(PlayerController==nullptr) return;
+	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Binding Player Controller is variable 1 "));
-		if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Binding Player Controller is variable 2 "));
-			
-			CastedPlayerController->MouseClickDelegate.BindUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
-		}
+		CastedPlayerController->MouseClickDelegate.BindUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
 	}
+	
 	
 }
 

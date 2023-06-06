@@ -85,9 +85,7 @@ void AAHVehiclePlayerController::MouseScan()
 				if(IsNPCScanning) IsNPCScanning = false;
 				if(IsNPCClicking)
 				{
-					IsNPCClicking = false;
-					//add delegate and ShutDown Loading UI
-					MouseClickDelegate.Execute(false);
+					MouseClickReleased();
 				}
 				InVisiblePrevWidget(MousePrevActor);
 				MousePrevActor = NowHitActor;
@@ -143,10 +141,8 @@ void AAHVehiclePlayerController::MouseClick()
 	if(IsNPCScanning)
 	{
 		IsNPCClicking = true;
-		UE_LOG(LogTemp, Warning, TEXT("Mouse Clicked"));
 		if (MouseClickDelegate.IsBound())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Delegate Execute"));
 			MouseClickDelegate.Execute(true);
 		}
 	}
@@ -156,13 +152,8 @@ void AAHVehiclePlayerController::MouseClickReleased()
 {
 	IsNPCClicking = false;
 	//add delegate and ShutDown Loading UI
-	if(IsNPCScanning)
+	if (MouseClickDelegate.IsBound())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Mouse Click Released"));
-		if (MouseClickDelegate.IsBound())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Delegate Execute"));
-			MouseClickDelegate.Execute(false);
-		}
+		MouseClickDelegate.Execute(false);
 	}
 }
