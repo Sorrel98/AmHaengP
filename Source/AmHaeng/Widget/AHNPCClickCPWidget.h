@@ -30,5 +30,7 @@ protected:
 	virtual void NativeConstruct() override;
 	
 private:
-	//float Percent = 0.3f;
+	UPROPERTY(BlueprintReadWrite, Category="Percenatge", meta=(AllowPrivateAccess = "true"))
+	float PercentValue = 0.3f;
+
 };

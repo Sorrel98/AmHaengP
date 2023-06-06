@@ -36,7 +36,6 @@ void AAHMouseActor::BeginPlay()
 
 void AAHMouseActor::SetCPWidgetVisibility(bool Visible) const
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetCP Widget Visibility Setting : %d"), Visible);
 	CPWidgetComponent->SetVisibility(Visible);
 }
 
@@ -44,7 +43,6 @@ void AAHMouseActor::SetCPWidget()
 {
 	CPWidgetComponent->SetCastShadow(false);
 }
-
 
 
 void AAHMouseActor::SetBindDelegate()
@@ -55,7 +53,5 @@ void AAHMouseActor::SetBindDelegate()
 	{
 		CastedPlayerController->MouseClickDelegate.BindUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
 	}
-	
-	
 }
 

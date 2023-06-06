@@ -30,7 +30,6 @@ public:
 
 private:
 	void SetBindDelegate();
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
