@@ -10,7 +10,7 @@
 /**
  * 
  */
-DECLARE_DELEGATE_OneParam( MouseClickDelegate, uint8 )
+DECLARE_DELEGATE_OneParam( MouseClickDelegate, bool)
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 {

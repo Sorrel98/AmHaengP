@@ -25,15 +25,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets")
 	class UAHNPCClickCPWidget* CPWidget;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	void SetCPWidgetVisiblity(bool Visible);
+	void SetCPWidgetVisibility(bool Visible) const;
 	void SetCPWidget();
-	void CPWidgetOnViewport();
 
 private:
+	void SetBindDelegate();
+
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
 };

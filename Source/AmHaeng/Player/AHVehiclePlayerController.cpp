@@ -145,6 +145,7 @@ void AAHVehiclePlayerController::MouseClick()
 		UE_LOG(LogTemp, Warning, TEXT("Mouse Clicked"));
 		if (MouseClickDelegate.IsBound())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Delegate Execute"));
 			MouseClickDelegate.Execute(true);
 		}
 	}
@@ -159,6 +160,7 @@ void AAHVehiclePlayerController::MouseClickReleased()
 		UE_LOG(LogTemp, Warning, TEXT("Mouse Click Released"));
 		if (MouseClickDelegate.IsBound())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Delegate Execute"));
 			MouseClickDelegate.Execute(false);
 		}
 	}

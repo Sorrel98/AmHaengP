@@ -3,6 +3,7 @@
 
 #include "AHMouseActor.h"
 
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/Widget/AHNPCClickCPWidget.h"
 #include "Components/WidgetComponent.h"
 
@@ -17,7 +18,9 @@ AAHMouseActor::AAHMouseActor()
 	{
 		CPWidgetClass = CPWidgetRef.Class;
 	}
-	SetCPWidget();
+	CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
+	CPWidgetComponent->SetupAttachment(this->GetRootComponent());
+	CPWidgetComponent->SetWidgetClass(CPWidgetClass);
 }
 
 // Called when the game starts or when spawned
@@ -25,32 +28,38 @@ void AAHMouseActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//CPWidgetOnViewport();
-	
+	SetCPWidgetVisibility(false);
+	SetBindDelegate();
+	SetCPWidget();
 }
 
-// Called every frame
-void AAHMouseActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
+void AAHMouseActor::SetCPWidgetVisibility(bool Visible) const
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetCP Widget Visibility Setting : %d"), Visible);
+	CPWidgetComponent->SetVisibility(Visible);
 }
 
 void AAHMouseActor::SetCPWidget()
 {
-	CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
-	CPWidgetComponent->SetupAttachment(this->GetRootComponent());
-	CPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	CPWidgetComponent->SetWidgetClass(CPWidgetClass);
-	//CPWidgetComponent->SetVisibility(false);
+	CPWidgetComponent->SetCastShadow(false);
 }
 
-void AAHMouseActor::CPWidgetOnViewport()
+
+
+void AAHMouseActor::SetBindDelegate()
 {
-	//class UWidgetComponent* CPWidgetComponent = NewObject<UWidgetComponent>(this);
-	//CPWidgetComponent->SetWidgetClass(CPWidget->StaticClass());
-	//CPWidgetComponent->SetupAttachment(GetRootComponent());
-	//CPWidgetComponent->SetRelativeScale3D(FVector(0.5f, 0.5f, 0.5f));
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if(PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Binding Player Controller is variable 1 "));
+		if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Binding Player Controller is variable 2 "));
+			
+			CastedPlayerController->MouseClickDelegate.BindUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
+		}
+	}
 	
 }
 
