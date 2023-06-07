@@ -10,7 +10,7 @@
 /**
  * 
  */
-DECLARE_DELEGATE_OneParam( MouseClickDelegate, bool)
+DECLARE_MULTICAST_DELEGATE_OneParam(MouseClickDelegate, bool)
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 {
@@ -45,6 +45,7 @@ public:
 
 	MouseClickDelegate MouseClickDelegate;
 
+
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
@@ -56,9 +57,7 @@ private:
 
 	AActor* MousePrevActor;
 	
-	//Mouse Scan Timer -> 삭제 예정 (마우스 스캔을 시간 재는 것이 아닌, 마우스 스캔 시 클릭이 활성화되고 클릭 시간을 재는 방향으로)
-	FTimerHandle ScanTimer;
-	AActor* NowHitActor;
+
 
 	//mouse input system
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -75,4 +74,7 @@ private:
 	
 	//click Circular Progressbar UI
 	FVector MousePosition;
+
+	AActor* NowHitActor;
+	
 };

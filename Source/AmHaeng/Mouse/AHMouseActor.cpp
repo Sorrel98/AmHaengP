@@ -51,7 +51,7 @@ void AAHMouseActor::SetBindDelegate()
 	if(PlayerController==nullptr) return;
 	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
-		CastedPlayerController->MouseClickDelegate.BindUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
+		CastedPlayerController->MouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
 	}
 }
 

@@ -143,7 +143,7 @@ void AAHVehiclePlayerController::MouseClick()
 		IsNPCClicking = true;
 		if (MouseClickDelegate.IsBound())
 		{
-			MouseClickDelegate.Execute(true);
+			MouseClickDelegate.Broadcast(true);
 		}
 	}
 }
@@ -154,6 +154,6 @@ void AAHVehiclePlayerController::MouseClickReleased()
 	//add delegate and ShutDown Loading UI
 	if (MouseClickDelegate.IsBound())
 	{
-		MouseClickDelegate.Execute(false);
+		MouseClickDelegate.Broadcast(false);
 	}
 }
