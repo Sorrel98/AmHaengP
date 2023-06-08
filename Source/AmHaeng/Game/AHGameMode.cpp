@@ -84,10 +84,17 @@ void AAHGameMode::MouseActorSpawn()
 		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
 		return;
 	}
+
+	FSoftObjectPath MouseBPRef(TEXT("/Script/Engine.Blueprint'/Game/Player/Widget/BP_CursorLocation.BP_CursorLocation'"));
+	if(!MouseBPRef.IsValid()) return;
+	UBlueprint* MouseBPObj = Cast<UBlueprint>(MouseBPRef.TryLoad());
+	if (MouseBPObj == nullptr) return;
+	UClass* MouseBPClass = MouseBPObj->GeneratedClass;
+	if (MouseBPClass == nullptr) return;
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	
-	AAHMouseActor* MouseActor = World->SpawnActor<AAHMouseActor>(AAHMouseActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	AAHMouseActor* MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 	if (MouseActor)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseActor Spawned"));
