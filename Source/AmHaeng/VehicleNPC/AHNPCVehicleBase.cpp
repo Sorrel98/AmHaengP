@@ -15,7 +15,6 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 
 	//ingame 위치값이 필요한 애는 아니라서 attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
-	//NPCStat->StatsSetting();
 	SetInfoWidget();
 	
 }
@@ -59,7 +58,6 @@ void AAHNPCVehicleBase::SetInfoWidgetData()
 	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
 	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
-	//UE_LOG(LogTemp, Log, TEXT("아무거나"));
 }
 
 void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)

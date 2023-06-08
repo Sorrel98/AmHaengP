@@ -15,12 +15,10 @@ AAHMouseActor::AAHMouseActor()
 	static ConstructorHelpers::FClassFinder<UAHNPCClickCPWidget> CPWidgetRef(TEXT("/Game/Player/Widget/WBP_ClickLoading.WBP_ClickLoading_C"));
 	if(CPWidgetRef.Succeeded())
 	{
-		CPWidgetClass = CPWidgetRef.Class;
+		CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
+		CPWidgetComponent->SetupAttachment(this->GetRootComponent());
+		CPWidgetComponent->SetWidgetClass(CPWidgetRef.Class);
 	}
-	CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
-	CPWidgetComponent->SetupAttachment(this->GetRootComponent());
-	CPWidgetComponent->SetWidgetClass(CPWidgetClass);
-	
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +26,7 @@ void AAHMouseActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetBindDelegate();
-	SetCPWidget();
+	InitCPWidget();
 }
 
 
@@ -37,7 +35,7 @@ void AAHMouseActor::SetCPWidgetVisibility(bool Visible) const
 	CPWidgetComponent->SetVisibility(Visible);
 }
 
-void AAHMouseActor::SetCPWidget()
+void AAHMouseActor::InitCPWidget()
 {
 	CPWidgetComponent->SetCastShadow(false);
 	SetCPWidgetVisibility(false);
@@ -45,7 +43,7 @@ void AAHMouseActor::SetCPWidget()
 
 void AAHMouseActor::ClickTimerFinishDelegateBind()
 {
-	CPWidgetComponent->SetVisibility(false);
+	SetCPWidgetVisibility(false);
 }
 
 
@@ -67,3 +65,20 @@ void AAHMouseActor::SetBindDelegate()
 	}
 }
 
+void AAHMouseActor::MouseClicked(bool bArg)
+{
+	/*if(bArg)
+	{
+		TTWidgetComponent->SetVisibility(false);
+	}*/
+}
+
+void AAHMouseActor::MouseClickDelegateBind()
+{
+	/*APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if(PlayerController==nullptr) return;
+	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+	{
+		CastedPlayerController->MouseClickDelegate.AddUObject(this, &AAHMouseActor::MouseClicked);
+	}*/
+}

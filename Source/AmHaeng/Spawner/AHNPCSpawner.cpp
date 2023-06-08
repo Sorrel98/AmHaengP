@@ -50,7 +50,57 @@ void UAHNPCSpawner::GetDelegateFromWidget()
 	}
 	int32 NewSpawnIndex = MathFunctions->GetRandomIndex(SpawnLocations.Num());
 	UE_LOG(LogTemp, Warning, TEXT("New Spawn location is %f %f %f"), SpawnLocations[NewSpawnIndex].X,SpawnLocations[NewSpawnIndex].Y, SpawnLocations[NewSpawnIndex].Z );
-	RandomNPCVehicleSpawn(NewSpawnIndex);
+	TestSpawnNPC();
+	//RandomNPCVehicleSpawn(NewSpawnIndex);
+}
+
+void UAHNPCSpawner::TestSpawnNPC()
+{
+	if (GetOuter()==nullptr)
+	{
+		return;
+	}
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
+	if(!NPCBPRef.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));
+	}
+	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
+	if (NPCBPObj == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPObj Is not Valid"));
+		return;
+	}
+	
+	UClass* NPCBPClass = NPCBPObj->GeneratedClass;
+	if (NPCBPClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPClass Is not Valid"));
+		return;
+	}
+	
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, FVector(-6990.0f, 5960.0f, 0.0f), FRotator(0, 0, 0), SpawnParams);
+	if (NPCVehicleSpawnActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+		/*if (SpawnedNPCController)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("실제 스폰하는 곳입니다"));
+			SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
+		}*/
+	}
 }
 
 //현재 사용하지 않음

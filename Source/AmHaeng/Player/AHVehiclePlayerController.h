@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AmHaeng/Mouse/AHMouseActor.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/WidgetComponent.h"
 #include "AHVehiclePlayerController.generated.h"
@@ -36,7 +37,7 @@ public:
 	void MouseScan();
 
 	void WidgetVisibleByMouseScan(AActor* HitActor);
-
+	
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
 	
@@ -76,5 +77,6 @@ private:
 	FVector MousePosition;
 
 	AActor* NowHitActor;
-	
+
+	AAHMouseActor* MouseActor;
 };

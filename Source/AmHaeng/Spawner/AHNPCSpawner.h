@@ -32,7 +32,7 @@ public:
 	void GetDelegateFromWidget();
 
 
-	
+	void TestSpawnNPC();
 
 	
 private:

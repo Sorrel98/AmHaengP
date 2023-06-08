@@ -93,7 +93,7 @@ void AAHGameMode::MouseActorSpawn()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	
-	AAHMouseActor* MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 	if (MouseActor)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseActor Spawned"));

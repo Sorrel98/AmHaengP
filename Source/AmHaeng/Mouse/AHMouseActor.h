@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "AmHaeng/Widget/AHNPCClickCPWidget.h"
+#include "Components/WidgetComponent.h"
 #include "AHMouseActor.generated.h"
 
 UCLASS()
@@ -19,20 +20,23 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	TSubclassOf<UAHNPCClickCPWidget> CPWidgetClass;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets")
 	UAHNPCClickCPWidget* CPWidget;
 
 	void SetCPWidgetVisibility(bool Visible) const;
-	void SetCPWidget();
+	void InitCPWidget();
+
 
 	void ClickTimerFinishDelegateBind();
 
 private:
 	void SetBindDelegate();
-	
+	void MouseClicked(bool bArg);
+	void MouseClickDelegateBind();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
+
 };

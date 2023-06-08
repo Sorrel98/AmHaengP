@@ -6,8 +6,6 @@
 #include "AmHaeng/Interface/AHScannable.h"
 #include "EnhancedInputComponent.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
-#include "AmHaeng/Widget/AHNPCClickCPWidget.h"
-#include "Components/WidgetComponent.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
@@ -91,14 +89,16 @@ void AAHVehiclePlayerController::MouseScan()
 				MousePrevActor = NowHitActor;
 				return;
 			}
-			//이 Pawn은 현재 주인공 Pawn
-			APawn* VehiclePawn = GetPawn();
-			float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
-			if (Distance < ScanDistance) {
-				IsNPCScanning = true;	
-				WidgetVisibleByMouseScan(NowHitActor);
+			if(!IsNPCScanning)
+			{
+				//이 Pawn은 현재 주인공 Pawn
+				APawn* VehiclePawn = GetPawn();
+				float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
+				if (Distance < ScanDistance) {
+					IsNPCScanning = true;	
+					WidgetVisibleByMouseScan(NowHitActor);
+				}
 			}
-			
 		}
 	}
 }

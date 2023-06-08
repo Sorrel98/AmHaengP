@@ -44,7 +44,7 @@ protected:
 
 	
 	UPROPERTY(BlueprintReadWrite, Category="ParentClass", meta=(AllowPrivateAccess = "true"))
-	float PercentValue = 0.8123f;
+	float PercentValue;
 	
 private:
 	UPROPERTY(BlueprintReadWrite, Category="ParentClass", meta=(AllowPrivateAccess="true"))
