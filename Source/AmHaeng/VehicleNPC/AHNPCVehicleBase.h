@@ -30,6 +30,11 @@ public:
 	void SetInfoWidgetData();
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
 
+	//Click Tooltip
+	void AHSetTooltipVisible(bool visible);
+
+	void BindTTDelegate();
+
 private:
 	//NPC info - Main
 	uint8 bIsTargetNPC : 1;
@@ -40,4 +45,6 @@ private:
 	//NPC Stat Component
 	UPROPERTY(VisibleAnywhere, Category=Stat)
 	class UAHNPCStatComponent* NPCStat;
+
+	TObjectPtr<class UAHNPCInfoWidget> NPCInfoWidget;
 };

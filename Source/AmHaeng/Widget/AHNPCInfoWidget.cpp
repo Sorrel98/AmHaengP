@@ -3,9 +3,24 @@
 
 #include "AHNPCInfoWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 
 UAHNPCInfoWidget::UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+}
+
+void UAHNPCInfoWidget::SetTooltipVisible(int8 visible)
+{
+	if(!visible)
+	{
+		FString NoneString = "";
+		BackGroundVerticalBox->SetToolTipText(FText::FromString(NoneString));
+	}
+	else
+	{
+		BackGroundVerticalBox->SetToolTipText(FText::FromString(TooltipText));
+	}
+	
 }
 
 void UAHNPCInfoWidget::NativeConstruct()

@@ -6,12 +6,14 @@
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/WidgetComponent.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AHVehiclePlayerController.generated.h"
 
 /**
  * 
  */
 DECLARE_MULTICAST_DELEGATE_OneParam(MouseClickDelegate, bool)
+DECLARE_DELEGATE_OneParam(TooltipDelegate, bool)
 
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
@@ -47,6 +49,8 @@ public:
 	FVector GetMouseLocation() { return MousePosition; }
 
 	MouseClickDelegate MouseClickDelegate;
+
+	TooltipDelegate TTDelegate;
 
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)

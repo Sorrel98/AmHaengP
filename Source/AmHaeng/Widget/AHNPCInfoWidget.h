@@ -20,11 +20,6 @@ public:
 	UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
 
 public:
-	//OwnerName
-	void SetTextOwnerName(FString NewOwnerName)
-	{
-	}
-
 	//Set Stats
 	FORCEINLINE void SetNPCOwnerName(const FString NewName) { TB_Owner->SetText(FText::FromString(NewName)); }
 	FORCEINLINE void SetNPCLicenseNumber(const FString NewLicenseNumber)
@@ -43,6 +38,9 @@ public:
 	}
 
 	FORCEINLINE void SetNPCSway(const int32 NewSway) { TB_Sway->SetText(FText::FromString(FString::FromInt(NewSway))); }
+
+	void SetTooltipVisible(int8 visible);
+	
 
 protected:
 	//이 함수가 실행될 때는 거의 모든 값이 초기화 된 상태
@@ -64,6 +62,9 @@ private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UTextBlock> TB_Sway;
 
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UVerticalBox> BackGroundVerticalBox;
+
 	UPROPERTY()
 	FString NPCOwnerName;
 	UPROPERTY()
@@ -74,4 +75,6 @@ private:
 	int32 NPCMinSpeed;
 	UPROPERTY()
 	int32 NPCSway;
+
+	const FString TooltipText = "If you want an arrest, hold the click for one second";
 };

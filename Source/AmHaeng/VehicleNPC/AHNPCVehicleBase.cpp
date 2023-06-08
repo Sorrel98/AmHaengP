@@ -4,6 +4,7 @@
 #include "AHNPCVehicleBase.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "AHNPCStatComponent.h"
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "Components/WidgetComponent.h"
 #include "AmHaeng/Widget/AHNPCInfoWidget.h"
 
@@ -22,6 +23,7 @@ void AAHNPCVehicleBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInfoWidgetData();
+	BindTTDelegate();
 }
 
 
@@ -49,7 +51,7 @@ void AAHNPCVehicleBase::SetInfoWidget()
 
 void AAHNPCVehicleBase::SetInfoWidgetData()
 {
-	UAHNPCInfoWidget* NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
+	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
 	if (NPCInfoWidget == nullptr)
 	{
 		return;
@@ -64,4 +66,26 @@ void AAHNPCVehicleBase::SetInfoWidgetData()
 void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
 {
 	NPCInfoWidgetComponent->SetVisibility(visible);
+}
+
+void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible)
+{
+	UE_LOG(LogTemp, Log, TEXT("bind 된 함수 들어옴"));
+	if(NPCInfoWidget)
+	{
+		NPCInfoWidget->SetTooltipVisible(visible);
+	}
+}
+
+void AAHNPCVehicleBase::BindTTDelegate()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController == nullptr)
+	{
+		return;
+	}
+	if (AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+	{
+		CastedPlayerController->TTDelegate.BindUObject(this, &AAHNPCVehicleBase::AHSetTooltipVisible);
+	}
 }

@@ -140,6 +140,7 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 		return;
 	}
 	HitActorBase->SetNPCInfoWidgetVisible(true);
+	HitActorBase->AHSetTooltipVisible(true);
 }
 
 void AAHVehiclePlayerController::SetupInputComponent()
@@ -166,6 +167,14 @@ void AAHVehiclePlayerController::MouseClick()
 		{
 			MouseClickDelegate.Broadcast(true);
 		}
+		if(NowHitActor)
+		{
+			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
+			if(HitActorBase)
+			{
+				HitActorBase->AHSetTooltipVisible(false);
+			}
+		}
 	}
 }
 
@@ -176,5 +185,13 @@ void AAHVehiclePlayerController::MouseClickReleased()
 	if (MouseClickDelegate.IsBound())
 	{
 		MouseClickDelegate.Broadcast(false);
+	}
+	if(NowHitActor)
+	{
+		AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
+		if(HitActorBase)
+		{
+			HitActorBase->AHSetTooltipVisible(false);
+		}
 	}
 }
