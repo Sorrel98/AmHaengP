@@ -26,8 +26,11 @@ void UAHNPCClickCPWidget::SetVisibility(ESlateVisibility InVisibility)
 void UAHNPCClickCPWidget::MouseClickDelegateBind()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if(PlayerController==nullptr) return;
-	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+	if (PlayerController == nullptr)
+	{
+		return;
+	}
+	if (AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
 		CastedPlayerController->MouseClickDelegate.AddUObject(this, &UAHNPCClickCPWidget::MouseClicked);
 	}
@@ -53,9 +56,9 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 {
 	//잘 들어옴
 
-	
+
 	//click 이었다면
-	if(ClickOrReleased)
+	if (ClickOrReleased)
 	{
 		//타이머 시작
 		GetWorld()->GetTimerManager().SetTimer(ScanTimer, TimerFinishSuccessDelegate, MaxClickTime, false);
@@ -66,5 +69,4 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 		GetWorld()->GetTimerManager().ClearTimer(ScanTimer);
 		NowClickTime = 0.0f;
 	}
-	
 }

@@ -9,29 +9,28 @@
  */
 
 //TArray를 받아서 그 Enum들 중 랜덤으로 하나를 반환하는 템플릿 함수
-template<typename T>
+template <typename T>
 T GetRandomValue(const TArray<T>& EnumValues)
 {
- int32 RandomIndex = FMath::RandRange(0, EnumValues.Num()-1);
- return EnumValues[RandomIndex];
+	int32 RandomIndex = FMath::RandRange(0, EnumValues.Num() - 1);
+	return EnumValues[RandomIndex];
 }
 
 
-template<typename T>
+template <typename T>
 FString GetNPCEnumName(T InNPCOwnerName, FString EnumName)
 {
- const UEnum* OwnerEnum = FindObject<UEnum>(ANY_PACKAGE, *EnumName, true);
- if(OwnerEnum)
- {
-  return OwnerEnum->GetDisplayNameTextByValue((int32)InNPCOwnerName).ToString();
- }
- else
- {
-  return "InValid";
- }
+	const UEnum* OwnerEnum = FindObject<UEnum>(ANY_PACKAGE, *EnumName, true);
+	if (OwnerEnum)
+	{
+		return OwnerEnum->GetDisplayNameTextByValue(static_cast<int32>(InNPCOwnerName)).ToString();
+	}
+	return "InValid";
 }
+
+
 class AMHAENG_API AHMathFunctions
 {
 public:
- int32 GetRandomIndex(int32 TArraySize);
+	int32 GetRandomIndex(int32 TArraySize);
 };

@@ -12,8 +12,8 @@ UCLASS()
 class AMHAENG_API AAHMouseActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AAHMouseActor();
 
@@ -38,5 +38,4 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
-
 };

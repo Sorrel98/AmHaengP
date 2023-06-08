@@ -10,10 +10,12 @@
  * 
  */
 DECLARE_DELEGATE(TimerFinised)
+
 UCLASS()
 class AMHAENG_API UAHNPCClickCPWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	void AHNPCClickCPWidget();
 
@@ -38,18 +40,17 @@ public:
 protected:
 	//이 함수가 실행될 때는 거의 모든 값이 초기화 된 상태
 	virtual void NativeConstruct() override;
-	
+
 	UFUNCTION(BlueprintCallable)
 	void SetMouseClickTimer(bool ClickState);
 
-	
+
 	UPROPERTY(BlueprintReadWrite, Category="ParentClass", meta=(AllowPrivateAccess = "true"))
 	float PercentValue;
-	
+
 private:
 	UPROPERTY(BlueprintReadWrite, Category="ParentClass", meta=(AllowPrivateAccess="true"))
 	float MaxClickTime;
 	UPROPERTY(BlueprintReadWrite, Category="ParentClass", meta=(AllowPrivateAccess="true"))
 	float NowClickTime;
-
 };

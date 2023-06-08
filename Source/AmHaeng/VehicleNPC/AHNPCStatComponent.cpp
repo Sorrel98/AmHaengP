@@ -13,7 +13,6 @@ UAHNPCStatComponent::UAHNPCStatComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
-	
 }
 
 
@@ -27,7 +26,8 @@ void UAHNPCStatComponent::BeginPlay()
 
 
 // Called every frame
-void UAHNPCStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UAHNPCStatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                        FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
@@ -42,11 +42,9 @@ void UAHNPCStatComponent::StatsSetting()
 
 	//NPCSpeedSetting
 	SetNPCSpeed();
-	
+
 	//NPCSwaySetting
 	SetNPCSway();
-
-	
 }
 
 void UAHNPCStatComponent::SetOwnerName()
@@ -73,9 +71,9 @@ FString UAHNPCStatComponent::MakeRandString(int32 Length)
 	FString RandomString;
 	RandomString.Reserve(Length);
 
-	for(int32 ix = 0; ix<Length; ++ix)
+	for (int32 ix = 0; ix < Length; ++ix)
 	{
-		int32 RandomIdx = FMath::RandRange(0, Characters.Len()-1);
+		int32 RandomIdx = FMath::RandRange(0, Characters.Len() - 1);
 		RandomString.AppendChar(Characters[RandomIdx]);
 	}
 
@@ -85,9 +83,9 @@ FString UAHNPCStatComponent::MakeRandString(int32 Length)
 FString UAHNPCStatComponent::CombineString(int32 WordsNumber)
 {
 	FString CombinedString;
-	for(int32 ix = 0; ix<WordsNumber; ++ix)
+	for (int32 ix = 0; ix < WordsNumber; ++ix)
 	{
-		if(ix != 0)
+		if (ix != 0)
 		{
 			CombinedString.AppendChar('_');
 		}
@@ -131,4 +129,3 @@ const int32 UAHNPCStatComponent::GetNPCSway()
 {
 	return NPCSway;
 }
-

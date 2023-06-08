@@ -15,16 +15,16 @@ UCLASS()
 class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScannable, public IAHTargetNPC
 {
 	GENERATED_BODY()
-	
+
 public:
 	AAHNPCVehicleBase();
 	virtual void BeginPlay() override;
-	
+
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;
 
-	
+
 	//set info widget
 	void SetInfoWidget();
 	void SetInfoWidgetData();
@@ -40,6 +40,4 @@ private:
 	//NPC Stat Component
 	UPROPERTY(VisibleAnywhere, Category=Stat)
 	class UAHNPCStatComponent* NPCStat;
-
-	
 };

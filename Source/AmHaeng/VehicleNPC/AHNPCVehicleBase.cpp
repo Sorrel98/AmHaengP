@@ -11,12 +11,11 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 {
 	//Main Info Setting
 	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
-	bIsTargetNPC = (bIsTargetNPCPercentage<=3)? true:false;
+	bIsTargetNPC = (bIsTargetNPCPercentage <= 3) ? true : false;
 
 	//ingame 위치값이 필요한 애는 아니라서 attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
 	SetInfoWidget();
-	
 }
 
 void AAHNPCVehicleBase::BeginPlay()
@@ -24,7 +23,6 @@ void AAHNPCVehicleBase::BeginPlay()
 	Super::BeginPlay();
 	SetInfoWidgetData();
 }
-
 
 
 bool AAHNPCVehicleBase::GetIsTargetNPC()
@@ -52,7 +50,10 @@ void AAHNPCVehicleBase::SetInfoWidget()
 void AAHNPCVehicleBase::SetInfoWidgetData()
 {
 	UAHNPCInfoWidget* NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
-	if(NPCInfoWidget==nullptr) return;
+	if (NPCInfoWidget == nullptr)
+	{
+		return;
+	}
 	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
 	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
 	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());

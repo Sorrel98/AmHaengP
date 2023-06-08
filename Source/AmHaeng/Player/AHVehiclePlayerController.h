@@ -12,22 +12,24 @@
  * 
  */
 DECLARE_MULTICAST_DELEGATE_OneParam(MouseClickDelegate, bool)
+
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
 public:
 	//sets default values for this character controller's properties
 	AAHVehiclePlayerController();
+
 protected:
 	//Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 
-//==============================
-//사용자 지정 함수 및 변수들
-//==============================	
+	//==============================
+	//사용자 지정 함수 및 변수들
+	//==============================	
 public:
 	//Called every frame;
 	virtual void Tick(float DeltaTime) override;
@@ -37,17 +39,15 @@ public:
 	void MouseScan();
 
 	void WidgetVisibleByMouseScan(AActor* HitActor);
-	
+
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
-	
+
 	UFUNCTION(BlueprintCallable)
-	FVector GetMouseLocation(){return MousePosition;}
+	FVector GetMouseLocation() { return MousePosition; }
 
 	MouseClickDelegate MouseClickDelegate;
 
-
-	
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
 	float ScanDistance;
@@ -57,14 +57,13 @@ private:
 	uint8 IsNPCScanning = false;
 
 	AActor* MousePrevActor;
-	
 
 
 	//mouse input system
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ClickAction;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ClickReleasedAction;
 
 	void MouseClick();
@@ -72,7 +71,7 @@ private:
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCClicking = false;
-	
+
 	//click Circular Progressbar UI
 	FVector MousePosition;
 

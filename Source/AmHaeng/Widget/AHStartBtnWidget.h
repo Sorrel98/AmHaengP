@@ -14,6 +14,7 @@ UCLASS()
 class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 public:
 	FStartButtonDelegate PushedStartButton;
 
@@ -28,6 +29,7 @@ protected:
 
 public:
 	virtual void NativeOnInitialized() override;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void TextButtonCallback();

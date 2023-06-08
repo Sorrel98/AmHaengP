@@ -8,13 +8,16 @@
 
 AAHGameMode::AAHGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/SportsCar/SportsCar_Pawn.SportsCar_Pawn_C'"));
-	if(DefaultPawnClassRef.Class)
+	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT(
+		"/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/SportsCar/SportsCar_Pawn.SportsCar_Pawn_C'"));
+	if (DefaultPawnClassRef.Class)
 	{
 		DefaultPawnClass = DefaultPawnClassRef.Class;
 	}
 
-	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/VehiclePlayerController.VehiclePlayerController_C'"));
+	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerRef(
+		TEXT(
+			"/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/VehiclePlayerController.VehiclePlayerController_C'"));
 	if (PlayerControllerRef.Class)
 	{
 		{
@@ -25,8 +28,9 @@ AAHGameMode::AAHGameMode()
 
 	//Start Button Test
 	//위젯 블루프린트 클래스를 받아옴
-	static ConstructorHelpers::FClassFinder<UAHStartBtnWidget> StartBtnRef(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_StartBtn.WBP_StartBtn_C'"));
-	
+	static ConstructorHelpers::FClassFinder<UAHStartBtnWidget> StartBtnRef(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_StartBtn.WBP_StartBtn_C'"));
+
 	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
 	if (StartBtnRef.Succeeded())
 	{
@@ -43,9 +47,8 @@ void AAHGameMode::BeginPlay()
 	MouseActorSpawn();
 	SpawnButtonOnViewport();
 	BindingDelegates();
-	
-	Spawner->Rename(TEXT("SpawnerOuter"), this);
 
+	Spawner->Rename(TEXT("SpawnerOuter"), this);
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -68,12 +71,11 @@ void AAHGameMode::BindingDelegates()
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
-
 }
 
 void AAHGameMode::MouseActorSpawn()
 {
-	if (GetOuter()==nullptr)
+	if (GetOuter() == nullptr)
 	{
 		return;
 	}
@@ -84,16 +86,27 @@ void AAHGameMode::MouseActorSpawn()
 		return;
 	}
 
-	FSoftObjectPath MouseBPRef(TEXT("/Script/Engine.Blueprint'/Game/Player/Widget/BP_CursorLocation.BP_CursorLocation'"));
-	if(!MouseBPRef.IsValid()) return;
+	FSoftObjectPath MouseBPRef(
+		TEXT("/Script/Engine.Blueprint'/Game/Player/Widget/BP_CursorLocation.BP_CursorLocation'"));
+	if (!MouseBPRef.IsValid())
+	{
+		return;
+	}
 	UBlueprint* MouseBPObj = Cast<UBlueprint>(MouseBPRef.TryLoad());
-	if (MouseBPObj == nullptr) return;
+	if (MouseBPObj == nullptr)
+	{
+		return;
+	}
 	UClass* MouseBPClass = MouseBPObj->GeneratedClass;
-	if (MouseBPClass == nullptr) return;
+	if (MouseBPClass == nullptr)
+	{
+		return;
+	}
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
-	
-	MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+
+	MouseActor = World->SpawnActor<
+		AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 	if (MouseActor)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseActor Spawned"));

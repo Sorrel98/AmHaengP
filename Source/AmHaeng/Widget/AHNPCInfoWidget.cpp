@@ -16,6 +16,4 @@ void UAHNPCInfoWidget::NativeConstruct()
 	ensure(TB_MinSpeed);
 	ensure(TB_MaxSpeed);
 	ensure(TB_Sway);
-	
-	
 }

@@ -16,9 +16,10 @@ UCLASS(Blueprintable, BlueprintType)
 class AMHAENG_API UAHNPCSpawner : public UObject
 {
 	GENERATED_BODY()
+
 public:
 	UAHNPCSpawner();
-	~UAHNPCSpawner();
+	virtual ~UAHNPCSpawner() override;
 
 	//Spawn될 위치 정하기
 	void SetSpawningRandomLocations();
@@ -34,9 +35,7 @@ public:
 
 	void TestSpawnNPC();
 
-	
 private:
-
 	void NPCVehicleSpawn();
 
 	void RandomNPCVehicleSpawn(int32 Index);
@@ -46,5 +45,4 @@ private:
 	TArray<FRotator> SpawnRotations;
 
 	AHMathFunctions* MathFunctions;
-
 };

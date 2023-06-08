@@ -7,12 +7,12 @@
 #include "AHNPCStatComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class AMHAENG_API UAHNPCStatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UAHNPCStatComponent();
 
@@ -20,23 +20,24 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
 	void StatsSetting();
-	
+
 	//NPC info - OwnerName
 	void SetOwnerName();
 	const FString GetOwnerName();
-	
+
 	//NPC info - LicenseNumber
 	void SetLicenseNumber();
 	FString MakeRandString(int32 Length);
 	FString CombineString(int32 WordsNumber);
 	const FString GetLicenseNumber();
-	
+
 	int MakeRandInteger(int32 num1, int32 num2);
 
 	//NPC info - NPCSpeed
@@ -47,7 +48,7 @@ public:
 	//NPC info - NPCSway
 	void SetNPCSway();
 	const int32 GetNPCSway();
-	
+
 private:
 	//NPC info - Detail
 	UPROPERTY()
@@ -60,5 +61,4 @@ private:
 	int32 NPCMinSpeed;
 	UPROPERTY()
 	int32 NPCSway;
-		
 };
