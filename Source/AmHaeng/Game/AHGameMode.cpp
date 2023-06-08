@@ -41,7 +41,6 @@ void AAHGameMode::BeginPlay()
 	Super::BeginPlay();
 	StartButtonOnViewport();
 	BindingWithWidgetDelegate();
-
 	
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 
@@ -67,6 +66,7 @@ void AAHGameMode::BindingWithWidgetDelegate()
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
+
 }
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)

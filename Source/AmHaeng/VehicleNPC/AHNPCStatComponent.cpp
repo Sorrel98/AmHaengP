@@ -2,6 +2,7 @@
 
 
 #include "AHNPCStatComponent.h"
+#include "AmHaeng/Dictionary/AHMathFunctions.h"
 #include "AmHaeng/Prop/AHTypes.h"
 
 // Sets default values for this component's properties
@@ -52,7 +53,7 @@ void UAHNPCStatComponent::SetOwnerName()
 {
 	AHTypes MyTypes;
 	FString EnumName = "NPCOwnerNames";
-	FString OwnerName = GetNPCEnumName(GetRandomEnumValue(MyTypes.GetNPCOwnerNameArray()), *EnumName);
+	FString OwnerName = GetNPCEnumName(GetRandomValue(MyTypes.GetNPCOwnerNameArray()), *EnumName);
 	NPCOwnerName = OwnerName;
 }
 

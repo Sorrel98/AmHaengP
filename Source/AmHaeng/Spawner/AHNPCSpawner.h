@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Engine/World.h"
+#include "AmHaeng/Dictionary/AHMathFunctions.h"
 #include "GameFramework/Actor.h"
 #include "AHNPCSpawner.generated.h"
 
@@ -23,18 +23,28 @@ public:
 	//Spawn될 위치 정하기
 	void SetSpawningRandomLocations();
 
+	//World의 Spawn Actors 위치 가져오기
+	void GetSpawnActorsLocation();
+
+
 	//Delegate 수신하는 함수
 	UFUNCTION()
 	void GetDelegateFromWidget();
 
 
+	
 
-protected:
-	//virtual void BeginPlay() override;
+	
 private:
+
+	void NPCVehicleSpawn();
+
+	void RandomNPCVehicleSpawn(int32 Index);
+
+	TArray<AActor*> NPCSpawnLocationActors;
 	TArray<FVector> SpawnLocations;
 	TArray<FRotator> SpawnRotations;
 
-	void NPCVehicleSpawn();
+	AHMathFunctions* MathFunctions;
 
 };
