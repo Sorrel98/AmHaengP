@@ -4,7 +4,6 @@
 #include "AHMouseActor.h"
 
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
-#include "AmHaeng/Widget/AHNPCClickCPWidget.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values
@@ -21,14 +20,13 @@ AAHMouseActor::AAHMouseActor()
 	CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
 	CPWidgetComponent->SetupAttachment(this->GetRootComponent());
 	CPWidgetComponent->SetWidgetClass(CPWidgetClass);
+	
 }
 
 // Called when the game starts or when spawned
 void AAHMouseActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	SetCPWidgetVisibility(false);
 	SetBindDelegate();
 	SetCPWidget();
 }
@@ -42,16 +40,30 @@ void AAHMouseActor::SetCPWidgetVisibility(bool Visible) const
 void AAHMouseActor::SetCPWidget()
 {
 	CPWidgetComponent->SetCastShadow(false);
+	SetCPWidgetVisibility(false);
+}
+
+void AAHMouseActor::ClickTimerFinishDelegateBind()
+{
+	CPWidgetComponent->SetVisibility(false);
 }
 
 
 void AAHMouseActor::SetBindDelegate()
 {
+	//클릭 유무 delegate with controller
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 	if(PlayerController==nullptr) return;
 	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
 		CastedPlayerController->MouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
+	}
+
+	//timer 끝남 delegate with click cp widget
+	CPWidget = Cast<UAHNPCClickCPWidget>(CPWidgetComponent->GetWidget());
+	if(CPWidget!=nullptr)
+	{
+		CPWidget->TimerFinishSuccessDelegate.BindUObject(this, &AAHMouseActor::ClickTimerFinishDelegateBind);
 	}
 }
 

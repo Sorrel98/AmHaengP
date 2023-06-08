@@ -23,10 +23,12 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets")
-	class UAHNPCClickCPWidget* CPWidget;
+	UAHNPCClickCPWidget* CPWidget;
 
 	void SetCPWidgetVisibility(bool Visible) const;
 	void SetCPWidget();
+
+	void ClickTimerFinishDelegateBind();
 
 private:
 	void SetBindDelegate();

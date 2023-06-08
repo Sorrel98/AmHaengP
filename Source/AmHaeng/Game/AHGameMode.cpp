@@ -69,7 +69,6 @@ void AAHGameMode::BindingDelegates()
 	Spawner = NewObject<UAHNPCSpawner>();
 	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
-	//TimerFinishSuccessDelegate
 }
 
 void AAHGameMode::MouseActorSpawn()

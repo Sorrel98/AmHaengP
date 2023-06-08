@@ -53,19 +53,17 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 {
 	//잘 들어옴
 
-	FTimerDelegate TimerDelegate;
 	
 	//click 이었다면
 	if(ClickOrReleased)
 	{
 		//타이머 시작
-		GetWorld()->GetTimerManager().SetTimer(ScanTimer, TimerDelegate, MaxClickTime, false);
+		GetWorld()->GetTimerManager().SetTimer(ScanTimer, TimerFinishSuccessDelegate, MaxClickTime, false);
 	}
 	//release였다면
 	else
 	{
 		GetWorld()->GetTimerManager().ClearTimer(ScanTimer);
-		//TimerFinishSuccessDelegate.Execute();
 		NowClickTime = 0.0f;
 	}
 	
