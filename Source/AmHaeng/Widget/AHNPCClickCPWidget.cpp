@@ -7,13 +7,10 @@
 
 void UAHNPCClickCPWidget::AHNPCClickCPWidget()
 {
-	
-	//Percent = 0.3f;
 }
 
 void UAHNPCClickCPWidget::SetPercent_Implementation(const float InPercentage)
 {
-	//PercentValue = InPercentage;
 }
 
 const float UAHNPCClickCPWidget::GetPercent()
@@ -43,16 +40,11 @@ void UAHNPCClickCPWidget::MouseClicked(bool ClickOrReleased)
 	SetMouseClickTimer(ClickOrReleased);
 }
 
-void UAHNPCClickCPWidget::AddPercentageByTick()
-{
-	NowClickTime+=0.1f;
-}
-
 
 void UAHNPCClickCPWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	MaxClickTime = 2.0f;
+	MaxClickTime = 1.0f;
 	NowClickTime = 0.0f;
 	MouseClickDelegateBind();
 }
@@ -62,8 +54,6 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 	//잘 들어옴
 
 	FTimerDelegate TimerDelegate;
-	//TimerDelegate.BindUFunction(this, FName("AddPercentageByTick"));
-	//TimerDelegate.BindUFunction(this, FName("SetPercent_Implementation"), NowClickTime/MaxClickTime);
 	
 	//click 이었다면
 	if(ClickOrReleased)

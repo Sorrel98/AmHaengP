@@ -53,14 +53,14 @@ void UAHNPCSpawner::GetDelegateFromWidget()
 	RandomNPCVehicleSpawn(NewSpawnIndex);
 }
 
-
+//현재 사용하지 않음
 void UAHNPCSpawner::NPCVehicleSpawn()
 {
 	if (GetOuter()==nullptr)
 	{
 		return;
 	}
-	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/OffroadCar_Pawn.OffroadCar_Pawn"));
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
 	if (NPCBPObj == nullptr) return;
 	
@@ -93,7 +93,7 @@ void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
 	{
 		return;
 	}
-	FSoftObjectPath NPCBPRef(TEXT("/Game/VehicleNPC/OffroadCar_Pawn.OffroadCar_Pawn_C"));
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
 	if(!NPCBPRef.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));
