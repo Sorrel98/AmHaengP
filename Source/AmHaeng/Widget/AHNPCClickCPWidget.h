@@ -9,7 +9,7 @@
 /**
  * 
  */
-
+DECLARE_DELEGATE(TimerFinised)
 UCLASS()
 class AMHAENG_API UAHNPCClickCPWidget : public UUserWidget
 {
@@ -29,8 +29,7 @@ public:
 
 	void MouseClicked(bool ClickOrReleased);
 
-	void AddPercentageByTick();
-
+	TimerFinised TimerFinishSuccessDelegate;
 
 protected:
 	//이 함수가 실행될 때는 거의 모든 값이 초기화 된 상태

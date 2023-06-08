@@ -65,6 +65,7 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 	else
 	{
 		GetWorld()->GetTimerManager().ClearTimer(ScanTimer);
+		TimerFinishSuccessDelegate.Execute();
 		NowClickTime = 0.0f;
 	}
 	

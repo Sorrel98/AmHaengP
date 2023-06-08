@@ -3,6 +3,7 @@
 
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
+#include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
 
 AAHGameMode::AAHGameMode()
@@ -39,15 +40,16 @@ AAHGameMode::AAHGameMode()
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	StartButtonOnViewport();
-	BindingWithWidgetDelegate();
+	MouseActorSpawn();
+	SpawnButtonOnViewport();
+	BindingDelegates();
 	
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 
 }
 
 //StartButton Widget Viewport에 띄우기
-void AAHGameMode::StartButtonOnViewport()
+void AAHGameMode::SpawnButtonOnViewport()
 {
 	if (IsValid(WidgetClass))
 	{
@@ -60,13 +62,36 @@ void AAHGameMode::StartButtonOnViewport()
 }
 
 //Delegate와 Button을 Binding
-void AAHGameMode::BindingWithWidgetDelegate()
+void AAHGameMode::BindingDelegates()
 {
 	SpawnStartButton->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"), bIsNPCSpawning);
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
+	//TimerFinishSuccessDelegate
+}
+
+void AAHGameMode::MouseActorSpawn()
+{
+	if (GetOuter()==nullptr)
+	{
+		return;
+	}
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	
+	AAHMouseActor* MouseActor = World->SpawnActor<AAHMouseActor>(AAHMouseActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	if (MouseActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MouseActor Spawned"));
+	}
 }
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
