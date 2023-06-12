@@ -3,10 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/Mouse/AHMouseActor.h"
 #include "GameFramework/PlayerController.h"
-#include "Components/WidgetComponent.h"
-#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AHVehiclePlayerController.generated.h"
 
 /**
@@ -81,5 +78,5 @@ private:
 
 	AActor* NowHitActor;
 
-	AAHMouseActor* MouseActor;
+	//class AAHMouseActor* MouseActor;
 };

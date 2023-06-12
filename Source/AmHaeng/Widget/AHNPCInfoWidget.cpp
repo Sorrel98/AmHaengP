@@ -2,7 +2,6 @@
 
 
 #include "AHNPCInfoWidget.h"
-#include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 
 UAHNPCInfoWidget::UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

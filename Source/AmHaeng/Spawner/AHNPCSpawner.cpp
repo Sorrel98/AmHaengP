@@ -4,8 +4,6 @@
 #include "AHNPCSpawner.h"
 #include "Engine/Blueprint.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
-#include "Engine/World.h"
-#include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 
 UAHNPCSpawner::UAHNPCSpawner()

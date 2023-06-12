@@ -67,7 +67,7 @@ void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 
 void AAHVehiclePlayerController::MouseScan()
 {
-	APlayerController* ABPlayerVehicleController = this;
+	//APlayerController* ABPlayerVehicleController = this;
 	if (this)
 	{
 		FHitResult HitResult;
