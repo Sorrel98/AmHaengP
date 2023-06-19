@@ -9,10 +9,20 @@
 
 void UAHGimmickModeWidget::SetGimmickWidgetText(EGimmickMode InGimmick)
 {
-	UEnum* EnumPtr = StaticEnum<EGimmickMode>();
-	int32 Index = EnumPtr->GetIndexByValue((int64)InGimmick);
-	FString EnumMemberDisplayName = EnumPtr->GetDisplayNameTextByIndex(Index).ToString();
-	GimmickText->SetText(FText::FromString(EnumMemberDisplayName));
+	if(InGimmick == EGimmickMode::Patrol)
+	{
+		TextPatrol->SetVisibility(ESlateVisibility::Visible);
+		TextChase->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else if(InGimmick == EGimmickMode::Chase)
+	{
+		TextPatrol->SetVisibility(ESlateVisibility::Hidden);
+		TextChase->SetVisibility(ESlateVisibility::Visible);
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("invalid EGimmickMode"));
+	}
+
 }
 
 void UAHGimmickModeWidget::TextChangeDelegateBind()

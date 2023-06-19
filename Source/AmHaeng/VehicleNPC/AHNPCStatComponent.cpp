@@ -8,11 +8,7 @@
 // Sets default values for this component's properties
 UAHNPCStatComponent::UAHNPCStatComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 }
 
 
@@ -21,14 +17,6 @@ void UAHNPCStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	StatsSetting();
-}
-
-
-// Called every frame
-void UAHNPCStatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                        FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UAHNPCStatComponent::StatsSetting()
@@ -61,36 +49,7 @@ const FString UAHNPCStatComponent::GetOwnerName()
 
 void UAHNPCStatComponent::SetLicenseNumber()
 {
-	NPCLicenseNumber = CombineString(2);
-}
-
-FString UAHNPCStatComponent::MakeRandString(int32 Length)
-{
-	const FString Characters = TEXT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
-	FString RandomString;
-	RandomString.Reserve(Length);
-
-	for (int32 ix = 0; ix < Length; ++ix)
-	{
-		int32 RandomIdx = FMath::RandRange(0, Characters.Len() - 1);
-		RandomString.AppendChar(Characters[RandomIdx]);
-	}
-
-	return RandomString;
-}
-
-FString UAHNPCStatComponent::CombineString(int32 WordsNumber)
-{
-	FString CombinedString;
-	for (int32 ix = 0; ix < WordsNumber; ++ix)
-	{
-		if (ix != 0)
-		{
-			CombinedString.AppendChar('_');
-		}
-		CombinedString.Append(MakeRandString(3));
-	}
-	return CombinedString;
+	NPCLicenseNumber = AHMathFunctions::CombineString(2);
 }
 
 const FString UAHNPCStatComponent::GetLicenseNumber()
@@ -98,15 +57,10 @@ const FString UAHNPCStatComponent::GetLicenseNumber()
 	return NPCLicenseNumber;
 }
 
-int UAHNPCStatComponent::MakeRandInteger(int32 num1, int32 num2)
-{
-	return FMath::RandRange(num1, num2);
-}
-
 void UAHNPCStatComponent::SetNPCSpeed()
 {
-	NPCMinSpeed = MakeRandInteger(30, 50);
-	NPCMaxSpeed = MakeRandInteger(90, 110);
+	NPCMinSpeed = AHMathFunctions::MakeRandInteger(30, 50);
+	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(90, 110);
 }
 
 const int32 UAHNPCStatComponent::GetNPCMinSpeed()
@@ -121,7 +75,7 @@ const int32 UAHNPCStatComponent::GetNPCMaxSpeed()
 
 void UAHNPCStatComponent::SetNPCSway()
 {
-	NPCSway = MakeRandInteger(10, 50);
+	NPCSway = AHMathFunctions::MakeRandInteger(10, 50);
 }
 
 const int32 UAHNPCStatComponent::GetNPCSway()

@@ -21,7 +21,10 @@ public:
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> GimmickText;
+	TObjectPtr<class UTextBlock> TextPatrol;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<class UTextBlock> TextChase;
 	
 protected:
 	virtual void NativeConstruct() override;

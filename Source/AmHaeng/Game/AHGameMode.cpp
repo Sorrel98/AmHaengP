@@ -7,6 +7,7 @@
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
 #include "AmHaeng/Widget/AHGimmickModeWidget.h"
+#include "AmHaeng/Widget/AHNPCIsTargetWidget.h"
 
 AAHGameMode::AAHGameMode()
 {
@@ -49,6 +50,20 @@ AAHGameMode::AAHGameMode()
 		GimmickModeWidgetClass = GimmickTextRef.Class;
 	}
 
+	//IsTargetCorrect Text Reference
+	static ConstructorHelpers::FClassFinder<UAHNPCIsTargetWidget> IsTargetTextRef(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_IsTargetNPC.WBP_IsTargetNPC_C'"));
+
+	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
+	if (IsTargetTextRef.Succeeded())
+	{
+		NPCIsTargetWidgetClass = IsTargetTextRef.Class;
+	}
+
+
+
+	
+
 	bIsNPCSpawning = false;
 
 
@@ -59,12 +74,16 @@ AAHGameMode::AAHGameMode()
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Spawner = NewObject<UAHNPCSpawner>();
+	
 	MouseActorSpawn();
 	SpawnButtonOnViewport();
 	GimmickTextOnViewport();
 	BindingDelegates();
-
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
+	Spawner->GetSpawnActorsLocation();
+	InitSpawnNPC();
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -92,13 +111,24 @@ void AAHGameMode::GimmickTextOnViewport()
     	}
 }
 
+void AAHGameMode::IsTargetTextOnViewport()
+{
+	if (IsValid(NPCIsTargetWidgetClass))
+	{
+		NPCIsTargetWidget = Cast<UAHNPCIsTargetWidget>(CreateWidget(GetWorld(), NPCIsTargetWidgetClass));
+		if (IsValid(NPCIsTargetWidget))
+		{
+			NPCIsTargetWidget->AddToViewport();
+			NPCIsTargetWidget->AllTextInvisible();
+		}
+	}
+}
+
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingDelegates()
 {
 	SpawnStartButton->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"), bIsNPCSpawning);
-
-	Spawner = NewObject<UAHNPCSpawner>();
-	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
+	//SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
 	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
 }
@@ -141,6 +171,7 @@ void AAHGameMode::MouseActorSpawn()
 void AAHGameMode::CPLoadingFinished()
 {
 	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
+	
 	if(NowGimmickMode == EGimmickMode::Chase)
 	{
 		SetGimmickMode(EGimmickMode::Patrol);
@@ -164,4 +195,16 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 void AAHGameMode::SetNPCSpawningState(uint8 NowState)
 {
 	bIsNPCSpawning = !NowState;
+}
+
+void AAHGameMode::InitSpawnNPC()
+{
+	if(Spawner!=nullptr)
+	{
+		Spawner->NPCVehicleSpawn();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Spawner is invalid"));
+	}
 }

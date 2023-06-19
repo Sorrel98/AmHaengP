@@ -37,6 +37,7 @@ public:
 
 private:
 	//NPC info - Main
+	//true(1) : 범법, false(2) : 일반
 	uint8 bIsTargetNPC : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))

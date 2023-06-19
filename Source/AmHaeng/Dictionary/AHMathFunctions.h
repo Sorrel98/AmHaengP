@@ -32,7 +32,10 @@ FString GetNPCEnumName(T InNPCOwnerName, FString EnumName)
 class AMHAENG_API AHMathFunctions
 {
 public:
-	int32 GetRandomIndex(int32 TArraySize);
+	static int32 GetRandomIndex(int32 TArraySize);
+	static FString MakeRandString(int32 Length);
+	static FString CombineString(int32 WordsNumber);
+	static int MakeRandInteger(int32 num1, int32 num2);
 };
 
 

@@ -20,26 +20,25 @@ class AMHAENG_API UAHNPCSpawner : public UObject
 public:
 	UAHNPCSpawner();
 	virtual ~UAHNPCSpawner() override;
-
-	//Spawn될 위치 정하기
-	void SetSpawningRandomLocations();
+	
 
 	//World의 Spawn Actors 위치 가져오기
 	void GetSpawnActorsLocation();
 
-
 	//Delegate 수신하는 함수
 	UFUNCTION()
-	void GetDelegateFromWidget();
+	//void GetDelegateFromWidget();
 
 
+	//실제 Spawn 함수
 	void TestSpawnNPC();
 
-private:
 	void NPCVehicleSpawn();
 
 	void RandomNPCVehicleSpawn(int32 Index);
 
+
+private:
 	TArray<AActor*> NPCSpawnLocationActors;
 	TArray<FVector> SpawnLocations;
 	TArray<FRotator> SpawnRotations;

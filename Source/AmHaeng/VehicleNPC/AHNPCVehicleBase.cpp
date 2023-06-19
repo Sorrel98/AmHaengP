@@ -12,17 +12,19 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 {
 	//Main Info Setting
 	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
-	bIsTargetNPC = (bIsTargetNPCPercentage <= 3) ? true : false;
+	//3:7 비율로 Target NPC Setting
+	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 3) ? true : false);
 
-	//ingame 위치값이 필요한 애는 아니라서 attachment 없어도 됨
+	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
 	SetInfoWidget();
+	SetInfoWidgetData();
 }
 
 void AAHNPCVehicleBase::BeginPlay()
 {
 	Super::BeginPlay();
-	SetInfoWidgetData();
+	
 	BindTTDelegate();
 }
 

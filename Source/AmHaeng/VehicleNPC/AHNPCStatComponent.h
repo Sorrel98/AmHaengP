@@ -20,10 +20,6 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
 	void StatsSetting();
@@ -34,11 +30,8 @@ public:
 
 	//NPC info - LicenseNumber
 	void SetLicenseNumber();
-	FString MakeRandString(int32 Length);
-	FString CombineString(int32 WordsNumber);
 	const FString GetLicenseNumber();
 
-	int MakeRandInteger(int32 num1, int32 num2);
 
 	//NPC info - NPCSpeed
 	void SetNPCSpeed();
