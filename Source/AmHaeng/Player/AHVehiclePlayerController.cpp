@@ -180,18 +180,22 @@ void AAHVehiclePlayerController::MouseClick()
 
 void AAHVehiclePlayerController::MouseClickReleased()
 {
-	IsNPCClicking = false;
-	//add delegate and ShutDown Loading UI
-	if (MouseClickDelegate.IsBound())
+	if(IsNPCClicking)
 	{
-		MouseClickDelegate.Broadcast(false);
-	}
-	if(NowHitActor)
-	{
-		AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-		if(HitActorBase)
+		IsNPCClicking = false;
+		//add delegate and ShutDown Loading UI
+		if (MouseClickDelegate.IsBound())
 		{
-			HitActorBase->AHSetTooltipVisible(false);
+			MouseClickDelegate.Broadcast(false);
+		}
+		if(NowHitActor)
+		{
+			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
+			if(HitActorBase)
+			{
+				HitActorBase->AHSetTooltipVisible(false);
+			}
 		}
 	}
+	
 }

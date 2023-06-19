@@ -44,6 +44,10 @@ void AAHMouseActor::InitCPWidget()
 void AAHMouseActor::ClickTimerFinishDelegateBind()
 {
 	SetCPWidgetVisibility(false);
+	if(CPWidget->GetScanTimerValid())
+	{
+		ClickCPLoadingDelegate.Broadcast();
+	}
 }
 
 
@@ -65,20 +69,3 @@ void AAHMouseActor::SetBindDelegate()
 	}
 }
 
-void AAHMouseActor::MouseClicked(bool bArg)
-{
-	/*if(bArg)
-	{
-		TTWidgetComponent->SetVisibility(false);
-	}*/
-}
-
-void AAHMouseActor::MouseClickDelegateBind()
-{
-	/*APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if(PlayerController==nullptr) return;
-	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
-	{
-		CastedPlayerController->MouseClickDelegate.AddUObject(this, &AAHMouseActor::MouseClicked);
-	}*/
-}

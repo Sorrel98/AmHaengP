@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "AHMouseActor.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FClickCPLoadingDelegate);
 UCLASS()
 class AMHAENG_API AAHMouseActor : public AActor
 {
@@ -27,14 +28,13 @@ public:
 
 	void SetCPWidgetVisibility(bool Visible) const;
 	void InitCPWidget();
-
-
+	
 	void ClickTimerFinishDelegateBind();
+
+	FClickCPLoadingDelegate ClickCPLoadingDelegate;
 
 private:
 	void SetBindDelegate();
-	void MouseClicked(bool bArg);
-	void MouseClickDelegateBind();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;

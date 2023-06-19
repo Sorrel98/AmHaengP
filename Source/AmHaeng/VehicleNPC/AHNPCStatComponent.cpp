@@ -21,7 +21,6 @@ void UAHNPCStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	StatsSetting();
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *this->GetOwnerName())
 }
 
 

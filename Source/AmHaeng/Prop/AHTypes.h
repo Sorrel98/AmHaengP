@@ -52,3 +52,10 @@ private:
 		NPCOwnerNames::Name8
 	};
 };
+
+UENUM()
+enum class EGimmickMode : uint8
+{
+	Patrol UMETA(DisplayName = "Patrol...ing"),
+	Chase UMETA(DisplayName = "Chase...ing")
+};

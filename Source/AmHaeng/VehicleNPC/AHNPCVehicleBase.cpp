@@ -70,7 +70,6 @@ void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
 
 void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible)
 {
-	UE_LOG(LogTemp, Log, TEXT("bind 된 함수 들어옴"));
 	if(NPCInfoWidget)
 	{
 		NPCInfoWidget->SetTooltipVisible(visible);

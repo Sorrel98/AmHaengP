@@ -42,6 +42,11 @@ void UAHNPCClickCPWidget::MouseClicked(bool ClickOrReleased)
 	SetMouseClickTimer(ClickOrReleased);
 }
 
+int8 UAHNPCClickCPWidget::GetScanTimerValid()
+{
+	return (ScanTimer.IsValid()? true : false);
+}
+
 
 void UAHNPCClickCPWidget::NativeConstruct()
 {
@@ -55,7 +60,6 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 {
 	//잘 들어옴
 
-
 	//click 이었다면
 	if (ClickOrReleased)
 	{
@@ -65,7 +69,8 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 	//release였다면
 	else
 	{
-		GetWorld()->GetTimerManager().ClearTimer(ScanTimer);
+		UE_LOG(LogTemp, Warning, TEXT("Timer Clear"));
+		ScanTimer.Invalidate();
 		NowClickTime = 0.0f;
 	}
 }

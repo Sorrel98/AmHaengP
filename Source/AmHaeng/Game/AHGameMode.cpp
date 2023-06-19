@@ -4,9 +4,9 @@
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
-#include "AmHaeng/Widget/AHNPCClickCPWidget.h"
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
+#include "AmHaeng/Widget/AHGimmickModeWidget.h"
 
 AAHGameMode::AAHGameMode()
 {
@@ -36,11 +36,24 @@ AAHGameMode::AAHGameMode()
 	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
 	if (StartBtnRef.Succeeded())
 	{
-		WidgetClass = StartBtnRef.Class;
+		StartBtnWidgetClass = StartBtnRef.Class;
+	}
+
+	//Gimmick Text Reference
+	static ConstructorHelpers::FClassFinder<UAHGimmickModeWidget> GimmickTextRef(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_GimmickText.WBP_GimmickText_C'"));
+
+	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
+	if (GimmickTextRef.Succeeded())
+	{
+		GimmickModeWidgetClass = GimmickTextRef.Class;
 	}
 
 	bIsNPCSpawning = false;
-	//UE_LOG(LogTemp, Log, TEXT("Spawn Function Stated : %u"), bIsNPCSpawning);
+
+
+	//Gimmick Mode Setting
+	NowGimmickMode = EGimmickMode::Patrol;
 }
 
 void AAHGameMode::BeginPlay()
@@ -48,6 +61,7 @@ void AAHGameMode::BeginPlay()
 	Super::BeginPlay();
 	MouseActorSpawn();
 	SpawnButtonOnViewport();
+	GimmickTextOnViewport();
 	BindingDelegates();
 
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
@@ -56,14 +70,26 @@ void AAHGameMode::BeginPlay()
 //StartButton Widget Viewport에 띄우기
 void AAHGameMode::SpawnButtonOnViewport()
 {
-	if (IsValid(WidgetClass))
+	if (IsValid(StartBtnWidgetClass))
 	{
-		SpawnStartButton = Cast<UAHStartBtnWidget>(CreateWidget(GetWorld(), WidgetClass));
+		SpawnStartButton = Cast<UAHStartBtnWidget>(CreateWidget(GetWorld(), StartBtnWidgetClass));
 		if (IsValid(SpawnStartButton))
 		{
 			SpawnStartButton->AddToViewport();
 		}
 	}
+}
+
+void AAHGameMode::GimmickTextOnViewport()
+{
+	if (IsValid(GimmickModeWidgetClass))
+    	{
+    		GimmickModeWidget = Cast<UAHGimmickModeWidget>(CreateWidget(GetWorld(), GimmickModeWidgetClass));
+    		if (IsValid(GimmickModeWidget))
+    		{
+    			GimmickModeWidget->AddToViewport();
+    		}
+    	}
 }
 
 //Delegate와 Button을 Binding
@@ -73,6 +99,8 @@ void AAHGameMode::BindingDelegates()
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
+
+	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
 }
 
 void AAHGameMode::MouseActorSpawn()
@@ -107,11 +135,28 @@ void AAHGameMode::MouseActorSpawn()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 
-	MouseActor = World->SpawnActor<
-		AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-	if (MouseActor)
+	MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+}
+
+void AAHGameMode::CPLoadingFinished()
+{
+	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
+	if(NowGimmickMode == EGimmickMode::Chase)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MouseActor Spawned"));
+		SetGimmickMode(EGimmickMode::Patrol);
+	}
+	else if(NowGimmickMode == EGimmickMode::Patrol)
+	{
+		SetGimmickMode(EGimmickMode::Chase);
+	}
+}
+
+void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
+{
+	NowGimmickMode = InGimmickMode;
+	if(GimmickChangeDelegate.IsBound())
+	{
+		GimmickChangeDelegate.Broadcast(InGimmickMode);
 	}
 }
 

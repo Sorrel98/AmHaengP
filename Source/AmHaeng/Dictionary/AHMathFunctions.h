@@ -34,3 +34,5 @@ class AMHAENG_API AHMathFunctions
 public:
 	int32 GetRandomIndex(int32 TArraySize);
 };
+
+

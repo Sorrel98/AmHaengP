@@ -31,6 +31,8 @@ public:
 
 	void MouseClicked(bool ClickOrReleased);
 
+	int8 GetScanTimerValid();
+
 	TimerFinised TimerFinishSuccessDelegate;
 
 	//Mouse Scan Timer -> 삭제 예정 (마우스 스캔을 시간 재는 것이 아닌, 마우스 스캔 시 클릭이 활성화되고 클릭 시간을 재는 방향으로)
