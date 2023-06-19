@@ -40,6 +40,9 @@ public:
 
 private:
 	TArray<AActor*> NPCSpawnLocationActors;
+
+	TArray<AActor*> GoodNPCSpawnLocationActors;
+	TArray<AActor*> BadNPCSpawnLocationActors;
 	TArray<FVector> SpawnLocations;
 	TArray<FRotator> SpawnRotations;
 

@@ -4,6 +4,7 @@
 #include "AHNPCSpawner.h"
 #include "Engine/Blueprint.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Kismet/GameplayStatics.h"
 
 UAHNPCSpawner::UAHNPCSpawner()
@@ -56,19 +57,32 @@ void UAHNPCSpawner::TestSpawnNPC()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-
-	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, FVector(-6990.0f, 5960.0f, 0.0f),
-	                                                         FRotator(0, 0, 0), SpawnParams);
-	/*if (NPCVehicleSpawnActor)
+	FVector GoodNPCLocation;
+	FRotator GoodNPCRotator;
+	UE_LOG(LogTemp, Log, TEXT("%s"), *GetWorld()->GetName());
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("GoodNPC"), GoodNPCSpawnLocationActors);
+	UE_LOG(LogTemp, Log, TEXT("%d"), GoodNPCSpawnLocationActors.Num());
+	for (AActor* NPCSpawnActor : GoodNPCSpawnLocationActors)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
-		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
-		if (SpawnedNPCController)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("실제 스폰하는 곳입니다"));
-			SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
-		}
-	}*/
+		GoodNPCLocation = NPCSpawnActor->GetActorLocation();
+		GoodNPCRotator = NPCSpawnActor->GetActorRotation();
+	}
+	AActor* TestGoodNPC = World->SpawnActor<AActor>(NPCBPClass, GoodNPCLocation, GoodNPCRotator, SpawnParams);
+	AAHNPCVehicleBase* TestGoodAHNPC = Cast<AAHNPCVehicleBase>(TestGoodNPC);
+	TestGoodAHNPC->GoodNPCInfoSetting();
+	
+
+	FVector BadNPCLocation;
+	FRotator BadNPCRotator;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("BadNPC"), BadNPCSpawnLocationActors);
+	for (AActor* NPCSpawnActor : BadNPCSpawnLocationActors)
+	{
+		BadNPCLocation = NPCSpawnActor->GetActorLocation();
+		BadNPCRotator = NPCSpawnActor->GetActorRotation();
+	}
+	AActor* TestBadNPC = World->SpawnActor<AActor>(NPCBPClass, BadNPCLocation, BadNPCRotator, SpawnParams);
+	AAHNPCVehicleBase* TestBadAHNPC = Cast<AAHNPCVehicleBase>(TestBadNPC);
+	TestBadAHNPC->BadNPCInfoSetting();
 }
 
 void UAHNPCSpawner::NPCVehicleSpawn()
@@ -98,18 +112,15 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	UE_LOG(LogTemp, Log, TEXT("Spawn location %d"), SpawnLocations.Num());
 	for (int32 ix = 0; ix < SpawnLocations.Num(); ++ix)
 	{
 		
 		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		if (NPCVehicleSpawnActor)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Spawn 합니다."));
 			AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
 			if (SpawnedNPCController)
 			{
-				UE_LOG(LogTemp, Log, TEXT("controller 붙입니다."));
 				SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 			}
 		}

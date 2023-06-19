@@ -26,20 +26,24 @@ public:
 
 	//NPC info - OwnerName
 	void SetOwnerName();
+	FORCEINLINE void SetOwnerName(FString InOwnerName){ NPCOwnerName = InOwnerName; };
 	const FString GetOwnerName();
 
 	//NPC info - LicenseNumber
 	void SetLicenseNumber();
+	FORCEINLINE void SetLicenseNumber(FString InLicenseNumber){ NPCLicenseNumber = InLicenseNumber; };
 	const FString GetLicenseNumber();
 
 
 	//NPC info - NPCSpeed
 	void SetNPCSpeed();
+	FORCEINLINE void SetNPCSpeed(int32 InNPCMinSpeed, int32 InNPCMaxSpeed){ NPCMinSpeed = InNPCMinSpeed, NPCMaxSpeed = InNPCMaxSpeed; };
 	const int32 GetNPCMinSpeed();
 	const int32 GetNPCMaxSpeed();
 
 	//NPC info - NPCSway
 	void SetNPCSway();
+	FORCEINLINE void SetNPCSway(int32 InNPCSway){ NPCSway = InNPCSway; };
 	const int32 GetNPCSway();
 
 private:

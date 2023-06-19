@@ -35,6 +35,11 @@ public:
 
 	void BindTTDelegate();
 
+
+	//Test NPC Setting
+	void GoodNPCInfoSetting();
+	void BadNPCInfoSetting();
+
 private:
 	//NPC info - Main
 	//true(1) : 범법, false(2) : 일반

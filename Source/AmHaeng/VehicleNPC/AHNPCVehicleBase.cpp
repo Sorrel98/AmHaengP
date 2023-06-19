@@ -90,3 +90,48 @@ void AAHNPCVehicleBase::BindTTDelegate()
 		CastedPlayerController->TTDelegate.BindUObject(this, &AAHNPCVehicleBase::AHSetTooltipVisible);
 	}
 }
+
+void AAHNPCVehicleBase::GoodNPCInfoSetting()
+{
+	bIsTargetNPC = false;
+
+	//Stat
+	NPCStat->SetOwnerName("GoodNPC");
+	NPCStat->SetLicenseNumber("123_345_122");
+	NPCStat->SetNPCSpeed(30, 70);
+	NPCStat->SetNPCSway(20);
+
+	//Widget
+	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
+	if (NPCInfoWidget == nullptr)
+	{
+		return;
+	}
+	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
+	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
+	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
+	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
+	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
+}
+
+void AAHNPCVehicleBase::BadNPCInfoSetting()
+{
+	bIsTargetNPC = true;
+
+	NPCStat->SetOwnerName("BadNPC");
+	NPCStat->SetLicenseNumber("12_333_544");
+	NPCStat->SetNPCSpeed(50, 120);
+	NPCStat->SetNPCSway(40);
+
+	//Widget
+	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
+	if (NPCInfoWidget == nullptr)
+	{
+		return;
+	}
+    NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
+	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
+	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
+	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
+	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
+}

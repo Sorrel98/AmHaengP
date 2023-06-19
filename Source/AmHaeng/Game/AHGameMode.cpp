@@ -84,6 +84,7 @@ void AAHGameMode::BeginPlay()
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 	Spawner->GetSpawnActorsLocation();
 	InitSpawnNPC();
+	Spawner->TestSpawnNPC();
 }
 
 //StartButton Widget Viewport에 띄우기
