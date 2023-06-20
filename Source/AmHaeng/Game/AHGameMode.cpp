@@ -210,15 +210,7 @@ void AAHGameMode::CPLoadingFinished()
 	{
 		return;
 	}
-	if(HitVehicleBase->GetIsTargetNPC())
-	{
-		NPCIsTargetWidget->SetNPCIsTargetWidget(true);
-	}
-	else
-	{
-		NPCIsTargetWidget->SetNPCIsTargetWidget(false);
-	}
-	
+	NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
