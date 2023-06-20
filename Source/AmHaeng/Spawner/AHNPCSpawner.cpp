@@ -124,6 +124,8 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 				SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 			}
 		}
+		AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
+		NPCActor->SetInfoWidgetData();
 	}
 }
 

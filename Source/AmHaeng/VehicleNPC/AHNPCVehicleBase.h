@@ -53,4 +53,5 @@ private:
 	class UAHNPCStatComponent* NPCStat;
 
 	TObjectPtr<class UAHNPCInfoWidget> NPCInfoWidget;
+
 };

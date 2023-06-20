@@ -8,7 +8,6 @@
 // Sets default values for this component's properties
 UAHNPCStatComponent::UAHNPCStatComponent()
 {
-
 }
 
 
@@ -16,7 +15,6 @@ UAHNPCStatComponent::UAHNPCStatComponent()
 void UAHNPCStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	StatsSetting();
 }
 
 void UAHNPCStatComponent::StatsSetting()

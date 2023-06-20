@@ -15,6 +15,7 @@ class AMHAENG_API UAHNPCStatComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UAHNPCStatComponent();
+	
 
 protected:
 	// Called when the game starts

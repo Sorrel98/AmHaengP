@@ -9,8 +9,9 @@
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE_OneParam(MouseClickDelegate, bool)
-DECLARE_DELEGATE_OneParam(TooltipDelegate, bool)
+DECLARE_MULTICAST_DELEGATE_OneParam(FMouseClickDelegate, bool)
+DECLARE_DELEGATE_OneParam(FTooltipDelegate, bool)
+DECLARE_DELEGATE_OneParam(FNowClickNPCToGameModeDelegate, class AAHNPCVehicleBase*)
 
 UCLASS()
 class AMHAENG_API AAHVehiclePlayerController : public APlayerController
@@ -45,9 +46,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetMouseLocation() { return MousePosition; }
 
-	MouseClickDelegate MouseClickDelegate;
+	//const uint8 GetIsNPCTarget();
+	
+	FMouseClickDelegate MouseClickDelegate;
 
-	TooltipDelegate TTDelegate;
+	FTooltipDelegate TTDelegate;
+
+	FNowClickNPCToGameModeDelegate SendNowClickNPCToGameMode;
 
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
@@ -77,6 +82,4 @@ private:
 	FVector MousePosition;
 
 	AActor* NowHitActor;
-
-	//class AAHMouseActor* MouseActor;
 };

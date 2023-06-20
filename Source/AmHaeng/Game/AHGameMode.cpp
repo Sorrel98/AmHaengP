@@ -4,7 +4,9 @@
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
 #include "AmHaeng/Widget/AHGimmickModeWidget.h"
 #include "AmHaeng/Widget/AHNPCIsTargetWidget.h"
@@ -85,6 +87,7 @@ void AAHGameMode::BeginPlay()
 	Spawner->GetSpawnActorsLocation();
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
+	
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -125,6 +128,12 @@ void AAHGameMode::IsTargetTextOnViewport()
 	}
 }
 
+void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetHitVehicleBase"));
+	HitVehicleBase = InHitVehicleBase;
+}
+
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingDelegates()
 {
@@ -132,6 +141,15 @@ void AAHGameMode::BindingDelegates()
 	//SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
 	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
+
+	PlayerController = CastChecked<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
+	
+	if(PlayerController)
+	{
+		//CP Timer 시작할 때 Scan 중인 Actor 정보 가져옴
+		//Timer 실행될 때마다 갈아끼우게 됨
+		PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
+	}
 }
 
 void AAHGameMode::MouseActorSpawn()
@@ -181,6 +199,21 @@ void AAHGameMode::CPLoadingFinished()
 	{
 		SetGimmickMode(EGimmickMode::Chase);
 	}
+
+	//CP가 끝났을 때
+	if(HitVehicleBase==nullptr)
+	{
+		return;
+	}
+	if(HitVehicleBase->GetIsTargetNPC())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("This NPC is Target"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("This NPC is not Target"));
+	}
+	
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)

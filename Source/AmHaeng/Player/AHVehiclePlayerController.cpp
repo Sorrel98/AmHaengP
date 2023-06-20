@@ -106,6 +106,7 @@ void AAHVehiclePlayerController::MouseScan()
 				if (Distance < ScanDistance)
 				{
 					IsNPCScanning = true;
+					UE_LOG(LogTemp, Log, TEXT("Mouse NPC 위에서 Scan 중"));
 					WidgetVisibleByMouseScan(NowHitActor);
 				}
 			}
@@ -139,6 +140,7 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 	{
 		return;
 	}
+	UE_LOG(LogTemp, Log, TEXT("Widget Visible true"));
 	HitActorBase->SetNPCInfoWidgetVisible(true);
 	HitActorBase->AHSetTooltipVisible(true);
 }
@@ -157,6 +159,16 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	                                   &AAHVehiclePlayerController::MouseClickReleased);
 }
 
+/*const uint8 AAHVehiclePlayerController::GetIsNPCTarget()
+{
+	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
+	if (HitActorBase)
+	{
+		return HitActorBase->GetIsTargetNPC();
+	}
+	return NULL;
+}*/
+
 void AAHVehiclePlayerController::MouseClick()
 {
 	//add Delegate and Start Loading UI
@@ -167,12 +179,16 @@ void AAHVehiclePlayerController::MouseClick()
 		{
 			MouseClickDelegate.Broadcast(true);
 		}
-		if(NowHitActor)
+		if (NowHitActor)
 		{
 			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-			if(HitActorBase)
+			if (HitActorBase)
 			{
 				HitActorBase->AHSetTooltipVisible(false);
+				if(SendNowClickNPCToGameMode.IsBound())
+				{
+					SendNowClickNPCToGameMode.Execute(HitActorBase);
+				}
 			}
 		}
 	}
@@ -180,7 +196,7 @@ void AAHVehiclePlayerController::MouseClick()
 
 void AAHVehiclePlayerController::MouseClickReleased()
 {
-	if(IsNPCClicking)
+	if (IsNPCClicking)
 	{
 		IsNPCClicking = false;
 		//add delegate and ShutDown Loading UI
@@ -188,14 +204,13 @@ void AAHVehiclePlayerController::MouseClickReleased()
 		{
 			MouseClickDelegate.Broadcast(false);
 		}
-		if(NowHitActor)
+		if (NowHitActor)
 		{
 			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-			if(HitActorBase)
+			if (HitActorBase)
 			{
 				HitActorBase->AHSetTooltipVisible(false);
 			}
 		}
 	}
-	
 }

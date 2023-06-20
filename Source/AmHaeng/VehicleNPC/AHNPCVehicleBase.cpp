@@ -18,7 +18,6 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
 	SetInfoWidget();
-	SetInfoWidgetData();
 }
 
 void AAHNPCVehicleBase::BeginPlay()
@@ -45,17 +44,32 @@ void AAHNPCVehicleBase::SetIsTargetNPC(const uint8& IsTargetNPC)
 //=================================================
 void AAHNPCVehicleBase::SetInfoWidget()
 {
-	NPCInfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
-	NPCInfoWidgetComponent->SetupAttachment(GetRootComponent());
-	NPCInfoWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	NPCInfoWidgetComponent->SetVisibility(false);
+	
+	ConstructorHelpers::FClassFinder<UAHNPCInfoWidget> NPCInfoWidgetRef(TEXT("/Game/VehicleNPC/Widget/WBP_AIInfo.WBP_AIInfo_C"));
+	if(NPCInfoWidgetRef.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCInfoWidgetRef.Succeeded() 성공"));
+		NPCInfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
+		NPCInfoWidgetComponent->SetWidgetClass(NPCInfoWidgetRef.Class);
+		NPCInfoWidgetComponent->SetupAttachment(GetRootComponent());
+		NPCInfoWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+		NPCInfoWidgetComponent->SetVisibility(false);
+	}
 }
 
 void AAHNPCVehicleBase::SetInfoWidgetData()
 {
-	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
+	NPCStat->StatsSetting();
+	UUserWidget* NPCWidget = NPCInfoWidgetComponent->GetUserWidgetObject();
+	if(NPCWidget == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("GetUserWidgetObject이 안됩니다"));
+		return;
+	}
+	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCWidget);
 	if (NPCInfoWidget == nullptr)
 	{
+		UE_LOG(LogTemp, Log, TEXT("NPCInfoWidget 캐스팅이 안됩니다"));
 		return;
 	}
 	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
@@ -67,7 +81,10 @@ void AAHNPCVehicleBase::SetInfoWidgetData()
 
 void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
 {
-	NPCInfoWidgetComponent->SetVisibility(visible);
+	if(NPCInfoWidgetComponent)
+	{
+		NPCInfoWidgetComponent->SetVisibility(visible);
+	}
 }
 
 void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible)
