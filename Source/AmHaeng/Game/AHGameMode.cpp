@@ -61,6 +61,10 @@ AAHGameMode::AAHGameMode()
 	{
 		NPCIsTargetWidgetClass = IsTargetTextRef.Class;
 	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("NPC is target widget class 성공적으로 로딩 안됨"));
+	}
 
 
 
@@ -82,6 +86,7 @@ void AAHGameMode::BeginPlay()
 	MouseActorSpawn();
 	SpawnButtonOnViewport();
 	GimmickTextOnViewport();
+	IsTargetTextOnViewport();
 	BindingDelegates();
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 	Spawner->GetSpawnActorsLocation();
@@ -207,11 +212,11 @@ void AAHGameMode::CPLoadingFinished()
 	}
 	if(HitVehicleBase->GetIsTargetNPC())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("This NPC is Target"));
+		NPCIsTargetWidget->SetNPCIsTargetWidget(true);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("This NPC is not Target"));
+		NPCIsTargetWidget->SetNPCIsTargetWidget(false);
 	}
 	
 }

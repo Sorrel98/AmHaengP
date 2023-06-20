@@ -26,4 +26,6 @@ private:
 	TObjectPtr<class UTextBlock> FailTargetText;
 
 	uint8 IsTargetNPC;
+
+	FTimerHandle WidgetInvisibleTimer;
 };
