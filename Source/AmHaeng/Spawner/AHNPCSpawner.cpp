@@ -140,6 +140,7 @@ void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
 	if (!NPCBPRef.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));
+		return;
 	}
 	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
 	if (NPCBPObj == nullptr)
@@ -169,11 +170,9 @@ void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
 	                                                         SpawnParams);
 	if (NPCVehicleSpawnActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
 		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
 		if (SpawnedNPCController)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("실제 스폰하는 곳입니다"));
 			SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 		}
 	}

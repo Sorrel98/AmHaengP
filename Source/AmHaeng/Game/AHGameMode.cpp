@@ -14,7 +14,7 @@
 AAHGameMode::AAHGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT(
-		"/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/SportsCar/SportsCar_Pawn.SportsCar_Pawn_C'"));
+		"/Script/Engine.Blueprint'/Game/Player/Player_SportsCar_Pawn.Player_SportsCar_Pawn_C'"));
 	if (DefaultPawnClassRef.Class)
 	{
 		DefaultPawnClass = DefaultPawnClassRef.Class;
@@ -22,7 +22,7 @@ AAHGameMode::AAHGameMode()
 
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerRef(
 		TEXT(
-			"/Script/Engine.Blueprint'/Game/VehicleTemplate/Blueprints/VehiclePlayerController.VehiclePlayerController_C'"));
+			"/Script/Engine.Blueprint'/Game/Player/VehiclePlayerController.VehiclePlayerController_C'"));
 	if (PlayerControllerRef.Class)
 	{
 		{
@@ -61,11 +61,6 @@ AAHGameMode::AAHGameMode()
 	{
 		NPCIsTargetWidgetClass = IsTargetTextRef.Class;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("NPC is target widget class 성공적으로 로딩 안됨"));
-	}
-
 
 
 	
@@ -146,8 +141,11 @@ void AAHGameMode::BindingDelegates()
 	//SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
 	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
-
-	PlayerController = CastChecked<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
+	APlayerController* pp = GetGameInstance()->GetFirstLocalPlayerController();
+    if(pp)
+	{
+		PlayerController = Cast<AAHVehiclePlayerController>(pp);
+	}
 	
 	if(PlayerController)
 	{
@@ -218,7 +216,7 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 	NowGimmickMode = InGimmickMode;
 	if(GimmickChangeDelegate.IsBound())
 	{
-		GimmickChangeDelegate.Broadcast(InGimmickMode);
+		GimmickChangeDelegate.Broadcast(InGimmickMode); //Widget Text 바꾸는 기능 밖에 없음 아직
 	}
 }
 

@@ -48,7 +48,6 @@ void AAHNPCVehicleBase::SetInfoWidget()
 	ConstructorHelpers::FClassFinder<UAHNPCInfoWidget> NPCInfoWidgetRef(TEXT("/Game/VehicleNPC/Widget/WBP_AIInfo.WBP_AIInfo_C"));
 	if(NPCInfoWidgetRef.Succeeded())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NPCInfoWidgetRef.Succeeded() 성공"));
 		NPCInfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
 		NPCInfoWidgetComponent->SetWidgetClass(NPCInfoWidgetRef.Class);
 		NPCInfoWidgetComponent->SetupAttachment(GetRootComponent());

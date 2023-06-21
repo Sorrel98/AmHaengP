@@ -69,7 +69,6 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 	//release였다면
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Timer Clear"));
 		ScanTimer.Invalidate();
 		NowClickTime = 0.0f;
 	}

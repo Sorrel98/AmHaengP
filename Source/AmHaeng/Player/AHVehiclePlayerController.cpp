@@ -106,7 +106,6 @@ void AAHVehiclePlayerController::MouseScan()
 				if (Distance < ScanDistance)
 				{
 					IsNPCScanning = true;
-					UE_LOG(LogTemp, Log, TEXT("Mouse NPC 위에서 Scan 중"));
 					WidgetVisibleByMouseScan(NowHitActor);
 				}
 			}
@@ -140,7 +139,6 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Log, TEXT("Widget Visible true"));
 	HitActorBase->SetNPCInfoWidgetVisible(true);
 	HitActorBase->AHSetTooltipVisible(true);
 }
