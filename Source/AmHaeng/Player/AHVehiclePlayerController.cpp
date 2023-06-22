@@ -34,6 +34,7 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)

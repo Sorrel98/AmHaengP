@@ -20,9 +20,9 @@ AAHGameMode::AAHGameMode()
 		DefaultPawnClass = DefaultPawnClassRef.Class;
 	}
 
-	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerRef(
+	static ConstructorHelpers::FClassFinder<AAHVehiclePlayerController> PlayerControllerRef(
 		TEXT(
-			"/Script/Engine.Blueprint'/Game/Player/VehiclePlayerController.VehiclePlayerController_C'"));
+			"/Script/Engine.Blueprint'/Game/Player/VehiclePlayerController2.VehiclePlayerController2_C'"));
 	if (PlayerControllerRef.Class)
 	{
 		{
@@ -62,6 +62,18 @@ AAHGameMode::AAHGameMode()
 		NPCIsTargetWidgetClass = IsTargetTextRef.Class;
 	}
 
+	//Minimap Widget Ref
+	static ConstructorHelpers::FClassFinder<UAHMinimapWidget> MinimapWidgetRef(
+	TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Minimap/WBP_Minimap.WBP_Minimap_C'"));
+
+	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
+	if (MinimapWidgetRef.Succeeded())
+	{
+		MinimapWidgetClass = MinimapWidgetRef.Class;
+	}
+
+	
+
 
 	
 
@@ -79,15 +91,18 @@ void AAHGameMode::BeginPlay()
 	Spawner = NewObject<UAHNPCSpawner>();
 	
 	MouseActorSpawn();
+	
+	//위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
 	SpawnButtonOnViewport();
 	GimmickTextOnViewport();
 	IsTargetTextOnViewport();
+	MinimapOnViewport();
+	
 	BindingDelegates();
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 	Spawner->GetSpawnActorsLocation();
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
-	
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -128,6 +143,18 @@ void AAHGameMode::IsTargetTextOnViewport()
 	}
 }
 
+void AAHGameMode::MinimapOnViewport()
+{
+	if (IsValid(MinimapWidgetClass))
+	{
+		MinimapWidget = Cast<UAHMinimapWidget>(CreateWidget(GetWorld(), MinimapWidgetClass));
+		if (IsValid(MinimapWidget))
+		{
+			MinimapWidget->AddToViewport();
+		}
+	}
+}
+
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
 	UE_LOG(LogTemp, Warning, TEXT("SetHitVehicleBase"));
@@ -152,6 +179,11 @@ void AAHGameMode::BindingDelegates()
 		//CP Timer 시작할 때 Scan 중인 Actor 정보 가져옴
 		//Timer 실행될 때마다 갈아끼우게 됨
 		PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
+	}
+	if(MinimapWidget)
+	{
+		//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
+		MinimapWidget->MinimapSettingEnd();
 	}
 }
 
@@ -188,6 +220,15 @@ void AAHGameMode::MouseActorSpawn()
 	SpawnParams.Owner = this;
 
 	MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+}
+
+UAHNPCSpawner* AAHGameMode::GetSpawner()
+{
+	if(Spawner)
+	{
+		return Spawner;
+	}
+	return nullptr;
 }
 
 void AAHGameMode::CPLoadingFinished()

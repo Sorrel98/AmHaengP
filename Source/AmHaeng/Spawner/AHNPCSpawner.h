@@ -6,12 +6,15 @@
 #include "Engine/World.h"
 #include "AmHaeng/Dictionary/AHMathFunctions.h"
 #include "GameFramework/Actor.h"
+
 #include "AHNPCSpawner.generated.h"
 
 
 /**
  * 
  */
+DECLARE_DELEGATE_OneParam(FOnNPCSpawnEnd, class AAHNPCVehicleBase*)
+
 UCLASS(Blueprintable, BlueprintType)
 class AMHAENG_API UAHNPCSpawner : public UObject
 {
@@ -36,6 +39,8 @@ public:
 	void NPCVehicleSpawn();
 
 	void RandomNPCVehicleSpawn(int32 Index);
+
+	FOnNPCSpawnEnd OnNPCSpawnEnd;
 
 
 private:

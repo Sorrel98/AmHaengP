@@ -116,14 +116,19 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	{
 		
 		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
-		if (NPCVehicleSpawnActor)
+		if(NPCVehicleSpawnActor==nullptr) return;
+		if(OnNPCSpawnEnd.IsBound())
 		{
-			AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
-			if (SpawnedNPCController)
-			{
-				SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
-			}
+			OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
 		}
+		else UE_LOG(LogTemp, Log, TEXT("NPSSpawnEnd 델리게이트에 등록된 함수가 없습니다"));
+		
+		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+		if (SpawnedNPCController)
+		{
+			SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
+		}
+		
 		AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
 		NPCActor->SetInfoWidgetData();
 	}
@@ -166,15 +171,13 @@ void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[Index], SpawnRotations[Index],
-	                                                         SpawnParams);
-	if (NPCVehicleSpawnActor)
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[Index], SpawnRotations[Index], SpawnParams);
+	if(NPCVehicleSpawnActor == nullptr) return;
+	
+	AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+	if (SpawnedNPCController)
 	{
-		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
-		if (SpawnedNPCController)
-		{
-			SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
-		}
+		SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 	}
 }
 
