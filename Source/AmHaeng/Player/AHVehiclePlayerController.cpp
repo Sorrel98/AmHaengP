@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AmHaeng/Interface/AHScannable.h"
 #include "EnhancedInputComponent.h"
+#include "InteractiveToolManager.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
@@ -34,7 +35,7 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetInitMousePrevActor();
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
@@ -43,7 +44,7 @@ void AAHVehiclePlayerController::Tick(float DeltaTime)
 	MouseScan();
 }
 
-void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
+/*void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
 {
 	AAHNPCVehicleBase* HitPrevActor = Cast<AAHNPCVehicleBase>(PrevActor);
 	if (HitPrevActor != nullptr)
@@ -51,7 +52,7 @@ void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
 		//UE_LOG(LogTemp, Log, TEXT("기존 Widget을 끕니다"));
 		HitPrevActor->SetNPCInfoWidgetVisible(false);
 	}
-}
+}*/
 
 void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 {
@@ -66,9 +67,13 @@ void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 		-1.f);
 }
 
+void AAHVehiclePlayerController::SetInitMousePrevActor()
+{
+	MousePrevActor = GetPawn();
+}
+
 void AAHVehiclePlayerController::MouseScan()
 {
-	//APlayerController* ABPlayerVehicleController = this;
 	if (this)
 	{
 		FHitResult HitResult;
@@ -76,38 +81,54 @@ void AAHVehiclePlayerController::MouseScan()
 		if (HitResult.bBlockingHit)
 		{
 			DrawShpere(HitResult);
-			MousePosition = HitResult.Location;
 			NowHitActor = HitResult.GetActor();
-			if (NowHitActor == nullptr)
-			{
-				return;
-			}
+			if (NowHitActor == nullptr) return;
+			if(MousePrevActor == nullptr) return;
+			MousePosition = HitResult.Location;
 
-			//NPC가 아니면 return
-			IAHScannable* IsScannable = Cast<IAHScannable>(NowHitActor);
-			if (IsScannable == nullptr)
+			
+			//다른 물체로 변경됨
+			if(NowHitActor->GetActorLabel() != *MousePrevActor->GetActorLabel())
 			{
-				if (IsNPCScanning)
-				{
-					IsNPCScanning = false;
-				}
 				if (IsNPCClicking)
 				{
 					MouseClickReleased();
 				}
-				InVisiblePrevWidget(MousePrevActor);
-				MousePrevActor = NowHitActor;
-				return;
-			}
-			if (!IsNPCScanning)
-			{
-				//이 Pawn은 현재 주인공 Pawn
-				APawn* VehiclePawn = GetPawn();
-				float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
-				if (Distance < ScanDistance)
+				//새로운 Hit Actor가 NPC 인지 판별
+				IAHScannable* IsScannable = Cast<IAHScannable>(NowHitActor);
+				//Hit Actor != NPC
+				if (IsScannable == nullptr)
 				{
-					IsNPCScanning = true;
-					WidgetVisibleByMouseScan(NowHitActor);
+					if (IsNPCScanning)
+					{
+						IsNPCScanning = false;
+						WidgetInVisibleByMouseScan(MousePrevActor);
+					}
+					MousePrevActor = NowHitActor;
+				}
+				//Hit Actor == NPC
+				else
+				{
+					if(IsNPCScanning)
+					{
+						WidgetInVisibleByMouseScan(MousePrevActor);
+					}
+					//이 Pawn은 현재 주인공 Pawn
+					APawn* VehiclePawn = GetPawn();
+					float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
+					if (Distance < ScanDistance)
+					{
+						//기존 prev actor가 null이 아니라면 Widget 꺼줘야 해
+						/*if (MousePrevActor != nullptr)
+						{
+							//원래 액터의 Widget을 Invisible하고
+							InVisiblePrevWidget(MousePrevActor);
+						}*/
+						//MousePrevActor update
+						MousePrevActor = NowHitActor;
+						WidgetVisibleByMouseScan(NowHitActor);
+						IsNPCScanning = true;
+					}
 				}
 			}
 		}
@@ -116,24 +137,6 @@ void AAHVehiclePlayerController::MouseScan()
 
 void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 {
-	//기존 prev actor가 null이 아니라면 Widget 꺼줘야 해
-	if (MousePrevActor != nullptr)
-	{
-		//만약에 가리키는 액터가 변하면
-		if (*HitActor->GetActorLabel() != *MousePrevActor->GetActorLabel())
-		{
-			//원래 액터의 Widget을 Invisible하고
-			InVisiblePrevWidget(MousePrevActor);
-		}
-		//변하지 않은 것이었다면 더이상의 로직은 필요없음
-		else
-		{
-			return;
-		}
-	}
-	//MousePrevActor update
-	MousePrevActor = HitActor;
-
 	//새로운 Widget Visible
 	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(HitActor);
 	if (HitActorBase == nullptr)
@@ -142,8 +145,20 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 	}
 	HitActorBase->SetNPCInfoWidgetVisible(true);
 	HitActorBase->AHSetTooltipVisible(true);
-	UE_LOG(LogTemp, Log, TEXT("set out line"));
 	HitActorBase->SetOutline(true);
+}
+
+void AAHVehiclePlayerController::WidgetInVisibleByMouseScan(AActor* HitActor)
+{
+	//새로운 Widget Visible
+	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(HitActor);
+	if (HitActorBase == nullptr)
+	{
+		return;
+	}
+	HitActorBase->SetNPCInfoWidgetVisible(false);
+	HitActorBase->AHSetTooltipVisible(false);
+	HitActorBase->SetOutline(false);
 }
 
 void AAHVehiclePlayerController::SetupInputComponent()

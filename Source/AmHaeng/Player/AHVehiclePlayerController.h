@@ -33,12 +33,13 @@ protected:
 public:
 	//Called every frame;
 	virtual void Tick(float DeltaTime) override;
-	void InVisiblePrevWidget(AActor* PrevActor);
 	void DrawShpere(FHitResult HitResult);
+	void SetInitMousePrevActor();
 
 	void MouseScan();
 
 	void WidgetVisibleByMouseScan(AActor* HitActor);
+	void WidgetInVisibleByMouseScan(AActor* HitActor);
 
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
