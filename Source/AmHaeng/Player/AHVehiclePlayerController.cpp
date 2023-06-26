@@ -142,6 +142,8 @@ void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
 	}
 	HitActorBase->SetNPCInfoWidgetVisible(true);
 	HitActorBase->AHSetTooltipVisible(true);
+	UE_LOG(LogTemp, Log, TEXT("set out line"));
+	HitActorBase->SetOutline(true);
 }
 
 void AAHVehiclePlayerController::SetupInputComponent()

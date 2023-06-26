@@ -40,6 +40,10 @@ public:
 	void GoodNPCInfoSetting();
 	void BadNPCInfoSetting();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetOutline(bool bOutlineEnabled);
+	
+
 private:
 	//NPC info - Main
 	//true(1) : 범법, false(2) : 일반

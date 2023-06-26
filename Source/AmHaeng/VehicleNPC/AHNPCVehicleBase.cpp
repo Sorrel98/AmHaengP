@@ -151,3 +151,7 @@ void AAHNPCVehicleBase::BadNPCInfoSetting()
 	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
+
+void AAHNPCVehicleBase::SetOutline_Implementation(bool bOutlineEnabled)
+{
+}
