@@ -53,6 +53,8 @@ public:
 
 	void RayDebugDraw(const FVector& InStartLocation, const FVector& InEndLocation, uint8 bDetected) const;
 
+	void DetectNPC(AAHNPCVehicleBase* NPCActor);
+
 private:
 	//NPC info - Main
 	//true(1) : 범법, false(2) : 일반
@@ -74,4 +76,5 @@ private:
 
 	uint8 bIsAnotherNPCForward;
 
+	uint8 bIsDetected;
 };
