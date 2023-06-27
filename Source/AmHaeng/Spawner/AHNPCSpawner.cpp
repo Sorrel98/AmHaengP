@@ -41,7 +41,7 @@ void UAHNPCSpawner::TestSpawnNPC()
 	{
 		return;
 	}
-	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAITEST.AH_VehicleAITEST'"));
 	if (!NPCBPRef.IsValid())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));

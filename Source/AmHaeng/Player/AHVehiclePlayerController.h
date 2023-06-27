@@ -50,8 +50,7 @@ public:
 	//const uint8 GetIsNPCTarget();
 	
 	FMouseClickDelegate MouseClickDelegate;
-
-	FTooltipDelegate TTDelegate;
+	
 
 	FNowClickNPCToGameModeDelegate SendNowClickNPCToGameMode;
 

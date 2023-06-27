@@ -19,6 +19,7 @@ class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScan
 public:
 	AAHNPCVehicleBase();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
@@ -33,16 +34,24 @@ public:
 	//Click Tooltip
 	void AHSetTooltipVisible(bool visible);
 
-	void BindTTDelegate();
-
-
 	//Test NPC Setting
 	void GoodNPCInfoSetting();
 	void BadNPCInfoSetting();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetOutline(bool bOutlineEnabled);
+
+	//Other NPC Detection
+	UFUNCTION(BlueprintCallable)
+	void SetRay();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SlowDown();
 	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void Brake();
+
+	void RayDebugDraw(const FVector& InStartLocation, const FVector& InEndLocation, uint8 bDetected) const;
 
 private:
 	//NPC info - Main
@@ -57,5 +66,12 @@ private:
 	class UAHNPCStatComponent* NPCStat;
 
 	TObjectPtr<class UAHNPCInfoWidget> NPCInfoWidget;
+
+	//Other NPC Detection
+	float DetectionDistance;
+
+	float BrakeDistance;
+
+	uint8 bIsAnotherNPCForward;
 
 };
