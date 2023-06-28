@@ -53,9 +53,7 @@ void UAHNPCSpawner::TestSpawnNPC()
 
 	FVector GoodNPCLocation;
 	FRotator GoodNPCRotator;
-	UE_LOG(LogTemp, Log, TEXT("%s"), *GetWorld()->GetName());
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("GoodNPC"), GoodNPCSpawnLocationActors);
-	UE_LOG(LogTemp, Log, TEXT("%d"), GoodNPCSpawnLocationActors.Num());
 	for (AActor* NPCSpawnActor : GoodNPCSpawnLocationActors)
 	{
 		GoodNPCLocation = NPCSpawnActor->GetActorLocation();

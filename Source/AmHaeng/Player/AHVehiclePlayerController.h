@@ -34,7 +34,6 @@ public:
 	//Called every frame;
 	virtual void Tick(float DeltaTime) override;
 	void DrawShpere(FHitResult HitResult);
-	void SetInitMousePrevActor();
 
 	void MouseScan();
 
@@ -43,9 +42,9 @@ public:
 
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
-
 	UFUNCTION(BlueprintCallable)
 	FVector GetMouseLocation() { return MousePosition; }
+	void SetInitMousePrevActor();
 
 	//const uint8 GetIsNPCTarget();
 	

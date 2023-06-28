@@ -3,6 +3,9 @@
 
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
+
+#include "AmHaeng/Gimmick/AHMannequin.h"
+#include "AmHaeng/Gimmick/AHThrowMannequin.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
@@ -29,6 +32,8 @@ AAHGameMode::AAHGameMode()
 			PlayerControllerClass = PlayerControllerRef.Class;
 		}
 	}
+
+	
 
 
 	//Start Button Test
@@ -81,9 +86,20 @@ AAHGameMode::AAHGameMode()
 	NowGimmickMode = EGimmickMode::Patrol;
 }
 
+void AAHGameMode::PlayPause(bool IsPause)
+{
+	if(PlayerController)
+	{
+		PlayerController->SetPause(IsPause);
+	}
+}
+
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
+	
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	Spawner->SetNPCNumber(NPCNumber); //동기화
@@ -108,6 +124,8 @@ void AAHGameMode::BeginPlay()
 	//Spawn NPC
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
+
+	ThrowManager = NewObject<AAHThrowMannequin>();
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -164,6 +182,10 @@ void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
 {
 }
 
+void AAHGameMode::PlayCrashGlassAnimation_Implementation()
+{
+}
+
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
 	UE_LOG(LogTemp, Warning, TEXT("SetHitVehicleBase"));
@@ -177,12 +199,6 @@ void AAHGameMode::BindingDelegates()
 	//SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
 	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
-	APlayerController* pp = GetGameInstance()->GetFirstLocalPlayerController();
-    if(pp)
-	{
-		PlayerController = Cast<AAHVehiclePlayerController>(pp);
-	}
-	
 	if(PlayerController)
 	{
 		//CP Timer 시작할 때 Scan 중인 Actor 정보 가져옴
@@ -247,7 +263,6 @@ UAHNPCSpawner* AAHGameMode::GetSpawner()
 
 void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 {
-	UE_LOG(LogTemp, Log, TEXT("[GameMode] Setting NPC Number : %d"), InNPCNumber);
 	NPCNumber = InNPCNumber;
 }
 
@@ -265,6 +280,10 @@ void AAHGameMode::CPLoadingFinished()
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
 			SetGimmickMode(EGimmickMode::Chase);
+			//play pause
+			PlayPause(true);
+			//Input 막고
+			PlayerController->SetInputMode(FInputModeUIOnly());
 			PlayChaseStartWidgetAnimation();
 			bIsChasing = true;
 		}
@@ -279,6 +298,53 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 	{
 		GimmickChangeDelegate.Broadcast(InGimmickMode); //Widget Text 바꾸는 기능 밖에 없음 아직
 	}
+}
+
+void AAHGameMode::ThrowMannequin()
+{
+	RagdollMannequinSpawn();
+	APawn* Player = PlayerController->GetPawn();
+	UE_LOG(LogTemp, Log, TEXT("%s"), *Mannequin->GetName());
+	if(RootComponent && RootComponent->GetNumChildrenComponents() > 0)
+	{
+		UE_LOG(LogTemp, Log, TEXT("hi"));
+		UE_LOG(LogTemp, Log, TEXT("%s"), *Mannequin->GetRootComponent()->GetChildComponent(0)->GetName());
+	}
+	ThrowManager->Throw(HitVehicleBase, Player, Mannequin);
+}
+
+void AAHGameMode::RagdollMannequinSpawn()
+{
+	if (GetOuter() == nullptr)
+	{
+		return;
+	}
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+
+	FSoftObjectPath RagdollMannequinBPRef(
+		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/RagdollMannequin.RagdollMannequin'"));
+	if (!RagdollMannequinBPRef.IsValid())
+	{
+		return;
+	}
+	UBlueprint* RagdollMannequinBP = Cast<UBlueprint>(RagdollMannequinBPRef.TryLoad());
+	if (RagdollMannequinBP == nullptr)
+	{
+		return;
+	}
+	UClass* RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
+	if (RagdollMannequinClass == nullptr)
+	{
+		return;
+	}
+
+	//Mannequin = World->SpawnActor<AAHThrowMannequin>(RagdollMannequinClass, FVector::ZeroVector, FRotator::ZeroRotator);
+	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, HitVehicleBase->GetActorLocation(), HitVehicleBase->GetActorRotation());
 }
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
