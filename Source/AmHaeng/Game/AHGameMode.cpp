@@ -304,12 +304,6 @@ void AAHGameMode::ThrowMannequin()
 {
 	RagdollMannequinSpawn();
 	APawn* Player = PlayerController->GetPawn();
-	UE_LOG(LogTemp, Log, TEXT("%s"), *Mannequin->GetName());
-	if(RootComponent && RootComponent->GetNumChildrenComponents() > 0)
-	{
-		UE_LOG(LogTemp, Log, TEXT("hi"));
-		UE_LOG(LogTemp, Log, TEXT("%s"), *Mannequin->GetRootComponent()->GetChildComponent(0)->GetName());
-	}
 	ThrowManager->Throw(HitVehicleBase, Player, Mannequin);
 }
 
@@ -342,8 +336,6 @@ void AAHGameMode::RagdollMannequinSpawn()
 	{
 		return;
 	}
-
-	//Mannequin = World->SpawnActor<AAHThrowMannequin>(RagdollMannequinClass, FVector::ZeroVector, FRotator::ZeroRotator);
 	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, HitVehicleBase->GetActorLocation(), HitVehicleBase->GetActorRotation());
 }
 

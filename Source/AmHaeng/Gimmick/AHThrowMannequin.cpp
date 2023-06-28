@@ -19,7 +19,7 @@ AAHThrowMannequin::AAHThrowMannequin()
 
 void AAHThrowMannequin::Throw(AActor* From, AActor* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 100000000.0f;
+	ThrowSpeed = 18000000.0f;
 	if(From && To)
 	{
 		AWheeledVehiclePawn* PlayerPawn = Cast<AWheeledVehiclePawn>(To);
