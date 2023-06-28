@@ -17,19 +17,45 @@ void UAHNPCStatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UAHNPCStatComponent::StatsSetting()
+void UAHNPCStatComponent::StatsSetting(int32 InIDNumber, uint8 IsTarget)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Setting NPC ID : %d"), InIDNumber);
+	//NPC Id Setting
+	SetIDNumber(InIDNumber);
+	
 	//NPCOwnerNameSetting
 	SetOwnerName();
 
 	//LicenseNumberSetting
-	SetLicenseNumber();
+	SetGoodLicenseNumber();
 
 	//NPCSpeedSetting
-	SetNPCSpeed();
+	SetGoodSpeed();
 
 	//NPCSwaySetting
-	SetNPCSway();
+	SetGoodSway();
+	if(IsTarget)
+	{
+		int32 WrongPoint = FMath::RandRange(0, 2);
+		switch (WrongPoint)
+		{
+		case 0:
+			//LicenseNumberSetting
+			SetBadLicenseNumber();
+			break;
+		case 1:
+			//NPCSpeedSetting
+			SetBadSpeed();
+			break;
+		case 2:
+			//NPCSwaySetting
+			SetBadSway();
+			break;
+		default:
+			return;	
+		}
+	}
+	
 }
 
 void UAHNPCStatComponent::SetOwnerName()
@@ -45,9 +71,15 @@ const FString UAHNPCStatComponent::GetOwnerName()
 	return NPCOwnerName;
 }
 
-void UAHNPCStatComponent::SetLicenseNumber()
+void UAHNPCStatComponent::SetGoodLicenseNumber()
 {
-	NPCLicenseNumber = AHMathFunctions::CombineString(2);
+	NPCLicenseNumber = AHMathFunctions::MakeGoodLicenseNumber(NPCIDNumber);
+}
+
+void UAHNPCStatComponent::SetBadLicenseNumber()
+{
+	int32 WrongPart = FMath::RandRange(0, 2); //Year, Month, Day 중에 하나만 Wrong
+	NPCLicenseNumber = AHMathFunctions::MakeBadLicenseNumber(WrongPart, NPCIDNumber);
 }
 
 const FString UAHNPCStatComponent::GetLicenseNumber()
@@ -55,10 +87,16 @@ const FString UAHNPCStatComponent::GetLicenseNumber()
 	return NPCLicenseNumber;
 }
 
-void UAHNPCStatComponent::SetNPCSpeed()
+void UAHNPCStatComponent::SetGoodSpeed()
 {
 	NPCMinSpeed = AHMathFunctions::MakeRandInteger(30, 50);
-	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(90, 110);
+	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(NPCMinSpeed, 70);
+}
+
+void UAHNPCStatComponent::SetBadSpeed()
+{
+	NPCMinSpeed = AHMathFunctions::MakeRandInteger(70, 90);
+	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(NPCMinSpeed, 110);
 }
 
 const int32 UAHNPCStatComponent::GetNPCMinSpeed()
@@ -71,12 +109,22 @@ const int32 UAHNPCStatComponent::GetNPCMaxSpeed()
 	return NPCMaxSpeed;
 }
 
-void UAHNPCStatComponent::SetNPCSway()
+void UAHNPCStatComponent::SetGoodSway()
 {
-	NPCSway = AHMathFunctions::MakeRandInteger(10, 50);
+	NPCSway = AHMathFunctions::MakeRandInteger(10, 30);
+}
+
+void UAHNPCStatComponent::SetBadSway()
+{
+	NPCSway = AHMathFunctions::MakeRandInteger(31, 50);
 }
 
 const int32 UAHNPCStatComponent::GetNPCSway()
 {
 	return NPCSway;
+}
+
+void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
+{
+	NPCIDNumber = InNumber;
 }

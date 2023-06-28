@@ -14,6 +14,7 @@
  * 
  */
 DECLARE_DELEGATE_OneParam(FOnNPCSpawnEnd, class AAHNPCVehicleBase*)
+DECLARE_DELEGATE_OneParam(FSendNPCNumber, int32)
 
 UCLASS(Blueprintable, BlueprintType)
 class AMHAENG_API UAHNPCSpawner : public UObject
@@ -33,14 +34,17 @@ public:
 	//void GetDelegateFromWidget();
 
 
+	//NPC 갯수
+	void SetNPCNumber(int32 InNPCNumber);
+	FORCEINLINE int32 GetNPCNumber(){return NPCNumber;}
+
 	//실제 Spawn 함수
 	void TestSpawnNPC();
-
 	void NPCVehicleSpawn();
-
 	void RandomNPCVehicleSpawn(int32 Index);
 
 	FOnNPCSpawnEnd OnNPCSpawnEnd;
+	FSendNPCNumber SendNPCNumber;
 
 
 private:
@@ -52,4 +56,6 @@ private:
 	TArray<FRotator> SpawnRotations;
 
 	AHMathFunctions* MathFunctions;
+
+	int32 NPCNumber;
 };

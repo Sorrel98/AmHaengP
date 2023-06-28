@@ -72,12 +72,9 @@ AAHGameMode::AAHGameMode()
 		MinimapWidgetClass = MinimapWidgetRef.Class;
 	}
 
-	
-
-
-	
-
 	bIsNPCSpawning = false;
+
+	NPCNumber = 0; //0부터 시작
 
 
 	//Gimmick Mode Setting
@@ -89,6 +86,7 @@ void AAHGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	Spawner = NewObject<UAHNPCSpawner>();
+	Spawner->SetNPCNumber(NPCNumber); //동기화
 	
 	MouseActorSpawn();
 	
@@ -185,6 +183,11 @@ void AAHGameMode::BindingDelegates()
 		//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
 		MinimapWidget->MinimapSettingEnd();
 	}
+
+	if(Spawner)
+	{
+		Spawner->SendNPCNumber.BindUObject(this, &AAHGameMode::SetNPCNumber);
+	}
 }
 
 void AAHGameMode::MouseActorSpawn()
@@ -229,6 +232,12 @@ UAHNPCSpawner* AAHGameMode::GetSpawner()
 		return Spawner;
 	}
 	return nullptr;
+}
+
+void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
+{
+	UE_LOG(LogTemp, Log, TEXT("[GameMode] Setting NPC Number : %d"), InNPCNumber);
+	NPCNumber = InNPCNumber;
 }
 
 void AAHGameMode::CPLoadingFinished()

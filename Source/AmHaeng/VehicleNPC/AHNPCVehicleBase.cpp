@@ -65,9 +65,31 @@ void AAHNPCVehicleBase::SetInfoWidget()
 	}
 }
 
-void AAHNPCVehicleBase::SetInfoWidgetData()
+void AAHNPCVehicleBase::SetGoodInfoWidgetData(int32 NPCID)
 {
-	NPCStat->StatsSetting();
+	NPCStat->StatsSetting(NPCID, bIsTargetNPC);
+	UUserWidget* NPCWidget = NPCInfoWidgetComponent->GetUserWidgetObject();
+	if (NPCWidget == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("GetUserWidgetObject이 안됩니다"));
+		return;
+	}
+	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCWidget);
+	if (NPCInfoWidget == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("NPCInfoWidget 캐스팅이 안됩니다"));
+		return;
+	}
+	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
+	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
+	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
+	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
+	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
+}
+
+void AAHNPCVehicleBase::SetBadInfoWidgetData(int32 NPCID)
+{
+	NPCStat->StatsSetting(NPCID, bIsTargetNPC);
 	UUserWidget* NPCWidget = NPCInfoWidgetComponent->GetUserWidgetObject();
 	if (NPCWidget == nullptr)
 	{
@@ -95,7 +117,7 @@ void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
 	}
 }
 
-void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible)
+void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible) const
 {
 	if (NPCInfoWidget)
 	{
@@ -104,15 +126,15 @@ void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible)
 }
 
 
-void AAHNPCVehicleBase::GoodNPCInfoSetting()
+void AAHNPCVehicleBase::TESTGoodNPCInfoSetting()
 {
 	bIsTargetNPC = false;
 
 	//Stat
 	NPCStat->SetOwnerName("GoodNPC");
-	NPCStat->SetLicenseNumber("123_345_122");
-	NPCStat->SetNPCSpeed(30, 70);
-	NPCStat->SetNPCSway(20);
+	//NPCStat->SetLicenseNumber("123_345_122");
+	//NPCStat->SetNPCSpeed(30, 70);
+	//NPCStat->SetGoodSway(20);
 
 	//Widget
 	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
@@ -127,14 +149,14 @@ void AAHNPCVehicleBase::GoodNPCInfoSetting()
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
 
-void AAHNPCVehicleBase::BadNPCInfoSetting()
+void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 {
 	bIsTargetNPC = true;
 
 	NPCStat->SetOwnerName("BadNPC");
-	NPCStat->SetLicenseNumber("12_333_544");
-	NPCStat->SetNPCSpeed(50, 120);
-	NPCStat->SetNPCSway(40);
+	//NPCStat->SetLicenseNumber("12_333_544");
+	//NPCStat->SetNPCSpeed(50, 120);
+	//NPCStat->SetGoodSway(40);
 
 	//Widget
 	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCInfoWidgetComponent->GetUserWidgetObject());
@@ -212,16 +234,16 @@ void AAHNPCVehicleBase::DetectNPC(AAHNPCVehicleBase* NPCActor)
 	if(NPCActor->Tags.Contains("AIVehicle"))
 	{
 		float NPCDistance = FVector::Distance(this->GetOwner()->GetActorLocation(), NPCActor->GetActorLocation());
-		UE_LOG(LogTemp, Log, TEXT("%f"), NPCDistance);
+		//UE_LOG(LogTemp, Log, TEXT("%f"), NPCDistance);
 		bIsDetected = true;
 		if(NPCDistance <= BrakeDistance)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("[c_1] Distance : %f, Brake"), NPCDistance);
+			//UE_LOG(LogTemp, Warning, TEXT("[c_1] Distance : %f, Brake"), NPCDistance);
 			Brake();
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("SlowDown"));
+			//UE_LOG(LogTemp, Warning, TEXT("SlowDown"));
 			SlowDown();
 		}
 	}

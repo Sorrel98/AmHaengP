@@ -23,7 +23,7 @@ protected:
 
 
 public:
-	void StatsSetting();
+	void StatsSetting(int32 InIDNumber, uint8 IsTarget);
 
 	//NPC info - OwnerName
 	void SetOwnerName();
@@ -31,21 +31,24 @@ public:
 	const FString GetOwnerName();
 
 	//NPC info - LicenseNumber
-	void SetLicenseNumber();
-	FORCEINLINE void SetLicenseNumber(FString InLicenseNumber){ NPCLicenseNumber = InLicenseNumber; };
+	void SetGoodLicenseNumber();
+	void SetBadLicenseNumber();
 	const FString GetLicenseNumber();
 
 
 	//NPC info - NPCSpeed
-	void SetNPCSpeed();
-	FORCEINLINE void SetNPCSpeed(int32 InNPCMinSpeed, int32 InNPCMaxSpeed){ NPCMinSpeed = InNPCMinSpeed, NPCMaxSpeed = InNPCMaxSpeed; };
+	void SetGoodSpeed();
+	void SetBadSpeed();
 	const int32 GetNPCMinSpeed();
 	const int32 GetNPCMaxSpeed();
 
 	//NPC info - NPCSway
-	void SetNPCSway();
-	FORCEINLINE void SetNPCSway(int32 InNPCSway){ NPCSway = InNPCSway; };
+	void SetGoodSway();
+	void SetBadSway();
 	const int32 GetNPCSway();
+
+	//NPC info - ID Number
+	void SetIDNumber(int32 InNumber);
 
 private:
 	//NPC info - Detail
@@ -59,4 +62,6 @@ private:
 	int32 NPCMinSpeed;
 	UPROPERTY()
 	int32 NPCSway;
+	UPROPERTY()
+	int32 NPCIDNumber;
 };

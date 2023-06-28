@@ -36,6 +36,18 @@ public:
 	static FString MakeRandString(int32 Length);
 	static FString CombineString(int32 WordsNumber);
 	static int MakeRandInteger(int32 num1, int32 num2);
+	static FString MakeGoodLicenseNumber(int32 IDNumber);
+	static FString MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber);
+
+	static FString RandomYear();
+	static FString RandomMonth();
+	static FString RandomDay(int32 Year, int32 Month);
+
+	static FString WrongRandomYear();
+	static FString WrongRandomMonth();
+	static FString WrongRandomDay();
+private:
+	//inline static TArray<uint32> LicenseWordNumber = {4, 2, 2, 1};
 };
 
 

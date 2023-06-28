@@ -22,17 +22,11 @@ void UAHNPCSpawner::GetSpawnActorsLocation()
 	}
 }
 
-
-/*void UAHNPCSpawner::GetDelegateFromWidget()
+void UAHNPCSpawner::SetNPCNumber(int32 InNPCNumber)
 {
-	if (NPCSpawnLocationActors.Num() == 0)
-	{
-		GetSpawnActorsLocation();
-	}
-	int32 NewSpawnIndex = MathFunctions->GetRandomIndex(SpawnLocations.Num());
-	//UE_LOG(LogTemp, Warning, TEXT("New Spawn location is %f %f %f"), SpawnLocations[NewSpawnIndex].X, SpawnLocations[NewSpawnIndex].Y, SpawnLocations[NewSpawnIndex].Z);
-	TestSpawnNPC();
-}*/
+	UE_LOG(LogTemp, Log,TEXT("[Spawner] Set NPC Number : %d"), InNPCNumber);
+	NPCNumber = InNPCNumber;
+}
 
 void UAHNPCSpawner::TestSpawnNPC()
 {
@@ -69,7 +63,7 @@ void UAHNPCSpawner::TestSpawnNPC()
 	}
 	AActor* TestGoodNPC = World->SpawnActor<AActor>(NPCBPClass, GoodNPCLocation, GoodNPCRotator, SpawnParams);
 	AAHNPCVehicleBase* TestGoodAHNPC = Cast<AAHNPCVehicleBase>(TestGoodNPC);
-	TestGoodAHNPC->GoodNPCInfoSetting();
+	TestGoodAHNPC->TESTGoodNPCInfoSetting();
 	
 
 	FVector BadNPCLocation;
@@ -82,7 +76,7 @@ void UAHNPCSpawner::TestSpawnNPC()
 	}
 	AActor* TestBadNPC = World->SpawnActor<AActor>(NPCBPClass, BadNPCLocation, BadNPCRotator, SpawnParams);
 	AAHNPCVehicleBase* TestBadAHNPC = Cast<AAHNPCVehicleBase>(TestBadNPC);
-	TestBadAHNPC->BadNPCInfoSetting();
+	TestBadAHNPC->TESTBadNPCInfoSetting();
 }
 
 void UAHNPCSpawner::NPCVehicleSpawn()
@@ -114,7 +108,6 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 
 	for (int32 ix = 0; ix < SpawnLocations.Num(); ++ix)
 	{
-		
 		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		if(NPCVehicleSpawnActor==nullptr) return;
 		if(OnNPCSpawnEnd.IsBound())
@@ -130,10 +123,27 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 		}
 		
 		AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
-		NPCActor->SetInfoWidgetData();
+		if(NPCActor->GetIsTargetNPC())
+		{
+			UE_LOG(LogTemp, Log, TEXT("%s NPC is target"), *NPCActor->GetName());
+			NPCActor->SetBadInfoWidgetData(NPCNumber);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("%s NPC is Not target"), *NPCActor->GetName());
+			NPCActor->SetGoodInfoWidgetData(NPCNumber);
+		}
+
+		++NPCNumber;
+		if(SendNPCNumber.IsBound())
+		{
+			SendNPCNumber.Execute(NPCNumber);
+		}
+		
 	}
 }
 
+//사용 안 하는 중
 void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
 {
 	if (GetOuter() == nullptr)

@@ -29,12 +29,12 @@ public:
 
 	FORCEINLINE void SetNPCMaxSpeed(const int32 NewMaxSpeed)
 	{
-		TB_MinSpeed->SetText(FText::FromString(FString::FromInt(NewMaxSpeed)));
+		TB_MaxSpeed->SetText(FText::FromString(FString::FromInt(NewMaxSpeed)));
 	}
 
 	FORCEINLINE void SetNPCMinSpeed(const int32 NewMinSpeed)
 	{
-		TB_MaxSpeed->SetText(FText::FromString(FString::FromInt(NewMinSpeed)));
+		TB_MinSpeed->SetText(FText::FromString(FString::FromInt(NewMinSpeed)));
 	}
 
 	FORCEINLINE void SetNPCSway(const int32 NewSway) { TB_Sway->SetText(FText::FromString(FString::FromInt(NewSway))); }

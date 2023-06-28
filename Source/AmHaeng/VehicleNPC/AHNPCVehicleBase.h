@@ -28,15 +28,16 @@ public:
 
 	//set info widget
 	void SetInfoWidget();
-	void SetInfoWidgetData();
+	void SetGoodInfoWidgetData(int32 NPCID);
+	void SetBadInfoWidgetData(int32 NPCID);
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
 
 	//Click Tooltip
-	void AHSetTooltipVisible(bool visible);
+	void AHSetTooltipVisible(bool visible) const;
 
 	//Test NPC Setting
-	void GoodNPCInfoSetting();
-	void BadNPCInfoSetting();
+	void TESTGoodNPCInfoSetting();
+	void TESTBadNPCInfoSetting();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetOutline(bool bOutlineEnabled);
