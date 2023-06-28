@@ -3,9 +3,8 @@
 
 #include "AHVehiclePlayerController.h"
 #include "GameFramework/PlayerController.h"
-#include "AmHaeng/Interface/AHScannable.h"
+#include "AmHaeng/Interface/NPC/AHScannable.h"
 #include "EnhancedInputComponent.h"
-#include "InteractiveToolManager.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()

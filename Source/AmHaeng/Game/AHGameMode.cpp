@@ -8,8 +8,8 @@
 #include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
-#include "AmHaeng/Widget/AHGimmickModeWidget.h"
-#include "AmHaeng/Widget/AHNPCIsTargetWidget.h"
+#include "AmHaeng/Widget/Gimmick/AHGimmickModeWidget.h"
+#include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 
 AAHGameMode::AAHGameMode()
 {

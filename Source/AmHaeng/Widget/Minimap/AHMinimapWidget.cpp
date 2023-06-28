@@ -3,11 +3,9 @@
 
 #include "AHMinimapWidget.h"
 
-#include "ShaderPrintParameters.h"
 #include "AmHaeng/Game/AHGameMode.h"
-#include "AmHaeng/Widget/AHNPCMinimapCursor.h"
+#include "AmHaeng/Widget/Minimap/AHNPCMinimapCursor.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
-#include "Components/Overlay.h"
 
 void UAHMinimapWidget::NativeConstruct()
 {

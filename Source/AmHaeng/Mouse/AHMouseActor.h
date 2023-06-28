@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AmHaeng/Widget/AHNPCClickCPWidget.h"
+#include "AmHaeng/Widget/NPC/AHNPCClickCPWidget.h"
 #include "Components/WidgetComponent.h"
 #include "AHMouseActor.generated.h"
 

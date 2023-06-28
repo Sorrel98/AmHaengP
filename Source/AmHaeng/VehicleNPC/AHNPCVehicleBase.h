@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "WheeledVehiclePawn.h"
-#include "AmHaeng/Interface/AHScannable.h"
-#include "AmHaeng/Interface/AHTargetNPC.h"
+#include "AmHaeng/Interface/NPC/AHScannable.h"
+#include "AmHaeng/Interface/NPC/AHTargetNPC.h"
 #include "AHNPCVehicleBase.generated.h"
 
 /**

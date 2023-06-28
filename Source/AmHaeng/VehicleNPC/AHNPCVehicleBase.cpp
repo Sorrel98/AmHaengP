@@ -3,9 +3,9 @@
 
 #include "AHNPCVehicleBase.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "AHNPCStatComponent.h"
+#include "AmHaeng/VehicleNPC/Stat/AHNPCStatComponent.h"
 #include "Components/WidgetComponent.h"
-#include "AmHaeng/Widget/AHNPCInfoWidget.h"
+#include "AmHaeng/Widget/NPC/AHNPCInfoWidget.h"
 #include "DrawDebugHelpers.h"
 
 AAHNPCVehicleBase::AAHNPCVehicleBase()
