@@ -22,7 +22,6 @@ void UAHGimmickModeWidget::SetGimmickWidgetText(EGimmickMode InGimmick)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("invalid EGimmickMode"));
 	}
-
 }
 
 void UAHGimmickModeWidget::TextChangeDelegateBind()

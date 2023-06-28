@@ -75,8 +75,8 @@ AAHGameMode::AAHGameMode()
 	bIsNPCSpawning = false;
 
 	NPCNumber = 0; //0부터 시작
-
-
+	
+	
 	//Gimmick Mode Setting
 	NowGimmickMode = EGimmickMode::Patrol;
 }
@@ -87,7 +87,9 @@ void AAHGameMode::BeginPlay()
 
 	Spawner = NewObject<UAHNPCSpawner>();
 	Spawner->SetNPCNumber(NPCNumber); //동기화
-	
+	bIsChasing = false;
+
+	//Mouse
 	MouseActorSpawn();
 	
 	//위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
@@ -95,10 +97,15 @@ void AAHGameMode::BeginPlay()
 	GimmickTextOnViewport();
 	IsTargetTextOnViewport();
 	MinimapOnViewport();
-	
+
+	//Bind Delegate
 	BindingDelegates();
+
+	//Spawner Setting
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
 	Spawner->GetSpawnActorsLocation();
+
+	//Spawn NPC
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
 }
@@ -151,6 +158,10 @@ void AAHGameMode::MinimapOnViewport()
 			MinimapWidget->AddToViewport();
 		}
 	}
+}
+
+void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
+{
 }
 
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
@@ -243,22 +254,22 @@ void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 void AAHGameMode::CPLoadingFinished()
 {
 	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
-	
-	if(NowGimmickMode == EGimmickMode::Chase)
-	{
-		SetGimmickMode(EGimmickMode::Patrol);
-	}
-	else if(NowGimmickMode == EGimmickMode::Patrol)
-	{
-		SetGimmickMode(EGimmickMode::Chase);
-	}
 
 	//CP가 끝났을 때
 	if(HitVehicleBase==nullptr)
 	{
 		return;
 	}
-	NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
+	if(!bIsChasing)
+	{
+		if(HitVehicleBase->GetIsTargetNPC())
+		{
+			SetGimmickMode(EGimmickMode::Chase);
+			PlayChaseStartWidgetAnimation();
+			bIsChasing = true;
+		}
+		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
+	}
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
