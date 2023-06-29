@@ -33,6 +33,7 @@ void AAHNPCVehicleBase::BeginPlay()
 void AAHNPCVehicleBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	// ToDo : SetRay() Tick 말고 일정 주기마다 불러라. 0.5초마다... Tick 에바임
 	SetRay();
 }
 
@@ -220,6 +221,14 @@ void AAHNPCVehicleBase::SetRay()
 			DetectNPC(NPCActor3);
 		}
 	}
+	else
+	{
+		DetectNothing();
+	}
+}
+
+void AAHNPCVehicleBase::DetectNothing_Implementation()
+{
 }
 
 void AAHNPCVehicleBase::RayDebugDraw(const FVector& InStartLocation, const FVector& InEndLocation, const uint8 bDetected) const
@@ -234,16 +243,13 @@ void AAHNPCVehicleBase::DetectNPC(AAHNPCVehicleBase* NPCActor)
 	if(NPCActor->Tags.Contains("AIVehicle"))
 	{
 		float NPCDistance = FVector::Distance(this->GetOwner()->GetActorLocation(), NPCActor->GetActorLocation());
-		//UE_LOG(LogTemp, Log, TEXT("%f"), NPCDistance);
 		bIsDetected = true;
 		if(NPCDistance <= BrakeDistance)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("[c_1] Distance : %f, Brake"), NPCDistance);
 			Brake();
 		}
 		else
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("SlowDown"));
 			SlowDown();
 		}
 	}

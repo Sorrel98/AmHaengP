@@ -52,6 +52,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Brake();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void DetectNothing();
+
 	void RayDebugDraw(const FVector& InStartLocation, const FVector& InEndLocation, uint8 bDetected) const;
 
 	void DetectNPC(AAHNPCVehicleBase* NPCActor);

@@ -27,7 +27,7 @@ void AAHThrowMannequin::Throw(AActor* From, AActor* To, AAHMannequin* Mannequin)
 		if(PlayerCamera)
 		{
 			FVector ThrowDirection = PlayerCamera->GetComponentLocation() - From->GetActorLocation();
-			DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple);
+			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple);
 			ThrowDirection.Normalize();
 			FVector Force = ThrowDirection*ThrowSpeed;
 			USkeletalMeshComponent* MannequinSkeletalMeshComponent = Cast<USkeletalMeshComponent>(Mannequin->GetSkeletalMeshComponent());
