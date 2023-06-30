@@ -33,8 +33,6 @@ void AAHNPCVehicleBase::BeginPlay()
 void AAHNPCVehicleBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	// ToDo : SetRay() Tick 말고 일정 주기마다 불러라. 0.5초마다... Tick 에바임
-	SetRay();
 }
 
 
@@ -172,88 +170,10 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
 
-void AAHNPCVehicleBase::SetRay()
-{
-	FHitResult HitResult1;
-	FHitResult HitResult2;
-	FHitResult HitResult3;
-	FVector StartLocation1 = this->GetActorLocation() + FVector(0.0f, 0.0f, 100.f);
-	FVector EndLocation1 = StartLocation1 + this->GetActorForwardVector() * DetectionDistance;
-	FVector StartLocation2 = this->GetMesh()->GetSocketLocation(FName("PhysWheel_FLSocket"));
-	FVector EndLocation2 = StartLocation2 + this->GetActorForwardVector() * DetectionDistance;
-	FVector StartLocation3 = this->GetMesh()->GetSocketLocation(FName("PhysWheel_FRSocket"));
-	FVector EndLocation3 = StartLocation3 + this->GetActorForwardVector() * DetectionDistance;
-
-
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-
-	bool bHit1 = GetWorld()->LineTraceSingleByChannel(HitResult1, StartLocation1, EndLocation1, ECC_Visibility, QueryParams);
-	bool bHit2 = GetWorld()->LineTraceSingleByChannel(HitResult2, StartLocation2, EndLocation2, ECC_Visibility, QueryParams);
-	bool bHit3 = GetWorld()->LineTraceSingleByChannel(HitResult3, StartLocation3, EndLocation3, ECC_Visibility, QueryParams);
-	RayDebugDraw(StartLocation1, EndLocation1,bHit1);
-	RayDebugDraw(StartLocation2, EndLocation2,bHit2);
-	RayDebugDraw(StartLocation3, EndLocation3,bHit3);
-	
-	if (bHit1 || bHit2 || bHit3)
-	{
-		//충돌 감지될 때만
-		AActor* HitActor1 = HitResult1.GetActor();
-		AAHNPCVehicleBase* NPCActor1 = Cast<AAHNPCVehicleBase>(HitActor1);
-		if(NPCActor1)
-		{
-			DetectNPC(NPCActor1);
-		}
-
-		//충돌 감지될 때만
-		AActor* HitActor2 = HitResult2.GetActor();
-		AAHNPCVehicleBase* NPCActor2 = Cast<AAHNPCVehicleBase>(HitActor2);
-		if(NPCActor2)
-		{
-			DetectNPC(NPCActor2);
-		}
-
-		//충돌 감지될 때만
-		AActor* HitActor3 = HitResult3.GetActor();
-		AAHNPCVehicleBase* NPCActor3 = Cast<AAHNPCVehicleBase>(HitActor3);
-		if(NPCActor3)
-		{
-			DetectNPC(NPCActor3);
-		}
-	}
-	else
-	{
-		DetectNothing();
-	}
-}
-
 void AAHNPCVehicleBase::DetectNothing_Implementation()
 {
 }
 
-void AAHNPCVehicleBase::RayDebugDraw(const FVector& InStartLocation, const FVector& InEndLocation, const uint8 bDetected) const
-{
-	FColor RayColor = (bDetected?FColor::Green : FColor::Red);
-	//Debug Line
-	DrawDebugLine(GetWorld(), InStartLocation, InEndLocation, RayColor, false, -1.f, 0, 2.f);
-}
-
-void AAHNPCVehicleBase::DetectNPC(AAHNPCVehicleBase* NPCActor)
-{
-	if(NPCActor->Tags.Contains("AIVehicle"))
-	{
-		float NPCDistance = FVector::Distance(this->GetOwner()->GetActorLocation(), NPCActor->GetActorLocation());
-		bIsDetected = true;
-		if(NPCDistance <= BrakeDistance)
-		{
-			Brake();
-		}
-		else
-		{
-			SlowDown();
-		}
-	}
-}
 
 
 void AAHNPCVehicleBase::Brake_Implementation()

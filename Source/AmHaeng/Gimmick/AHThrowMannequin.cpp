@@ -19,17 +19,17 @@ AAHThrowMannequin::AAHThrowMannequin()
 
 void AAHThrowMannequin::Throw(AActor* From, AActor* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 18000000.0f;
+	ThrowSpeed = 7000000.0f;
 	if(From && To)
 	{
 		AWheeledVehiclePawn* PlayerPawn = Cast<AWheeledVehiclePawn>(To);
 		UCameraComponent* PlayerCamera = Cast<UCameraComponent>(PlayerPawn->GetRootComponent()->GetChildComponent(0)->GetChildComponent(0));
 		if(PlayerCamera)
 		{
-			FVector ThrowDirection = PlayerCamera->GetComponentLocation() - From->GetActorLocation();
-			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple);
+			FVector ThrowDirection = PlayerCamera->GetComponentLocation() - From->GetActorLocation() + FVector{0.0f, 0.0f, 100.f};
+			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple, 1.0f);
 			ThrowDirection.Normalize();
-			FVector Force = ThrowDirection*ThrowSpeed;
+			FVector Force = ThrowDirection * ThrowSpeed;
 			USkeletalMeshComponent* MannequinSkeletalMeshComponent = Cast<USkeletalMeshComponent>(Mannequin->GetSkeletalMeshComponent());
 			if(MannequinSkeletalMeshComponent)
 			{

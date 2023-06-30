@@ -117,12 +117,6 @@ void AAHVehiclePlayerController::MouseScan()
 					float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
 					if (Distance < ScanDistance)
 					{
-						//기존 prev actor가 null이 아니라면 Widget 꺼줘야 해
-						/*if (MousePrevActor != nullptr)
-						{
-							//원래 액터의 Widget을 Invisible하고
-							InVisiblePrevWidget(MousePrevActor);
-						}*/
 						//MousePrevActor update
 						MousePrevActor = NowHitActor;
 						WidgetVisibleByMouseScan(NowHitActor);
@@ -173,16 +167,6 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this,
 	                                   &AAHVehiclePlayerController::MouseClickReleased);
 }
-
-/*const uint8 AAHVehiclePlayerController::GetIsNPCTarget()
-{
-	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-	if (HitActorBase)
-	{
-		return HitActorBase->GetIsTargetNPC();
-	}
-	return NULL;
-}*/
 
 void AAHVehiclePlayerController::MouseClick()
 {

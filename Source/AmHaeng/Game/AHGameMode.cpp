@@ -338,6 +338,10 @@ void AAHGameMode::RagdollMannequinSpawn()
 	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, HitVehicleBase->GetActorLocation(), HitVehicleBase->GetActorRotation());
 }
 
+void AAHGameMode::CameraShake()
+{
+}
+
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
 void AAHGameMode::SetNPCSpawningState(uint8 NowState)
 {
