@@ -29,11 +29,6 @@ public:
 	//World의 Spawn Actors 위치 가져오기
 	void GetSpawnActorsLocation();
 
-	//Delegate 수신하는 함수
-	UFUNCTION()
-	//void GetDelegateFromWidget();
-
-
 	//NPC 갯수
 	void SetNPCNumber(int32 InNPCNumber);
 	FORCEINLINE int32 GetNPCNumber(){return NPCNumber;}

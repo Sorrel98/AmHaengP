@@ -4,14 +4,16 @@
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
 
-#include "AmHaeng/Gimmick/AHMannequin.h"
-#include "AmHaeng/Gimmick/AHThrowMannequin.h"
+#include "AmHaeng/Gimmick/BeforeChase/AHMannequin.h"
+#include "AmHaeng/Gimmick/BeforeChase/AHThrowMannequin.h"
+#include "..\Gimmick\BeforeChase\AHBeforeChase.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
 #include "AmHaeng/Widget/Gimmick/AHGimmickModeWidget.h"
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
+#include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 
 AAHGameMode::AAHGameMode()
 {
@@ -80,9 +82,6 @@ AAHGameMode::AAHGameMode()
 
 	NPCNumber = 0; //0부터 시작
 	
-	
-	//Gimmick Mode Setting
-	NowGimmickMode = EGimmickMode::Patrol;
 }
 
 void AAHGameMode::PlayPause(bool IsPause)
@@ -97,17 +96,23 @@ void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Gimmick Mode Setting
+	NowGimmickMode = EGimmickMode::Patrol;
+	
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
 	
-
 	Spawner = NewObject<UAHNPCSpawner>();
 	Spawner->SetNPCNumber(NPCNumber); //동기화
-	bIsChasing = false;
+
+	//BeforeChase 초기 셋팅
+	BeforeChaseClass = NewObject<UAHBeforeChase>();
+	BeforeChaseClass->Rename(TEXT("BeforeChaseOuter"), this);
 
 	//Mouse
 	MouseActorSpawn();
-	
-	//위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
+
+	//Widgets
+	//Todo : 위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
 	SpawnButtonOnViewport();
 	GimmickTextOnViewport();
 	IsTargetTextOnViewport();
@@ -124,7 +129,11 @@ void AAHGameMode::BeginPlay()
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
 
+	//==========Chase
+	//Mannequin
 	ThrowManager = NewObject<AAHThrowMannequin>();
+
+	//Runaway Setting
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -274,7 +283,7 @@ void AAHGameMode::CPLoadingFinished()
 	{
 		return;
 	}
-	if(!bIsChasing)
+	if(NowGimmickMode ==EGimmickMode::Patrol)
 	{
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
@@ -283,8 +292,7 @@ void AAHGameMode::CPLoadingFinished()
 			PlayPause(true);
 			//Input 막고
 			PlayerController->SetInputMode(FInputModeUIOnly());
-			PlayChaseStartWidgetAnimation();
-			bIsChasing = true;
+			BeforeChaseClass->BeforeChaseProcess(PlayerController);
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
@@ -330,7 +338,8 @@ void AAHGameMode::RagdollMannequinSpawn()
 	{
 		return;
 	}
-	UClass* RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
+	UClass* RagdollMannequinClass;
+	RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
 	if (RagdollMannequinClass == nullptr)
 	{
 		return;

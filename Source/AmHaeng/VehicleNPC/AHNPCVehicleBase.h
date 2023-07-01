@@ -24,8 +24,7 @@ public:
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;
-
-
+	
 	//set info widget
 	void SetInfoWidget();
 	void SetGoodInfoWidgetData(int32 NPCID);
@@ -51,6 +50,13 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DetectNothing();
 
+	//Chase 기믹
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetIsChased(uint8 IsChased){ bIsChased = IsChased; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE uint8 GetIsChased(){ return bIsChased; }
+
 private:
 	//NPC info - Main
 	//true(1) : 범법, false(2) : 일반
@@ -73,4 +79,8 @@ private:
 	uint8 bIsAnotherNPCForward;
 
 	uint8 bIsDetected;
+
+	//Chase 기믹
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
+	uint8 bIsChased;
 };

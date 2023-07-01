@@ -23,6 +23,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	bIsAnotherNPCForward = false;
 	BrakeDistance = 10000.f;
 	bIsDetected = false;
+	bIsChased = false;
 }
 
 void AAHNPCVehicleBase::BeginPlay()
