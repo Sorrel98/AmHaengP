@@ -24,9 +24,10 @@ public:
 	FWidgetAnimationDynamicEvent FinishWidgetAnimationEvent;
 	FFinishChaseAnim SendToBeforeChaseClass;
 
-private:
-	UPROPERTY(BlueprintReadOnly, Transient, Category="Anim", meta = (BindWidgetAnim, AllowPrivateAccess = true))
-	class UWidgetAnimation* PlayerChaseStartAnim = nullptr;
+/*private:
 	UPROPERTY(BlueprintReadOnly, Transient, Category="Anim", meta = (BindWidgetAnim, AllowPrivateAccess = true))
 	class UWidgetAnimation* NPCChasedStartAnim = nullptr;
+	UPROPERTY(BlueprintReadOnly, Transient, Category="Anim", meta = (BindWidgetAnim, AllowPrivateAccess = true))
+	class UWidgetAnimation* PlayerChaseStartAnim = nullptr;*/
+
 };
