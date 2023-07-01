@@ -49,7 +49,6 @@ void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPC
 	{
 		PlayChaseStartWidget();
 	}
-	//Camera Shake + Crash Widget
 }
 
 void AAHBeforeChase::PlayChaseStartWidget()
@@ -78,7 +77,6 @@ void AAHBeforeChase::FinishChaseStartWidget()
 	SetPause(false);
 	//Throw Mannequin
 	ThrowMannequin();
-	CameraShake();
 }
 
 void AAHBeforeChase::SetPause(bool InPause)
@@ -128,12 +126,14 @@ void AAHBeforeChase::ThrowMannequin()
 
 void AAHBeforeChase::CameraShake()
 {
-	PC->ClientStartCameraShake(CameraShakeClass);
+	UE_LOG(LogTemp, Warning, TEXT("Camera Shake Start"));
+	PC->ClientStartCameraShake(CameraShakeClass, 1000000.0);
 }
 
 void AAHBeforeChase::PlayCrashWidget()
 {
 	UE_LOG(LogTemp, Warning, TEXT("PlayCrashWidget Start"));
+	CameraShake();
 	if(CameraCrashClass)
 	{
 		CameraCrashWidget = Cast<UAHScreenCrashWidget>(CreateWidget(GetWorld(), CameraCrashClass));
