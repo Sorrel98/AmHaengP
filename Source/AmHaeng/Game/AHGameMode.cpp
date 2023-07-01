@@ -4,9 +4,8 @@
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
 
-#include "AmHaeng/Gimmick/BeforeChase/AHMannequin.h"
-#include "AmHaeng/Gimmick/BeforeChase/AHThrowMannequin.h"
-#include "..\Gimmick\BeforeChase\AHBeforeChase.h"
+
+#include "AmHaeng/Gimmick/BeforeChase/AHBeforeChase.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -105,7 +104,7 @@ void AAHGameMode::BeginPlay()
 	Spawner->SetNPCNumber(NPCNumber); //동기화
 
 	//BeforeChase 초기 셋팅
-	BeforeChaseClass = NewObject<UAHBeforeChase>();
+	BeforeChaseClass = NewObject<AAHBeforeChase>();
 	BeforeChaseClass->Rename(TEXT("BeforeChaseOuter"), this);
 
 	//Mouse
@@ -131,7 +130,7 @@ void AAHGameMode::BeginPlay()
 
 	//==========Chase
 	//Mannequin
-	ThrowManager = NewObject<AAHThrowMannequin>();
+	//ThrowManager = NewObject<AAHThrowMannequin>();
 
 	//Runaway Setting
 }
@@ -292,7 +291,7 @@ void AAHGameMode::CPLoadingFinished()
 			PlayPause(true);
 			//Input 막고
 			PlayerController->SetInputMode(FInputModeUIOnly());
-			BeforeChaseClass->BeforeChaseProcess(PlayerController);
+			BeforeChaseClass->BeforeChaseProcess(PlayerController, HitVehicleBase);
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
@@ -307,7 +306,7 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 	}
 }
 
-void AAHGameMode::ThrowMannequin()
+/*void AAHGameMode::ThrowMannequin()
 {
 	RagdollMannequinSpawn();
 	APawn* Player = PlayerController->GetPawn();
@@ -345,7 +344,7 @@ void AAHGameMode::RagdollMannequinSpawn()
 		return;
 	}
 	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, HitVehicleBase->GetActorLocation(), HitVehicleBase->GetActorRotation());
-}
+}*/
 
 void AAHGameMode::CameraShake()
 {

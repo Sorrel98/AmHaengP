@@ -2,39 +2,57 @@
 
 
 #include "AHBeforeChase.h"
-
+#include "AmHaeng/Gimmick/BeforeChase/AHMannequin.h"
+#include "AmHaeng/Gimmick/BeforeChase/AHThrowMannequin.h"
+#include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/Gimmick/BeforeChase/AHChaseStartWidget.h"
+#include "AmHaeng/Widget/Gimmick/BeforeChase/AHScreenCrashWidget.h"
 
-UAHBeforeChase::UAHBeforeChase()
+AAHBeforeChase::AAHBeforeChase()
 {
 	static ConstructorHelpers::FClassFinder<UAHChaseStartWidget> ChaseStartRef(
 		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_ChaseStartCutscene.WBP_ChaseStartCutscene_C'"));
 	if (ChaseStartRef.Succeeded())
 	{
-		UE_LOG(LogTemp, Log, TEXT("ChaseStartREf"));
 		ChaseStartWidgetClass = ChaseStartRef.Class;
 	}
+
+	static  ConstructorHelpers::FClassFinder<UCameraShakeBase> CameraShakeRef(
+		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/CameraShake/BP_CrashCameraShake.BP_CrashCameraShake_C'"));
+	if(CameraShakeRef.Succeeded())
+	{
+		CameraShakeClass = CameraShakeRef.Class;
+	}
+	static  ConstructorHelpers::FClassFinder<UAHScreenCrashWidget> CameraCrashRef(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_CrashGlass.WBP_CrashGlass_C'"));
+	if(CameraCrashRef.Succeeded())
+	{
+		UE_LOG(LogTemp, Log, TEXT("CameraCrashClass is OK"));
+		CameraCrashClass = CameraCrashRef.Class;
+	}
+	
 	
 }
 
 
-void UAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC)
+void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPCVehicleBase* InTargetNPC)
 {
 	UE_LOG(LogTemp, Log, TEXT("Before Chase Class"));
+	PC = InPC;
+	PlayerPawn = Cast<AAHPlayerPawn>(PC->GetPawn());
+	PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
+	TargetNPC = InTargetNPC;
+	ThrowManager = NewObject<AAHThrowMannequin>();
 	if(ChaseStartWidgetClass)
 	{
 		PlayChaseStartWidget();
 	}
-	PC = InPC;
-	//GamePasue 풀고
-	
-	//ThrowMannequin
-	
 	//Camera Shake + Crash Widget
 }
 
-void UAHBeforeChase::PlayChaseStartWidget()
+void AAHBeforeChase::PlayChaseStartWidget()
 {
 	if(ChaseStartWidgetClass)
 	{
@@ -45,7 +63,7 @@ void UAHBeforeChase::PlayChaseStartWidget()
 			ChaseStartWidget = Cast<UAHChaseStartWidget>(CreateWidget(GetWorld(), ChaseStartWidgetClass));
 			if(IsValid(ChaseStartWidget))
 			{
-				ChaseStartWidget->SendToBeforeChaseClass.BindUObject(this, &UAHBeforeChase::FinishChaseStartWidget);
+				ChaseStartWidget->SendToBeforeChaseClass.BindUObject(this, &AAHBeforeChase::FinishChaseStartWidget);
 				ChaseStartWidget->AddToViewport();
 				ChaseStartWidget->PlayAnims();
 			}
@@ -54,14 +72,75 @@ void UAHBeforeChase::PlayChaseStartWidget()
 	}
 }
 
-void UAHBeforeChase::FinishChaseStartWidget()
+void AAHBeforeChase::FinishChaseStartWidget()
 {
 	UE_LOG(LogTemp, Log, TEXT("BeforeCHase CLass에서 전달받았습니다"));
 	SetPause(false);
+	//Throw Mannequin
+	ThrowMannequin();
+	CameraShake();
 }
 
-void UAHBeforeChase::SetPause(bool InPause)
+void AAHBeforeChase::SetPause(bool InPause)
 {
 	PC->SetPause(InPause);
-	//todo:여기까지 구현됨
+}
+
+void AAHBeforeChase::RagdollMannequinSpawn()
+{
+	if (GetOuter() == nullptr)
+	{
+		return;
+	}
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+
+	FSoftObjectPath RagdollMannequinBPRef(
+		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/RagdollMannequin.RagdollMannequin'"));
+	if (!RagdollMannequinBPRef.IsValid())
+	{
+		return;
+	}
+	UBlueprint* RagdollMannequinBP = Cast<UBlueprint>(RagdollMannequinBPRef.TryLoad());
+	if (RagdollMannequinBP == nullptr)
+	{
+		return;
+	}
+	UClass* RagdollMannequinClass;
+	RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
+	if (RagdollMannequinClass == nullptr)
+	{
+		return;
+	}
+	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, TargetNPC->GetActorLocation(), TargetNPC->GetActorRotation());
+}
+
+void AAHBeforeChase::ThrowMannequin()
+{
+	RagdollMannequinSpawn();
+	APawn* Player = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController())->GetPawn();
+	ThrowManager->Throw(TargetNPC, Player, Mannequin);
+}
+
+void AAHBeforeChase::CameraShake()
+{
+	PC->ClientStartCameraShake(CameraShakeClass);
+}
+
+void AAHBeforeChase::PlayCrashWidget()
+{
+	UE_LOG(LogTemp, Warning, TEXT("PlayCrashWidget Start"));
+	if(CameraCrashClass)
+	{
+		CameraCrashWidget = Cast<UAHScreenCrashWidget>(CreateWidget(GetWorld(), CameraCrashClass));
+		if(IsValid(CameraCrashWidget))
+		{
+			CameraCrashWidget->PlayAnims();
+		}
+	}
+	
 }

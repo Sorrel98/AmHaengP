@@ -3,24 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AHBeforeChase.generated.h"
 
-/**
- * 
- */
 UCLASS(Blueprintable, BlueprintType)
-class AMHAENG_API UAHBeforeChase : public UObject
+class AMHAENG_API AAHBeforeChase : public AActor
 {
 	GENERATED_BODY()
 public:
-	UAHBeforeChase();
-	void BeforeChaseProcess(AAHVehiclePlayerController* PC);
+	AAHBeforeChase();
+	void BeforeChaseProcess(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* InTargetNPC);
 	void PlayChaseStartWidget();
 
 	void FinishChaseStartWidget();
 
 	void SetPause(bool InPause);
+	void RagdollMannequinSpawn();
+	void ThrowMannequin();
+	void CameraShake();
+
+	void PlayCrashWidget();
+
 
 
 private:
@@ -29,7 +31,21 @@ private:
 	TSubclassOf<class UAHChaseStartWidget> ChaseStartWidgetClass;
 	UAHChaseStartWidget* ChaseStartWidget = nullptr;
 
-	AAHVehiclePlayerController* PC;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UAHScreenCrashWidget> CameraCrashClass;
+	class UAHScreenCrashWidget* CameraCrashWidget;
 
+
+	AAHVehiclePlayerController* PC;
+	AAHNPCVehicleBase* TargetNPC;
+	class AAHPlayerPawn* PlayerPawn;
+	
+	//Ragdoll Mannequin
+	class AAHMannequin* Mannequin;
+	class AAHThrowMannequin* ThrowManager;
+
+	//CameraShake
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UCameraShakeBase> CameraShakeClass;
 
 };
