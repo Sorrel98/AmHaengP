@@ -19,7 +19,11 @@ class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScan
 public:
 	AAHNPCVehicleBase();
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaSeconds) override;
+	//virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AHSetMaxEngineTorque(float InMaxTorque);
+
 
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
@@ -57,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE uint8 GetIsChased(){ return bIsChased; }
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void FinishChased();
+
 private:
 	//NPC info - Main
 	//true(1) : 범법, false(2) : 일반
@@ -83,4 +90,7 @@ private:
 	//Chase 기믹
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
 	uint8 bIsChased;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
 };

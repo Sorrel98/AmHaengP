@@ -3,6 +3,7 @@
 
 #include "AHChase.h"
 
+#include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "NPCTeleport/AHNPCTeleport.h"
 
 // Sets default values
@@ -38,6 +39,7 @@ void AAHChase::SetNPCState()
 
 void AAHChase::SetNPCMaxEngineTorque()
 {
+	ChasedNPC->AHSetMaxEngineTorque(400.0f);
 }
 
 void AAHChase::SetNPCCollisionAndMass()

@@ -25,6 +25,8 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	BrakeDistance = 10000.f;
 	bIsDetected = false;
 	bIsChased = false;
+
+	
 }
 
 void AAHNPCVehicleBase::BeginPlay()
@@ -32,11 +34,9 @@ void AAHNPCVehicleBase::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AAHNPCVehicleBase::Tick(float DeltaSeconds)
+void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
 {
-	Super::Tick(DeltaSeconds);
 }
-
 
 bool AAHNPCVehicleBase::GetIsTargetNPC()
 {
@@ -172,10 +172,13 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
 
-void AAHNPCVehicleBase::DetectNothing_Implementation()
+void AAHNPCVehicleBase::FinishChased_Implementation()
 {
 }
 
+void AAHNPCVehicleBase::DetectNothing_Implementation()
+{
+}
 
 
 void AAHNPCVehicleBase::Brake_Implementation()

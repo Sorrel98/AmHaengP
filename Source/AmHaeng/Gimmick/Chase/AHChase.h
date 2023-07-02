@@ -25,4 +25,7 @@ public:
 private:
 	class UAHNPCTeleport* TeleportClass;
 	AAHNPCVehicleBase* ChasedNPC;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	class UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
 };
