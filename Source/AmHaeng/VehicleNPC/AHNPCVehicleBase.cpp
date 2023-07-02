@@ -13,7 +13,8 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	//Main Info Setting
 	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
 	//3:7 비율로 Target NPC Setting
-	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 3) ? true : false);
+	//Debug 위해 모든 NPC target
+	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 10) ? true : false);
 
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));

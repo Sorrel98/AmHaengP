@@ -5,7 +5,7 @@
 #include "AHGameMode.h"
 
 
-#include "AmHaeng/Gimmick/BeforeChase/AHBeforeChase.h"
+#include "AmHaeng/Gimmick/AHChaseGimmickManager.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -103,9 +103,9 @@ void AAHGameMode::BeginPlay()
 	Spawner = NewObject<UAHNPCSpawner>();
 	Spawner->SetNPCNumber(NPCNumber); //동기화
 
-	//BeforeChase 초기 셋팅
-	BeforeChaseClass = NewObject<AAHBeforeChase>();
-	BeforeChaseClass->Rename(TEXT("BeforeChaseOuter"), this);
+	//Chase Gimmick Setting
+	ChaseGimmickClass = NewObject<AAHChaseGimmickManager>();
+	ChaseGimmickClass->Rename(TEXT("ChaseGimmick"), this);
 
 	//Mouse
 	MouseActorSpawn();
@@ -291,7 +291,8 @@ void AAHGameMode::CPLoadingFinished()
 			PlayPause(true);
 			//Input 막고
 			PlayerController->SetInputMode(FInputModeUIOnly());
-			BeforeChaseClass->BeforeChaseProcess(PlayerController, HitVehicleBase);
+			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase);
+			//BeforeChaseClass->BeforeChaseProcess(PlayerController, HitVehicleBase);
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}

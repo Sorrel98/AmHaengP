@@ -122,12 +122,20 @@ void AAHBeforeChase::ThrowMannequin()
 	RagdollMannequinSpawn();
 	APawn* Player = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController())->GetPawn();
 	ThrowManager->Throw(TargetNPC, Player, Mannequin);
+	//하자마자 Delegate로 Chase 시작 알림
+	if(StartChaseDelegate.IsBound())
+	{
+		StartChaseDelegate.Execute();
+	}
 }
 
 void AAHBeforeChase::CameraShake()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Camera Shake Start"));
 	PC->ClientStartCameraShake(CameraShakeClass, 1000000.0);
+	// 이게 여기 있는 게 맞나
+	FTimerHandle Timer;
+	GetWorldTimerManager().SetTimer(Timer, this, &AAHBeforeChase::SetInputMode, 1.0f, false);
 }
 
 void AAHBeforeChase::PlayCrashWidget()
@@ -143,4 +151,9 @@ void AAHBeforeChase::PlayCrashWidget()
 		}
 	}
 	
+}
+
+void AAHBeforeChase::SetInputMode()
+{
+	PC->SetInputMode(FInputModeGameAndUI());
 }

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "HNPCTeleport.generated.h"
+#include "AHNPCTeleport.generated.h"
 
 /**
  * 

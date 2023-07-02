@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AHBeforeChase.generated.h"
 
+DECLARE_DELEGATE(FStartChaseDelegate)
 UCLASS(Blueprintable, BlueprintType)
 class AMHAENG_API AAHBeforeChase : public AActor
 {
@@ -22,7 +23,9 @@ public:
 	void CameraShake();
 
 	void PlayCrashWidget();
+	void SetInputMode();
 
+	FStartChaseDelegate StartChaseDelegate;
 
 
 private:
