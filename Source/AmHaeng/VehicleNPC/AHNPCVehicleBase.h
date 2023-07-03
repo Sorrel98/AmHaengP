@@ -28,6 +28,8 @@ public:
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;
+
+	void SetMassOne();
 	
 	//set info widget
 	void SetInfoWidget();
@@ -63,6 +65,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void FinishChased();
+
 
 private:
 	//NPC info - Main

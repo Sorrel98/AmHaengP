@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AHNPCMinimapCursor.h"
 #include "Blueprint/UserWidget.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
+#include "Containers/Map.h"
 #include "AHMinimapWidget.generated.h"
 
 /**
@@ -18,26 +20,22 @@ class AMHAENG_API UAHMinimapWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	//void SetNPCArray(class AAHNPCVehicleBase* InNPCVehicleBase);
-
 	void MinimapSettingEnd();
 
 	UFUNCTION(BlueprintNativeEvent, Category="NPCIcon")
 	void AddNPCIcon(class AAHNPCVehicleBase* InNPCVehicleBase);
-	void AddNPCIcon_Implementation(AAHNPCVehicleBase* InNPCVehicleBase);
 
 	void CallAddNPCIcon(AAHNPCVehicleBase* InNPCVehicleBase);
 
+	void SetNPCCursorRed(AAHNPCVehicleBase* InTarget);
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	TArray<AActor*> NPCArray;
+	TMap<AAHNPCVehicleBase*, UAHNPCMinimapCursor*> NPCCursorMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	class UAHNPCSpawner* Spawner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	AAHNPCVehicleBase* NPCActor;
-
-	TSubclassOf<class UAHNPCMinimapCursor> NPCCursorClass;
-	class UAHNPCMinimapCursor* NPCCursor;
 };

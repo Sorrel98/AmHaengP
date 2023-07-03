@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AmHaeng/Game/AHGameMode.h"
 #include "GameFramework/Actor.h"
 #include "AHChaseGimmickManager.generated.h"
 
@@ -15,7 +16,7 @@ public:
 	// Sets default values for this actor's properties
 	AAHChaseGimmickManager();
 
-	void StartChaseGimmick(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* NPCVehicle);
+	void StartChaseGimmick(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* NPCVehicle, class UAHMinimapWidget* Minimap);
 
 	void ChaseStart();
 
@@ -23,6 +24,7 @@ public:
 
 
 protected:
+	
 private:
 	class AAHBeforeChase* BeforeChase;
 
@@ -30,5 +32,5 @@ private:
 
 	AAHNPCVehicleBase* ChasedNPC;
 
-	AAHVehiclePlayerController* AHPC;
+	UAHMinimapWidget* MinimapWidget;
 };

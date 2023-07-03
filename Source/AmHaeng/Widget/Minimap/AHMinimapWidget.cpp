@@ -4,6 +4,7 @@
 #include "AHMinimapWidget.h"
 
 #include "AmHaeng/Game/AHGameMode.h"
+#include "Containers/Map.h"
 #include "AmHaeng/Widget/Minimap/AHNPCMinimapCursor.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
@@ -37,6 +38,25 @@ void UAHMinimapWidget::AddNPCIcon_Implementation(AAHNPCVehicleBase* InNPCVehicle
 void UAHMinimapWidget::CallAddNPCIcon(AAHNPCVehicleBase* InNPCVehicleBase)
 {
 	this->AddNPCIcon(InNPCVehicleBase);
+}
+
+void UAHMinimapWidget::SetNPCCursorRed(AAHNPCVehicleBase* InTarget)
+{
+	if(InTarget)
+	{
+		//Map에서 Intarget 찾아서 Cursor에게 Tint 변경 요청
+		UE_LOG(LogTemp, Log, TEXT("npc is in map"));
+		if(NPCCursorMap.Num()) // 왜 NPCCursorMap 자체에 접근이 안되는 걸까요
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NPCCursorMap is %d"), NPCCursorMap.Num());
+			UAHNPCMinimapCursor** TempCursor = NPCCursorMap.Find(InTarget);
+			if(TempCursor!=nullptr)
+			{
+				UAHNPCMinimapCursor* AHCursor = *TempCursor;
+				AHCursor->SetNPCCursorRed();
+			}
+		}
+	}
 }
 
 

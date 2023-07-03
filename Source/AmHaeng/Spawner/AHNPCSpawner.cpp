@@ -12,7 +12,7 @@ UAHNPCSpawner::UAHNPCSpawner()
 	//Spawn 위치들 Setting하기
 }
 
-void UAHNPCSpawner::GetSpawnActorsLocation()
+void UAHNPCSpawner::SetSpawnActorsLocation()
 {
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("NPCSpawnLocation"), NPCSpawnLocationActors);
 	for (AActor* NPCSpawnActor : NPCSpawnLocationActors)
@@ -142,8 +142,9 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 }
 
 //사용 안 하는 중
-void UAHNPCSpawner::RandomNPCVehicleSpawn(int32 Index)
+void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(int32 Index)
 {
+	UE_LOG(LogTemp, Log, TEXT("Start Spawn"));
 	if (GetOuter() == nullptr)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Outer is invalid"));

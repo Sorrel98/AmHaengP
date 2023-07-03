@@ -101,6 +101,7 @@ void AAHGameMode::BeginPlay()
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
 	
 	Spawner = NewObject<UAHNPCSpawner>();
+	//Spawner->Initialize(PlayerController);
 	Spawner->SetNPCNumber(NPCNumber); //동기화
 
 	//Chase Gimmick Setting
@@ -122,17 +123,13 @@ void AAHGameMode::BeginPlay()
 
 	//Spawner Setting
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
-	Spawner->GetSpawnActorsLocation();
+	Spawner->SetSpawnActorsLocation();
 
 	//Spawn NPC
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
 
-	//==========Chase
-	//Mannequin
-	//ThrowManager = NewObject<AAHThrowMannequin>();
-
-	//Runaway Setting
+	
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -284,15 +281,18 @@ void AAHGameMode::CPLoadingFinished()
 	}
 	if(NowGimmickMode ==EGimmickMode::Patrol)
 	{
+		//Chase
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
+			ChasedNPC = HitVehicleBase;
+			ChasedNPC->SetMassOne();
+			/*ChasedNPC->SetIsChased(true);
 			SetGimmickMode(EGimmickMode::Chase);
 			//play pause
 			PlayPause(true);
 			//Input 막고
 			PlayerController->SetInputMode(FInputModeUIOnly());
-			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase);
-			//BeforeChaseClass->BeforeChaseProcess(PlayerController, HitVehicleBase);
+			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);*/
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
@@ -306,46 +306,6 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 		GimmickChangeDelegate.Broadcast(InGimmickMode); //Widget Text 바꾸는 기능 밖에 없음 아직
 	}
 }
-
-/*void AAHGameMode::ThrowMannequin()
-{
-	RagdollMannequinSpawn();
-	APawn* Player = PlayerController->GetPawn();
-	ThrowManager->Throw(HitVehicleBase, Player, Mannequin);
-}
-
-void AAHGameMode::RagdollMannequinSpawn()
-{
-	if (GetOuter() == nullptr)
-	{
-		return;
-	}
-	UWorld* World = GetWorld();
-	if (World == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
-		return;
-	}
-
-	FSoftObjectPath RagdollMannequinBPRef(
-		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/RagdollMannequin.RagdollMannequin'"));
-	if (!RagdollMannequinBPRef.IsValid())
-	{
-		return;
-	}
-	UBlueprint* RagdollMannequinBP = Cast<UBlueprint>(RagdollMannequinBPRef.TryLoad());
-	if (RagdollMannequinBP == nullptr)
-	{
-		return;
-	}
-	UClass* RagdollMannequinClass;
-	RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
-	if (RagdollMannequinClass == nullptr)
-	{
-		return;
-	}
-	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, HitVehicleBase->GetActorLocation(), HitVehicleBase->GetActorRotation());
-}*/
 
 void AAHGameMode::CameraShake()
 {

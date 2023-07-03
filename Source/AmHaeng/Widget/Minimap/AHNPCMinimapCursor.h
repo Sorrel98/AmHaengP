@@ -17,6 +17,9 @@ class AMHAENG_API UAHNPCMinimapCursor : public UUserWidget
 public:
 	void SetNPCActor(AAHNPCVehicleBase* InNPCActor);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetNPCCursorRed();
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	AAHNPCVehicleBase* NPCActor;

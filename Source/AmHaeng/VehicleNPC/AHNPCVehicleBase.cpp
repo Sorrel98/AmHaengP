@@ -48,6 +48,21 @@ void AAHNPCVehicleBase::SetIsTargetNPC(const uint8& IsTargetNPC)
 	bIsTargetNPC = IsTargetNPC;
 }
 
+void AAHNPCVehicleBase::SetMassOne()
+{
+	this->GetMesh()->SetSimulatePhysics(false);
+	UE_LOG(LogTemp, Log, TEXT("%s"), *GetRootComponent()->GetName());
+	// 물리 시뮬레이션 컴포넌트 가져오기
+	UMeshComponent* RC = Cast<UMeshComponent>(GetRootComponent());
+	if (RC)
+	{
+		UE_LOG(LogTemp, Log, TEXT("RC"));
+		float NewMassScale = 0.000000000000000000000000000000001f; // 변경할 무게 비율
+		RC->SetMassScale(NAME_None, NewMassScale);
+	}
+	this->GetMesh()->SetSimulatePhysics(true);
+}
+
 
 //=================================================
 //NPC Info Widget
@@ -171,6 +186,7 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
+
 
 void AAHNPCVehicleBase::FinishChased_Implementation()
 {

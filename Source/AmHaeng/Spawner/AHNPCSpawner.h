@@ -27,7 +27,9 @@ public:
 	
 
 	//World의 Spawn Actors 위치 가져오기
-	void GetSpawnActorsLocation();
+	void SetSpawnActorsLocation();
+	FORCEINLINE int32 GetSpawnLocationNumber(){ return SpawnLocations.Num(); }
+	FORCEINLINE FVector GetSpawnLocationByIndex(int32 Index){ return SpawnLocations[Index];}
 
 	//NPC 갯수
 	void SetNPCNumber(int32 InNPCNumber);
@@ -36,7 +38,7 @@ public:
 	//실제 Spawn 함수
 	void TestSpawnNPC();
 	void NPCVehicleSpawn();
-	void RandomNPCVehicleSpawn(int32 Index);
+	void SpecificLocationNPCVehicleSpawn(int32 Index);
 
 	FOnNPCSpawnEnd OnNPCSpawnEnd;
 	FSendNPCNumber SendNPCNumber;
