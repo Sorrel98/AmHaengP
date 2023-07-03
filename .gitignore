@@ -72,3 +72,14 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Assets
+Content/Assets/Megascans/*
+!Content/Assets/Megascans/.gitkeep
+Content/Assets/MSPresets/*
+!Content/Assets/MSPresets/.gitkeep
+Content/Assets/NorwayMaple/*
+!Content/Assets/NorwayMaple/.gitkeep
+Content/Assets/ProceduralBuildingGenerator/*
+!Content/Assets/ProceduralBuildingGenerator/.gitkeep
+

@@ -38,6 +38,10 @@ void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
 {
 }
 
+void AAHNPCVehicleBase::AHDestroyFrontSphere_Implementation()
+{
+}
+
 bool AAHNPCVehicleBase::GetIsTargetNPC()
 {
 	return bIsTargetNPC;

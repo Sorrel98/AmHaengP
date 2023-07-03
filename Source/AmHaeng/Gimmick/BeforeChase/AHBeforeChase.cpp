@@ -155,5 +155,5 @@ void AAHBeforeChase::PlayCrashWidget()
 
 void AAHBeforeChase::SetInputMode()
 {
-	PC->SetInputMode(FInputModeGameAndUI());
+	PC->EnableInput(PC);
 }

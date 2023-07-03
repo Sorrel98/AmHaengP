@@ -23,11 +23,14 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AHSetMaxEngineTorque(float InMaxTorque);
-
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	
+	void AHDestroyFrontSphere();
 
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;
+
 
 	void SetMassOne();
 	

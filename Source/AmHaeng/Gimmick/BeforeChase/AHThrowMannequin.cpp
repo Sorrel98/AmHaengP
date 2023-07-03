@@ -12,14 +12,11 @@ class AAHMannequin;
 // Sets default values
 AAHThrowMannequin::AAHThrowMannequin()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
-	
 }
 
 void AAHThrowMannequin::Throw(AActor* From, AActor* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 8000000.0f;
+	ThrowSpeed = 8'000'000.0f;
 	if(From && To)
 	{
 		AWheeledVehiclePawn* PlayerPawn = Cast<AWheeledVehiclePawn>(To);
