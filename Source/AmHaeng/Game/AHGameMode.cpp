@@ -14,6 +14,7 @@
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 
+EGimmickMode AAHGameMode::NowGimmickMode = EGimmickMode::Patrol;
 AAHGameMode::AAHGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT(
@@ -308,9 +309,14 @@ void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 	}
 }
 
-void AAHGameMode::CameraShake()
+const EGimmickMode AAHGameMode::GetGimmickMode()
 {
+	return NowGimmickMode;
 }
+
+/*void AAHGameMode::CameraShake()
+{
+}*/
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
 void AAHGameMode::SetNPCSpawningState(uint8 NowState)

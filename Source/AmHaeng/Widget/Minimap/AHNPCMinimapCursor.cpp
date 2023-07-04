@@ -8,6 +8,10 @@ void UAHNPCMinimapCursor::SetNPCActor(AAHNPCVehicleBase* InNPCActor)
 	NPCActor = InNPCActor;
 }
 
+void UAHNPCMinimapCursor::GetNPC_Implementation()
+{
+}
+
 void UAHNPCMinimapCursor::SetNPCCursorRed_Implementation()
 {
 }

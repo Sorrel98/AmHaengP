@@ -20,6 +20,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetNPCCursorRed();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void GetNPC();
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	AAHNPCVehicleBase* NPCActor;

@@ -32,6 +32,9 @@ void UAHNPCStatComponent::StatsSetting(int32 InIDNumber, uint8 IsTarget)
 	//NPCSpeedSetting
 	SetGoodSpeed();
 
+	//NPC Groggy Setting
+	SetGroggyGage(0);
+
 	//NPCSwaySetting
 	SetGoodSway();
 	if(IsTarget)
@@ -127,4 +130,9 @@ const int32 UAHNPCStatComponent::GetNPCSway()
 void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
 {
 	NPCIDNumber = InNumber;
+}
+
+void UAHNPCStatComponent::SetGroggyGage(int32 InGage)
+{
+	GroggyGage = InGage;
 }

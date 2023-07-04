@@ -50,6 +50,9 @@ public:
 	//NPC info - ID Number
 	void SetIDNumber(int32 InNumber);
 
+	//NPC info - Groggy Gage
+	void SetGroggyGage(int32 InGage);
+
 private:
 	//NPC info - Detail
 	UPROPERTY()
@@ -64,4 +67,8 @@ private:
 	int32 NPCSway;
 	UPROPERTY()
 	int32 NPCIDNumber;
+
+	//0 ~ 100
+	UPROPERTY()
+	int32 GroggyGage;
 };

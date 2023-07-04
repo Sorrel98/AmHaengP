@@ -5,6 +5,8 @@
 #include "GameFramework/PlayerController.h"
 #include "AmHaeng/Interface/NPC/AHScannable.h"
 #include "EnhancedInputComponent.h"
+#include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Prop/AHTypes.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 AAHVehiclePlayerController::AAHVehiclePlayerController()
@@ -40,7 +42,10 @@ void AAHVehiclePlayerController::BeginPlay()
 void AAHVehiclePlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	MouseScan();
+	if(AAHGameMode::NowGimmickMode == EGimmickMode::Patrol)
+	{
+		MouseScan();
+	}
 }
 
 /*void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)

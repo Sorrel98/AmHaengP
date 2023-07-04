@@ -3,6 +3,7 @@
 
 #include "AHChase.h"
 
+#include "AmHaeng/Game/AHGameMode.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "NPCTeleport/AHNPCTeleport.h"
 
@@ -10,7 +11,7 @@
 AAHChase::AAHChase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	//PrimaryActorTick.bCanEverTick = true;
 	
 }
 
@@ -51,5 +52,38 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	TeleportClass = NewObject<UAHNPCTeleport>();
 	ChasedNPC = InNPC;
 	TeleportClass->Rename(TEXT("TeleportOuter"), this);
+	StartChaseTimer();
+}
+
+void AAHChase::StartChaseTimer()
+{
+	//Timer 측정 -> 몇초로 할까.. 일단 30초로 하자
+	//30초 뒤에 End
+	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 20.f, false);
+}
+
+void AAHChase::EndChaseTimer()
+{
+	GetWorld()->GetTimerManager().ClearTimer(ChaseTimerHandle);
+}
+
+void AAHChase::ChaseTimerExpired()
+{
+	//타이머 실행되면 코드 작성
+	UE_LOG(LogTemp, Log, TEXT("Chase 제한 시간이 끝났습니다."));
+	Cast<AAHGameMode>(GetWorld()->GetAuthGameMode())->SetGimmickMode(EGimmickMode::Patrol);
+	ChasedNPCDestroy();
+}
+
+void AAHChase::ChasedNPCDestroy()
+{
+	if(ChasedNPC)
+	{
+		ChasedNPC->Destroy();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Chased NPC Is Null"));
+	}
 }
 

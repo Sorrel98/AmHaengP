@@ -21,6 +21,13 @@ public:
 	void SetNPCMaxEngineTorque();
 	void SetNPCCollisionAndMass();
 	void Initialize(AAHNPCVehicleBase* InNPC);
+	
+	void ChasedNPCDestroy();
+
+	//Timer
+	void StartChaseTimer();
+	void EndChaseTimer();
+	void ChaseTimerExpired();
 
 private:
 	class UAHNPCTeleport* TeleportClass;
@@ -28,4 +35,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	class UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
+
+	FTimerHandle ChaseTimerHandle;
 };
