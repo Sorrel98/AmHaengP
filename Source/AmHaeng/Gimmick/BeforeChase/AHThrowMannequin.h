@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AmHaeng/Player/AHPlayerPawn.h"
 #include "GameFramework/Actor.h"
 #include "AHThrowMannequin.generated.h"
 
@@ -16,7 +17,7 @@ public:
 	AAHThrowMannequin();
 
 	UFUNCTION(BlueprintCallable, Category="ThrowMannequin")
-	void Throw(AActor* From, AActor* To, AAHMannequin* Mannequin);
+	void Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Mannequin);
 
 	
 

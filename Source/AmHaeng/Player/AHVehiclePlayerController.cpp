@@ -6,9 +6,11 @@
 #include "AmHaeng/Interface/NPC/AHScannable.h"
 #include "EnhancedInputComponent.h"
 #include "AmHaeng/Game/AHGameMode.h"
+#include "EnhancedInputSubsystems.h"
 #include "AmHaeng/Prop/AHTypes.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
+AAHPlayerPawn* AAHVehiclePlayerController::PlayerPawn = nullptr;
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
 	bShowMouseCursor = true;
@@ -17,26 +19,44 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 
 
 	//Mouse Click Input Ref Find
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionClickRef(
-		TEXT("/Script/EnhancedInput.InputAction'/Game/VehicleTemplate/Input/Actions/IA_Click.IA_Click'"));
-	if (InputActionClickRef.Object != nullptr)
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionPatrolClickRef(
+		TEXT("/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Patrol/IA_Patrol_Click.IA_Patrol_Click'"));
+	if (InputActionPatrolClickRef.Object != nullptr)
 	{
-		ClickAction = InputActionClickRef.Object;
+		PatrolClickAction = InputActionPatrolClickRef.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionClickReleasedRef(
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionPatrolClickReleasedRef(
 		TEXT(
-			"/Script/EnhancedInput.InputAction'/Game/VehicleTemplate/Input/Actions/IA_ClickReleased.IA_ClickReleased'"));
-	if (InputActionClickReleasedRef.Object != nullptr)
+			"/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Patrol/IA_Patrol_ClickReleased.IA_Patrol_ClickReleased'"));
+	if (InputActionPatrolClickReleasedRef.Object != nullptr)
 	{
-		ClickReleasedAction = InputActionClickReleasedRef.Object;
+		PatrolClickReleasedAction = InputActionPatrolClickReleasedRef.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionChaseClickRef(
+	TEXT("/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Chase/IA_Chase_Click.IA_Chase_Click'"));
+	if (InputActionChaseClickRef.Object != nullptr)
+	{
+		ChaseClickAction = InputActionChaseClickRef.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionChaseClickReleasedRef(
+		TEXT(
+			"/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Chase/IA_Chase_ClickReleased.IA_Chase_ClickReleased'"));
+	if (InputActionChaseClickReleasedRef.Object != nullptr)
+	{
+		ChaseClickReleasedAction = InputActionChaseClickReleasedRef.Object;
+	}
+
+	// IMC
 }
 
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInitMousePrevActor();
+	PlayerPawn = Cast<AAHPlayerPawn>(GetPawn());
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
@@ -96,7 +116,7 @@ void AAHVehiclePlayerController::MouseScan()
 			{
 				if (IsNPCClicking)
 				{
-					MouseClickReleased();
+					PatrolMouseClickReleased();
 				}
 				//새로운 Hit Actor가 NPC 인지 판별
 				IAHScannable* IsScannable = Cast<IAHScannable>(NowHitActor);
@@ -167,21 +187,21 @@ void AAHVehiclePlayerController::SetupInputComponent()
 		return;
 	}
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this,
-	                                   &AAHVehiclePlayerController::MouseClick);
-	EnhancedInputComponent->BindAction(ClickReleasedAction, ETriggerEvent::Triggered, this,
-	                                   &AAHVehiclePlayerController::MouseClickReleased);
+	EnhancedInputComponent->BindAction(PatrolClickAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClick);
+	EnhancedInputComponent->BindAction(PatrolClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClickReleased);
+	EnhancedInputComponent->BindAction(ChaseClickAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::ChaseMouseClick);
+	EnhancedInputComponent->BindAction(ChaseClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::ChaseMouseClickReleased);
 }
 
-void AAHVehiclePlayerController::MouseClick()
+void AAHVehiclePlayerController::PatrolMouseClick()
 {
 	//add Delegate and Start Loading UI
 	if (IsNPCScanning)
 	{
 		IsNPCClicking = true;
-		if (MouseClickDelegate.IsBound())
+		if (PatrolMouseClickDelegate.IsBound())
 		{
-			MouseClickDelegate.Broadcast(true);
+			PatrolMouseClickDelegate.Broadcast(true);
 		}
 		if (NowHitActor)
 		{
@@ -198,15 +218,15 @@ void AAHVehiclePlayerController::MouseClick()
 	}
 }
 
-void AAHVehiclePlayerController::MouseClickReleased()
+void AAHVehiclePlayerController::PatrolMouseClickReleased()
 {
 	if (IsNPCClicking)
 	{
 		IsNPCClicking = false;
 		//add delegate and ShutDown Loading UI
-		if (MouseClickDelegate.IsBound())
+		if (PatrolMouseClickDelegate.IsBound())
 		{
-			MouseClickDelegate.Broadcast(false);
+			PatrolMouseClickDelegate.Broadcast(false);
 		}
 		if (NowHitActor)
 		{
@@ -218,3 +238,48 @@ void AAHVehiclePlayerController::MouseClickReleased()
 		}
 	}
 }
+
+void AAHVehiclePlayerController::ChaseMouseClick()
+{
+	UE_LOG(LogTemp, Log, TEXT("Chase Mode : Mouse Click"));
+	if(ChaseMouseClickDelegate.IsBound())
+	{
+		ChaseMouseClickDelegate.Broadcast(true);
+	}
+	
+}
+
+void AAHVehiclePlayerController::ChaseMouseClickReleased()
+{
+	UE_LOG(LogTemp, Log, TEXT("Chase Mode : Mouse Click Released"));
+	if(ChaseMouseClickDelegate.IsBound())
+	{
+		ChaseMouseClickDelegate.Broadcast(false);
+	}
+}
+
+void AAHVehiclePlayerController::SetPatrolIMC_Implementation()
+{
+}
+
+void AAHVehiclePlayerController::SetChaseIMC_Implementation()
+{
+}
+
+/*void AAHVehiclePlayerController::SetIMC(EGimmickMode NowGimmickMode)
+{
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
+	{
+		Subsystem->ClearAllMappings();
+		if(NowGimmickMode == EGimmickMode::Chase)
+		{
+			Subsystem->AddMappingContext(ChaseIMC, 0);
+		}
+		else if(NowGimmickMode == EGimmickMode::Patrol)
+		{
+			Subsystem->AddMappingContext(PatrolIMC, 0);
+		}
+	}
+	
+}*/
+

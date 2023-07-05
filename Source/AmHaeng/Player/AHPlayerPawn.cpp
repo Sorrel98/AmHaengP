@@ -2,6 +2,26 @@
 
 
 #include "AHPlayerPawn.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Weapon/AHChickenBlade.h"
+
+void AAHPlayerPawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(ChickenBladeClass)
+	{
+		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenBladeClass);
+		if(ChickenBlade)
+		{
+			GetSkeletalMesh();
+			if(const auto BladeSocket = PlayerSkeletalMeshComponent->GetSocketByName("Blade"))
+			{
+				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
+			}
+		}
+	}
+}
 
 void AAHPlayerPawn::PlayerMannequinDetect()
 {
@@ -11,3 +31,22 @@ void AAHPlayerPawn::PlayerMannequinDetect()
 		MannequinDetect.Execute();
 	}
 }
+
+void AAHPlayerPawn::GetWeaponFromBP_Implementation()
+{
+}
+
+void AAHPlayerPawn::GetSkeletalMesh_Implementation()
+{
+}
+
+USkeletalMeshComponent* AAHPlayerPawn::GetPlayerPawnSkeletalMesh()
+{
+	return PlayerSkeletalMeshComponent;
+}
+
+USkeletalMeshComponent* AAHPlayerPawn::GetWeaponComponent()
+{
+	return WeaponComponent;
+}
+

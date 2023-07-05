@@ -4,15 +4,15 @@
 #include "AHChase.h"
 
 #include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/Player/Weapon/AHChickenBlade.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
+#include "GameFramework/Actor.h"
 #include "NPCTeleport/AHNPCTeleport.h"
 
 // Sets default values
 AAHChase::AAHChase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
-	
 }
 
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
@@ -22,7 +22,10 @@ void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 	NPCTeleport();
 	//NPC 상태값 셋팅
 	SetNPCState();
-	
+	//Chicken Blade 셋팅
+	SetWeaponClass();
+	//IMC Chase 모드로 변경
+	SetIMC(EGimmickMode::Chase);
 }
 
 void AAHChase::NPCTeleport()
@@ -53,6 +56,20 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	ChasedNPC = InNPC;
 	TeleportClass->Rename(TEXT("TeleportOuter"), this);
 	StartChaseTimer();
+}
+
+void AAHChase::SetWeaponClass()
+{
+	if(GetWorld())
+	{
+		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(AAHChickenBlade::StaticClass());
+	}
+	ChickenBlade->InitChickenBlade(ChasedNPC);
+}
+
+void AAHChase::SetIMC(EGimmickMode InGimmickMode)
+{
+	AAHGameMode::PlayerController->SetChaseIMC();
 }
 
 void AAHChase::StartChaseTimer()

@@ -3,13 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputMappingQuery.h"
+#include "AmHaeng/Game/AHGameMode.h"
 #include "GameFramework/PlayerController.h"
+#include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AHVehiclePlayerController.generated.h"
 
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE_OneParam(FMouseClickDelegate, bool)
+DECLARE_MULTICAST_DELEGATE_OneParam(FPatrolMouseClickDelegate, bool)
+DECLARE_MULTICAST_DELEGATE_OneParam(FChaseMouseClickDelegate, bool)
 DECLARE_DELEGATE_OneParam(FTooltipDelegate, bool)
 DECLARE_DELEGATE_OneParam(FNowClickNPCToGameModeDelegate, class AAHNPCVehicleBase*)
 
@@ -21,6 +25,9 @@ class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 public:
 	//sets default values for this character controller's properties
 	AAHVehiclePlayerController();
+
+	//Static
+	static AAHPlayerPawn* PlayerPawn;
 
 protected:
 	//Called when the game starts or when spawned
@@ -46,12 +53,24 @@ public:
 	FVector GetMouseLocation() { return MousePosition; }
 	void SetInitMousePrevActor();
 
+
+	//Input mapping
+	void PatrolMouseClick();
+	void PatrolMouseClickReleased();
+	void ChaseMouseClick();
+	void ChaseMouseClickReleased();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetChaseIMC();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetPatrolIMC();
+	
 	//const uint8 GetIsNPCTarget();
 	
-	FMouseClickDelegate MouseClickDelegate;
-	
-
+	//Delegate
+	FPatrolMouseClickDelegate PatrolMouseClickDelegate;
 	FNowClickNPCToGameModeDelegate SendNowClickNPCToGameMode;
+	FChaseMouseClickDelegate ChaseMouseClickDelegate;
 
 private:
 	UPROPERTY(EditAnywhere, Category = Scan)
@@ -66,13 +85,18 @@ private:
 
 	//mouse input system
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputAction> ClickAction;
+	TObjectPtr<class UInputAction> PatrolClickAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	TObjectPtr<class UInputAction> ClickReleasedAction;
+	TObjectPtr<class UInputAction> PatrolClickReleasedAction;
 
-	void MouseClick();
-	void MouseClickReleased();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> ChaseClickAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> ChaseClickReleasedAction;
+
+
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCClicking = false;
@@ -81,4 +105,10 @@ private:
 	FVector MousePosition;
 
 	AActor* NowHitActor;
+
+	//Input Mappint Context
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input , meta=(AllowPrivateAccess = true))
+	TObjectPtr<UInputMappingContext> ChaseIMC;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input , meta=(AllowPrivateAccess = true))
+	TObjectPtr<UInputMappingContext> PatrolIMC;
 };

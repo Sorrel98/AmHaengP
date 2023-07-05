@@ -3,8 +3,6 @@
 
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
-
-
 #include "AmHaeng/Gimmick/AHChaseGimmickManager.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
@@ -15,6 +13,7 @@
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 
 EGimmickMode AAHGameMode::NowGimmickMode = EGimmickMode::Patrol;
+AAHVehiclePlayerController* AAHGameMode::PlayerController = nullptr;
 AAHGameMode::AAHGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT(
@@ -81,7 +80,6 @@ AAHGameMode::AAHGameMode()
 	bIsNPCSpawning = false;
 
 	NPCNumber = 0; //0부터 시작
-	
 }
 
 void AAHGameMode::PlayPause(bool IsPause)

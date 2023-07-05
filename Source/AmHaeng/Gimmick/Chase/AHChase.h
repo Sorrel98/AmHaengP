@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHBeforeChase.h"
+#include "AmHaeng/Player/Weapon/AHChickenBlade.h"
+#include "AmHaeng/Prop/AHTypes.h"
 #include "GameFramework/Actor.h"
 #include "AHChase.generated.h"
 
@@ -21,6 +23,8 @@ public:
 	void SetNPCMaxEngineTorque();
 	void SetNPCCollisionAndMass();
 	void Initialize(AAHNPCVehicleBase* InNPC);
+	void SetWeaponClass();
+	void SetIMC(EGimmickMode InGimmickMode);
 	
 	void ChasedNPCDestroy();
 
@@ -37,4 +41,7 @@ private:
 	class UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
 
 	FTimerHandle ChaseTimerHandle;
+
+	TObjectPtr<AAHChickenBlade> ChickenBlade;
+	TArray<UActorComponent*> ChickenBladeComponentArray;
 };

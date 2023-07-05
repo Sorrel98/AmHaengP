@@ -2,6 +2,8 @@
 
 
 #include "AHBeforeChase.h"
+
+#include "AmHaeng/Game/AHGameMode.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHMannequin.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHThrowMannequin.h"
 #include "AmHaeng/Player/AHPlayerPawn.h"
@@ -40,9 +42,8 @@ AAHBeforeChase::AAHBeforeChase()
 void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPCVehicleBase* InTargetNPC)
 {
 	UE_LOG(LogTemp, Log, TEXT("Before Chase Class"));
+	AAHVehiclePlayerController::PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
 	PC = InPC;
-	PlayerPawn = Cast<AAHPlayerPawn>(PC->GetPawn());
-	PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
 	TargetNPC = InTargetNPC;
 	ThrowManager = NewObject<AAHThrowMannequin>();
 	if(ChaseStartWidgetClass)
@@ -120,8 +121,7 @@ void AAHBeforeChase::RagdollMannequinSpawn()
 void AAHBeforeChase::ThrowMannequin()
 {
 	RagdollMannequinSpawn();
-	APawn* Player = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController())->GetPawn();
-	ThrowManager->Throw(TargetNPC, Player, Mannequin);
+	ThrowManager->Throw(TargetNPC, AAHVehiclePlayerController::PlayerPawn, Mannequin);
 	//하자마자 Delegate로 Chase 시작 알림
 	if(StartChaseDelegate.IsBound())
 	{

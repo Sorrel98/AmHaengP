@@ -58,7 +58,7 @@ void AAHMouseActor::SetBindDelegate()
 	if(PlayerController==nullptr) return;
 	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
-		CastedPlayerController->MouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
+		CastedPlayerController->PatrolMouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
 	}
 
 	//timer 끝남 delegate with click cp widget

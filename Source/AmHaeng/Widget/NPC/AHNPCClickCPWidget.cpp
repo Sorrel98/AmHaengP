@@ -31,7 +31,7 @@ void UAHNPCClickCPWidget::MouseClickDelegateBind()
 	}
 	if (AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
 	{
-		CastedPlayerController->MouseClickDelegate.AddUObject(this, &UAHNPCClickCPWidget::MouseClicked);
+		CastedPlayerController->PatrolMouseClickDelegate.AddUObject(this, &UAHNPCClickCPWidget::MouseClicked);
 	}
 }
 

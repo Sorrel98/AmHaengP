@@ -18,7 +18,7 @@ void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 	{
 		SpawnLocation = FMath::RandRange(0, Spawner->GetSpawnLocationNumber()-1);
 		Spawner->SpecificLocationNPCVehicleSpawn(SpawnLocation);
-	}while(IsHitActorOnSpawnActor(Spawner->GetSpawnLocationByIndex(SpawnLocation)));
+	}while(!IsHitActorOnSpawnActor(Spawner->GetSpawnLocationByIndex(SpawnLocation)));
 }
 
 void AAHInMap::SetSpawner()
