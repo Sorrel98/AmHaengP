@@ -20,6 +20,17 @@ void UAHNPCSpawner::SetSpawnActorsLocation()
 		SpawnLocations.Add(NPCSpawnActor->GetActorLocation());
 		SpawnRotations.Add(NPCSpawnActor->GetActorRotation());
 	}
+
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("NPCRunAwayLocation"), NPCTeleportLocationActors);
+}
+
+AActor* UAHNPCSpawner::GetTeleportLocationActor(int32 Index)
+{
+	if(NPCTeleportLocationActors.Num() > Index && Index >= 0)
+	{
+		return NPCTeleportLocationActors[Index];
+	}
+	return nullptr;
 }
 
 void UAHNPCSpawner::SetNPCNumber(int32 InNPCNumber)
@@ -189,6 +200,102 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(int32 Index)
 		SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
 	}
 }
+
+void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(AActor* LocationActor)
+{
+	UE_LOG(LogTemp, Log, TEXT("Start Spawn"));
+	if (GetOuter() == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Outer is invalid"));
+		return;
+	}
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
+	if (!NPCBPRef.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));
+		return;
+	}
+	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
+	if (NPCBPObj == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPObj Is not Valid"));
+		return;
+	}
+
+	UClass* NPCBPClass = NPCBPObj->GeneratedClass;
+	if (NPCBPClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPClass Is not Valid"));
+		return;
+	}
+
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, LocationActor->GetActorLocation(), LocationActor->GetActorRotation(), SpawnParams);
+	if(NPCVehicleSpawnActor == nullptr) return;
+	
+	AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+	if (SpawnedNPCController)
+	{
+		SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
+	}
+}
+
+/*void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator Rotation)
+{
+	UE_LOG(LogTemp, Log, TEXT("Start Spawn"));
+	if (GetOuter() == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Outer is invalid"));
+		return;
+	}
+	FSoftObjectPath NPCBPRef(TEXT("/Script/Engine.Blueprint'/Game/VehicleNPC/AH_VehicleAI.AH_VehicleAI'"));
+	if (!NPCBPRef.IsValid())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPRef Is not Valid"));
+		return;
+	}
+	UBlueprint* NPCBPObj = Cast<UBlueprint>(NPCBPRef.TryLoad());
+	if (NPCBPObj == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPObj Is not Valid"));
+		return;
+	}
+
+	UClass* NPCBPClass = NPCBPObj->GeneratedClass;
+	if (NPCBPClass == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NPCBPClass Is not Valid"));
+		return;
+	}
+
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, Location, Rotation, SpawnParams);
+	if(NPCVehicleSpawnActor == nullptr) return;
+	
+	AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
+	if (SpawnedNPCController)
+	{
+		SpawnedNPCController->Possess(Cast<APawn>(NPCVehicleSpawnActor));
+	}
+}*/
 
 
 UAHNPCSpawner::~UAHNPCSpawner()

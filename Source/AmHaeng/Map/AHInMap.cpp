@@ -5,6 +5,9 @@
 
 #include "AmHaeng/Game/AHGameMode.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
+#include "Components/BoxComponent.h"
+
+class UBoxComponent;
 
 void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 {
@@ -13,12 +16,7 @@ void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 		SetSpawner();
 	}
 	OutNPC->Destroy();
-	int32 SpawnLocation;
-	do
-	{
-		SpawnLocation = FMath::RandRange(0, Spawner->GetSpawnLocationNumber()-1);
-		Spawner->SpecificLocationNPCVehicleSpawn(SpawnLocation);
-	}while(!IsHitActorOnSpawnActor(Spawner->GetSpawnLocationByIndex(SpawnLocation)));
+	GetWorld()->GetTimerManager().SetTimer(FindSpawnerTimerHandle, this, &AAHInMap::SpawnNewNPC, 5.0f, true);
 }
 
 void AAHInMap::SetSpawner()
@@ -34,24 +32,55 @@ void AAHInMap::SetSpawner()
 	}
 }
 
-bool AAHInMap::IsHitActorOnSpawnActor(FVector SpawnActorLocation)
+bool AAHInMap::IsHitActorOnSpawnActor(int32 TeleportLocationIndex)
 {
-	FHitResult OutHit;
-	FVector RaycastEndLocation = SpawnActorLocation + FVector(0.f, 0.f, 1.f) * 10;
-
-	FCollisionQueryParams Params;
-	Params.bTraceComplex = true; // 자세한 충돌 검사를 위해 true로 설정
-	if (GetWorld()->LineTraceSingleByChannel(OutHit, SpawnActorLocation, RaycastEndLocation, ECC_Pawn, Params))
+	AActor* TeleportActor = Spawner->GetTeleportLocationActor(TeleportLocationIndex);
+	TArray<UActorComponent*> Components = TeleportActor->GetComponentsByTag(UActorComponent::StaticClass(), FName(TEXT("NPCCollision")));
+	UBoxComponent* TeleportActorCollision = nullptr;
+	bool bResult = false;
+	if(!Components.IsEmpty())
 	{
-		// 충돌이 감지되었을 때 처리
-		AActor* HitActor = OutHit.GetActor();
-		AAHNPCVehicleBase* HittedNPC = Cast<AAHNPCVehicleBase>(HitActor);
-		if(HittedNPC)
+		TeleportActorCollision = Cast<UBoxComponent>(Components[0]);
+		if(GetWorld())
 		{
-			return true;
+			FHitResult OutHitResult;
+			FVector Start = TeleportActorCollision->GetComponentLocation();
+			FCollisionShape Box = FCollisionShape::MakeBox(TeleportActorCollision->GetScaledBoxExtent()/2);
+			FVector End = Start;
+			bResult = GetWorld()->SweepSingleByProfile(OutHitResult, Start, End, TeleportActorCollision->GetComponentRotation().Quaternion(), FName(TEXT("BlockAll")), Box);
+			DrawDebugBox(GetWorld(), Start, TeleportActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 30.f);
+			//무엇인가 있었다면 true
 		}
 	}
-	return false;
+	//없었다면 false
+	return bResult;
+}
+
+int32 AAHInMap::SetRandomIndex()
+{
+
+	SpawnIndex = FMath::RandRange(0, Spawner->GetSpawnLocationNumber()-1);
+	UE_LOG(LogTemp, Log, TEXT("Make Random Index : %d"), SpawnIndex);
+	return SpawnIndex;
+	
+}
+
+void AAHInMap::SpawnNewNPC()
+{
+	if(!IsHitActorOnSpawnActor(SetRandomIndex()))
+	{
+		//없었다면
+		if(FindSpawnerTimerHandle.IsValid())
+		{
+			GetWorld()->GetTimerManager().ClearTimer(FindSpawnerTimerHandle);
+			Spawner->SpecificLocationNPCVehicleSpawn(Spawner->GetTeleportLocationActor(SpawnIndex));
+		}
+		//있었다면 계속 Timer 돌아가게
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("Something On Spawn Location Actor"));
+		}
+	}
 }
 
 // Called when the game starts or when spawned

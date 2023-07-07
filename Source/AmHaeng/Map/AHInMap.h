@@ -18,7 +18,12 @@ public:
 
 	void SetSpawner();
 
-	bool IsHitActorOnSpawnActor(FVector SpawnActorLocation);
+	bool IsHitActorOnSpawnActor(int32 TeleportLocationIndex);
+
+	UFUNCTION()
+	int32 SetRandomIndex();
+
+	void SpawnNewNPC();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,4 +37,7 @@ private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	class UAHNPCSpawner* Spawner;
 
+	FTimerHandle FindSpawnerTimerHandle;
+
+	int32 SpawnIndex;
 };

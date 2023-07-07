@@ -20,10 +20,11 @@ void AAHThrowMannequin::Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Man
 	ThrowSpeed = 7'000'000.0f;
 	if(From && To)
 	{
-		UCameraComponent* PlayerCamera = Cast<UCameraComponent>(To->GetRootComponent()->GetChildComponent(0)->GetChildComponent(0));
-		if(PlayerCamera)
+		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinDestMeshComponent();
+		if(MannequinMeshComponent)
 		{
-			FVector ThrowDirection = PlayerCamera->GetComponentLocation() - From->GetActorLocation() + FVector{0.0f, 0.0f, 10.f};
+			FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation() + FVector{0.0f, 0.0f, 10.f};
+			//FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
 			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple, 1.0f);
 			ThrowDirection.Normalize();
 			FVector Force = ThrowDirection * ThrowSpeed;

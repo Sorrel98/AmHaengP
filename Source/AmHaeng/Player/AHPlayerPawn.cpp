@@ -45,6 +45,17 @@ USkeletalMeshComponent* AAHPlayerPawn::GetPlayerPawnSkeletalMesh()
 	return PlayerSkeletalMeshComponent;
 }
 
+UStaticMeshComponent* AAHPlayerPawn::GetMannequinDestMeshComponent()
+{
+	TArray<UActorComponent*> Components = this->GetComponentsByTag(UStaticMeshComponent::StaticClass(), FName(TEXT("MannequinDest")));
+	UStaticMeshComponent* MannequinDestMeshComponent = nullptr;
+	if(!Components.IsEmpty())
+	{
+		MannequinDestMeshComponent = Cast<UStaticMeshComponent>(Components[0]);
+	}
+	return MannequinDestMeshComponent;
+}
+
 USkeletalMeshComponent* AAHPlayerPawn::GetWeaponComponent()
 {
 	return WeaponComponent;

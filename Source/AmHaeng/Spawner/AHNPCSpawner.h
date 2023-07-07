@@ -30,6 +30,8 @@ public:
 	void SetSpawnActorsLocation();
 	FORCEINLINE int32 GetSpawnLocationNumber(){ return SpawnLocations.Num(); }
 	FORCEINLINE FVector GetSpawnLocationByIndex(int32 Index){ return SpawnLocations[Index];}
+	//FORCEINLINE FVector GetTeleportLocationByIndex(int32 Index){ return NPCTeleportLocation[Index];}
+	AActor* GetTeleportLocationActor(int32 Index);
 
 	//NPC 갯수
 	void SetNPCNumber(int32 InNPCNumber);
@@ -39,6 +41,7 @@ public:
 	void TestSpawnNPC();
 	void NPCVehicleSpawn();
 	void SpecificLocationNPCVehicleSpawn(int32 Index);
+	void SpecificLocationNPCVehicleSpawn(AActor* LocationActor);
 
 	FOnNPCSpawnEnd OnNPCSpawnEnd;
 	FSendNPCNumber SendNPCNumber;
@@ -46,11 +49,14 @@ public:
 
 private:
 	TArray<AActor*> NPCSpawnLocationActors;
+	TArray<AActor*> NPCTeleportLocationActors;
 
 	TArray<AActor*> GoodNPCSpawnLocationActors;
 	TArray<AActor*> BadNPCSpawnLocationActors;
 	TArray<FVector> SpawnLocations;
 	TArray<FRotator> SpawnRotations;
+	TArray<FVector> TeleportLocations;
+	TArray<FRotator> TeleportRotations;
 
 	AHMathFunctions* MathFunctions;
 

@@ -31,6 +31,8 @@ public:
 
 	USkeletalMeshComponent* GetPlayerPawnSkeletalMesh();
 
+	UStaticMeshComponent* GetMannequinDestMeshComponent();
+
 
 	USkeletalMeshComponent* GetWeaponComponent();
 private:
