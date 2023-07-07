@@ -28,7 +28,7 @@ void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 {
 	Initialize(InNPC);
 	//Teleport하고
-	NPCTeleport();
+	//NPCTeleport();
 	//NPC 상태값 셋팅
 	SetNPCState();
 	//Chicken Blade 셋팅

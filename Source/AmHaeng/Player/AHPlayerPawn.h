@@ -38,7 +38,11 @@ public:
 	void GetSkeletalMesh();
 
 	USkeletalMeshComponent* GetPlayerPawnSkeletalMesh();
-	UStaticMeshComponent* GetMannequinDestMeshComponent();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetMannequinDestMeshComponent();
+
+	UStaticMeshComponent* GetMannequinTarget(){return MannequinTarget;}
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
@@ -54,4 +58,7 @@ private:
 	uint8 IsAttacking;
 
 	FRotator OriginChickenRotation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	UStaticMeshComponent* MannequinTarget;
 };

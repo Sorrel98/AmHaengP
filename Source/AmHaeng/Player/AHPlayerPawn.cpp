@@ -26,12 +26,10 @@ void AAHPlayerPawn::MouseDelegate(bool IsClick)
 	
 	if(IsClick)
 	{
-		UE_LOG(LogTemp,Log, TEXT("MouseClick"));
 		MouseClick();
 	}
 	else
 	{
-		UE_LOG(LogTemp,Log, TEXT("MouseClick Released"));
 		MouseClickReleased();
 	}
 }
@@ -56,7 +54,7 @@ void AAHPlayerPawn::BeginPlay()
 	}
 	IsAttacking = false;
 	
-
+	SetMannequinDestMeshComponent();
 	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::MouseDelegate);
 }
 
@@ -66,19 +64,16 @@ void AAHPlayerPawn::ChickenAttack_Implementation()
 
 void AAHPlayerPawn::SetChickenRotate(FRotator RotateRate)
 {
-	UE_LOG(LogTemp, Log, TEXT("[SetChickenRotate] %s"), *RotateRate.ToString());
 	ChickenBlade->SetActorRotation(OriginChickenRotation + RotateRate);
 }
 
 void AAHPlayerPawn::ChickenAttackFinish()
 {
-	UE_LOG(LogTemp, Log, TEXT("PlayerPawn : Chicken Attack Finish"));
 	IsAttacking = false;
 }
 
 void AAHPlayerPawn::PlayerMannequinDetect()
 {
-	UE_LOG(LogTemp, Log, TEXT("Mannequin is Detected"));
 	if(MannequinDetect.IsBound())
 	{
 		MannequinDetect.Execute();
@@ -94,15 +89,7 @@ USkeletalMeshComponent* AAHPlayerPawn::GetPlayerPawnSkeletalMesh()
 	return PlayerSkeletalMeshComponent;
 }
 
-UStaticMeshComponent* AAHPlayerPawn::GetMannequinDestMeshComponent()
+void AAHPlayerPawn::SetMannequinDestMeshComponent_Implementation()
 {
-	TArray<UActorComponent*> Components = this->GetComponentsByTag(UStaticMeshComponent::StaticClass(), FName(TEXT("MannequinDest")));
-	UStaticMeshComponent* MannequinDestMeshComponent = nullptr;
-	if(!Components.IsEmpty())
-	{
-		MannequinDestMeshComponent = Cast<UStaticMeshComponent>(Components[0]);
-	}
-	return MannequinDestMeshComponent;
 }
-
 

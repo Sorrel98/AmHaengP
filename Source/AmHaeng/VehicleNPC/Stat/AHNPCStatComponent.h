@@ -51,7 +51,9 @@ public:
 	void SetIDNumber(int32 InNumber);
 
 	//NPC info - Groggy Gage
-	void SetGroggyGage(int32 InGage);
+	void SetGroggyGage();
+	int32 GetGroggyGage(){ return GroggyGage; };
+	void DownGroggyGage();
 
 private:
 	//NPC info - Detail

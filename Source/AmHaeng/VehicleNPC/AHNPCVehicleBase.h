@@ -6,6 +6,7 @@
 #include "WheeledVehiclePawn.h"
 #include "AmHaeng/Interface/NPC/AHScannable.h"
 #include "AmHaeng/Interface/NPC/AHTargetNPC.h"
+#include "Stat/AHNPCStatComponent.h"
 #include "AHNPCVehicleBase.generated.h"
 
 /**
@@ -61,13 +62,18 @@ public:
 
 	//Chase 기믹
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetIsChased(uint8 IsChased){ bIsChased = IsChased; }
+	FORCEINLINE void SetIsChased(bool IsChased){ bIsChased = IsChased; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE uint8 GetIsChased(){ return bIsChased; }
+	FORCEINLINE bool GetIsChased(){ return bIsChased; }
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void FinishChased();
+
+	UFUNCTION(BlueprintCallable)
+	void GroggyGageDown();
+	UFUNCTION(BlueprintCallable)
+	int32 GetGroggyGage() { return NPCStat->GetGroggyGage(); };
 
 
 private:
@@ -95,7 +101,7 @@ private:
 
 	//Chase 기믹
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
-	uint8 bIsChased;
+	bool bIsChased;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;

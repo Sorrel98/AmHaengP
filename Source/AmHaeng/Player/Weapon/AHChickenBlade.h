@@ -26,9 +26,13 @@ public:
 	void ChickenAttackTimelineFinish();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenRotate(float XRotateRate, AAHChickenBlade* ChickenBlade);
-	//void ChickenBladeUp();
 	
 	void ChickenAttackSound();
+
+	//Attack
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ChickenAttackDetect();
+	
 	
 	ChickenAttackFinish ChickenAttackFinishDelegate;
 protected:
@@ -40,4 +44,7 @@ protected:
 private:
 	bool IsAttacking = false;
 	bool IsClicking = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
+	AAHNPCVehicleBase* ChaseNPC = nullptr;
 };

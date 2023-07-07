@@ -15,7 +15,10 @@ AAHChickenBlade::AAHChickenBlade()
 
 void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 {
-	
+	if(ChasedNPC)
+	{
+		ChaseNPC = ChasedNPC;
+	}
 }
 
 void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
@@ -24,9 +27,7 @@ void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* Chic
 
 void AAHChickenBlade::ChickenAttackTimelineFinish()
 {
-	UE_LOG(LogTemp, Log, TEXT("Chicken : Chicken Attack Finish"));
-	if(ChickenAttackFinishDelegate.IsBound())
-	{UE_LOG(LogTemp, Log, TEXT("Delegate to Pawn"));
+	if(ChickenAttackFinishDelegate.IsBound()){
 		ChickenAttackFinishDelegate.Execute();
 	}
 }
@@ -44,6 +45,11 @@ void AAHChickenBlade::BeginPlay()
 
 void AAHChickenBlade::ChickenAttackSound()
 {
+}
+
+void AAHChickenBlade::ChickenAttackDetect_Implementation()
+{
+	
 }
 
 /*void AAHChickenBlade::MouseClick()

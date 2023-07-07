@@ -17,10 +17,10 @@ AAHThrowMannequin::AAHThrowMannequin()
 
 void AAHThrowMannequin::Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 7'000'000.0f;
+	ThrowSpeed = 3'000'000.0f;
 	if(From && To)
 	{
-		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinDestMeshComponent();
+		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinTarget();
 		if(MannequinMeshComponent)
 		{
 			FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
