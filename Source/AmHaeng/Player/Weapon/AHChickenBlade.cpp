@@ -45,3 +45,15 @@ void AAHChickenBlade::BeginPlay()
 void AAHChickenBlade::ChickenAttackSound()
 {
 }
+
+/*void AAHChickenBlade::MouseClick()
+{
+	UE_LOG(LogTemp, Log, TEXT("[Chicken] MouseClick Function"));
+	ChickenBladeDown();
+}
+
+void AAHChickenBlade::MouseClickReleased()
+{
+	//아직은 사용하지 않을 예정.
+	//그냥 Mouse Click 하면 내려갔다 올라오는 걸로
+}*/

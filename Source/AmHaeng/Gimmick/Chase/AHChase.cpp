@@ -98,6 +98,7 @@ void AAHChase::ChaseTimerExpired()
 	//타이머 실행되면 코드 작성
 	UE_LOG(LogTemp, Log, TEXT("Chase 제한 시간이 끝났습니다."));
 	Cast<AAHGameMode>(GetWorld()->GetAuthGameMode())->SetGimmickMode(EGimmickMode::Patrol);
+	//todo : 여기서 스폰이 무한대로 되고 있음 왤까
 	ChasedNPCDestroy();
 }
 

@@ -17,15 +17,13 @@ AAHThrowMannequin::AAHThrowMannequin()
 
 void AAHThrowMannequin::Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 7'000'000.0f;
+	ThrowSpeed = 10'000.0f;
 	if(From && To)
 	{
 		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinDestMeshComponent();
 		if(MannequinMeshComponent)
 		{
 			FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
-			//FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
-			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple, 1.0f);
 			ThrowDirection.Normalize();
 			FVector Force = ThrowDirection * ThrowSpeed;
 			USkeletalMeshComponent* MannequinSkeletalMeshComponent = Cast<USkeletalMeshComponent>(Mannequin->GetSkeletalMeshComponent());
