@@ -16,25 +16,30 @@ class AMHAENG_API AAHPlayerPawn : public AWheeledVehiclePawn
 	GENERATED_BODY()
 
 public:
+	void MouseClick();
+	void MouseClickReleased();
+	void MouseDelegate(bool IsClick);
 	virtual void BeginPlay() override;
+
+	//Chicken Blade
+	UFUNCTION(BlueprintNativeEvent)
+	void ChickenAttack();
+	UFUNCTION(BlueprintCallable)
+	void SetChickenRotate(FRotator RotateRate);
+	UFUNCTION(BlueprintCallable)
+	void ChickenAttackFinish();
 	
 	FMannequinDetect MannequinDetect;
 
 	UFUNCTION(BlueprintCallable)
 	void PlayerMannequinDetect();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void GetWeaponFromBP();
-
 	UFUNCTION(BlueprintNativeEvent)
 	void GetSkeletalMesh();
 
 	USkeletalMeshComponent* GetPlayerPawnSkeletalMesh();
-
 	UStaticMeshComponent* GetMannequinDestMeshComponent();
 
-
-	USkeletalMeshComponent* GetWeaponComponent();
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	USkeletalMeshComponent* WeaponComponent;
@@ -45,4 +50,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	class USkeletalMeshComponent* PlayerSkeletalMeshComponent;
+
+	uint8 IsAttacking;
+
+	FRotator OriginChickenRotation;
 };

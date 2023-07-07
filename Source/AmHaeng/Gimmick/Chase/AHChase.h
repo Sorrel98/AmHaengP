@@ -43,5 +43,6 @@ private:
 	FTimerHandle ChaseTimerHandle;
 
 	TObjectPtr<AAHChickenBlade> ChickenBlade;
+	TSubclassOf<AAHChickenBlade> ChickenClass;
 	TArray<UActorComponent*> ChickenBladeComponentArray;
 };

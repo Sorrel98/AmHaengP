@@ -15,27 +15,26 @@ AAHChickenBlade::AAHChickenBlade()
 
 void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 {
-	AAHVehiclePlayerController::PlayerPawn->GetWeaponFromBP();
-	ChickenBladeSkeletalMeshComponent = AAHVehiclePlayerController::PlayerPawn->GetWeaponComponent();
-	if(ChickenBladeSkeletalMeshComponent)
-	{
-		ChickenBladeSetVisible(true);
+	
+}
+
+void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
+{
+}
+
+void AAHChickenBlade::ChickenAttackTimelineFinish()
+{
+	UE_LOG(LogTemp, Log, TEXT("Chicken : Chicken Attack Finish"));
+	if(ChickenAttackFinishDelegate.IsBound())
+	{UE_LOG(LogTemp, Log, TEXT("Delegate to Pawn"));
+		ChickenAttackFinishDelegate.Execute();
 	}
-	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHChickenBlade::MouseDelegate);
 }
 
-void AAHChickenBlade::GetChickenComponent_Implementation()
+void AAHChickenBlade::SetChickenRotate_Implementation(float XRotateRate, AAHChickenBlade* ChickenBlade)
 {
 }
 
-void AAHChickenBlade::ChickenBladeDown_Implementation()
-{
-}
-
-/*void AAHChickenBlade::ChickenBladeUp()
-{
-	UE_LOG(LogTemp, Log, TEXT("Up"));
-}*/
 
 // Called when the game starts or when spawned
 void AAHChickenBlade::BeginPlay()
@@ -46,35 +45,3 @@ void AAHChickenBlade::BeginPlay()
 void AAHChickenBlade::ChickenAttackSound()
 {
 }
-
-void AAHChickenBlade::ChickenBladeSetVisible(bool InVisible)
-{
-	if(ChickenBladeSkeletalMeshComponent)
-	{
-		ChickenBladeSkeletalMeshComponent->SetVisibility(InVisible);
-	}
-}
-
-void AAHChickenBlade::MouseDelegate(bool IsClick)
-{
-	if(IsClick)
-	{
-		MouseClick();
-	}
-	else
-	{
-		MouseClickReleased();
-	}
-}
-
-void AAHChickenBlade::MouseClick()
-{
-}
-
-void AAHChickenBlade::MouseClickReleased()
-{
-	//아직은 사용하지 않을 예정.
-	//그냥 Mouse Click 하면 내려갔다 올라오는 걸로
-}
-
-

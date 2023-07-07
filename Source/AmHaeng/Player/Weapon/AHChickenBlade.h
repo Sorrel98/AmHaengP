@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "AHChickenBlade.generated.h"
 
+DECLARE_DELEGATE(ChickenAttackFinish)
 UCLASS()
 class AMHAENG_API AAHChickenBlade : public AActor, public IAHWeapon
 {
@@ -19,34 +20,24 @@ public:
 
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
-	UFUNCTION(BlueprintNativeEvent)
-	void GetChickenComponent();
-	UFUNCTION(BlueprintNativeEvent)
-	void ChickenBladeDown();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ChickenAttackTimeline(AAHChickenBlade* ChickenBlade);
+	UFUNCTION(BlueprintCallable)
+	void ChickenAttackTimelineFinish();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetChickenRotate(float XRotateRate, AAHChickenBlade* ChickenBlade);
 	//void ChickenBladeUp();
 	
-
-	void MouseDelegate(bool IsClick);
-	void MouseClick();
-	void MouseClickReleased();
-	
-
 	void ChickenAttackSound();
-	void ChickenBladeSetVisible(bool InVisible);
-
 	
+	ChickenAttackFinish ChickenAttackFinishDelegate;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	
+
 private:
-	TArray<UActorComponent*> ChickenBladeComponentArray;
-	USkeletalMeshComponent* ChickenBladeSkeletalMeshComponent;
-
-	FTimerHandle ChickenDownTimer;
-	FTimerHandle ChickenDownCallbackTimer;
-	FTimerHandle ChickenUpTimer;
-
 	bool IsAttacking = false;
 	bool IsClicking = false;
 };

@@ -23,7 +23,7 @@ void AAHThrowMannequin::Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Man
 		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinDestMeshComponent();
 		if(MannequinMeshComponent)
 		{
-			FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation() + FVector{0.0f, 0.0f, 10.f};
+			FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
 			//FVector ThrowDirection = MannequinMeshComponent->GetComponentLocation() - From->GetActorLocation();
 			//DrawDebugLine(GetWorld(), From->GetActorLocation(), To->GetActorLocation(), FColor::Purple, 1.0f);
 			ThrowDirection.Normalize();

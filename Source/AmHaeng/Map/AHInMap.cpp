@@ -94,6 +94,5 @@ void AAHInMap::BeginPlay()
 void AAHInMap::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 

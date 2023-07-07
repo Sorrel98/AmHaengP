@@ -13,6 +13,15 @@
 // Sets default values
 AAHChase::AAHChase()
 {
+	static ConstructorHelpers::FClassFinder<AAHChickenBlade> ChickenBladeClassRef(
+	TEXT(
+		"/Script/Engine.Blueprint'/Game/Player/Blade/ChickenBladeActor.ChickenBladeActor_C'"));
+	if (ChickenBladeClassRef.Class)
+	{
+		{
+			ChickenClass = ChickenBladeClassRef.Class;
+		}
+	}
 }
 
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
@@ -62,7 +71,7 @@ void AAHChase::SetWeaponClass()
 {
 	if(GetWorld())
 	{
-		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(AAHChickenBlade::StaticClass());
+		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenClass);
 	}
 	ChickenBlade->InitChickenBlade(ChasedNPC);
 }
@@ -76,7 +85,7 @@ void AAHChase::StartChaseTimer()
 {
 	//Timer 측정 -> 몇초로 할까.. 일단 30초로 하자
 	//30초 뒤에 End
-	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 1.f, false);
+	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 30.f, false);
 }
 
 void AAHChase::EndChaseTimer()

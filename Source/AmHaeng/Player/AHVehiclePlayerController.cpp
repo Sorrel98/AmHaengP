@@ -241,7 +241,6 @@ void AAHVehiclePlayerController::PatrolMouseClickReleased()
 
 void AAHVehiclePlayerController::ChaseMouseClick()
 {
-	UE_LOG(LogTemp, Log, TEXT("Chase Mode : Mouse Click"));
 	if(ChaseMouseClickDelegate.IsBound())
 	{
 		ChaseMouseClickDelegate.Broadcast(true);
@@ -251,7 +250,6 @@ void AAHVehiclePlayerController::ChaseMouseClick()
 
 void AAHVehiclePlayerController::ChaseMouseClickReleased()
 {
-	UE_LOG(LogTemp, Log, TEXT("Chase Mode : Mouse Click Released"));
 	if(ChaseMouseClickDelegate.IsBound())
 	{
 		ChaseMouseClickDelegate.Broadcast(false);

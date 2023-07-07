@@ -2,16 +2,48 @@
 
 
 #include "AHPlayerPawn.h"
+
+#include "AHVehiclePlayerController.h"
+#include "AmHaeng/Game/AHGameMode.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Weapon/AHChickenBlade.h"
+
+void AAHPlayerPawn::MouseClick()
+{
+	if(!IsAttacking)
+	{
+		IsAttacking = true;
+		ChickenAttack();
+	}
+}
+
+void AAHPlayerPawn::MouseClickReleased()
+{
+}
+
+void AAHPlayerPawn::MouseDelegate(bool IsClick)
+{
+	
+	if(IsClick)
+	{
+		UE_LOG(LogTemp,Log, TEXT("MouseClick"));
+		MouseClick();
+	}
+	else
+	{
+		UE_LOG(LogTemp,Log, TEXT("MouseClick Released"));
+		MouseClickReleased();
+	}
+}
 
 void AAHPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if(ChickenBladeClass)
 	{
 		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenBladeClass);
+		ChickenBlade->ChickenAttackFinishDelegate.BindUObject(this, &AAHPlayerPawn::ChickenAttackFinish);
 		if(ChickenBlade)
 		{
 			GetSkeletalMesh();
@@ -19,8 +51,29 @@ void AAHPlayerPawn::BeginPlay()
 			{
 				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
 			}
+			OriginChickenRotation = ChickenBlade->GetActorRotation();
 		}
 	}
+	IsAttacking = false;
+	
+
+	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::MouseDelegate);
+}
+
+void AAHPlayerPawn::ChickenAttack_Implementation()
+{
+}
+
+void AAHPlayerPawn::SetChickenRotate(FRotator RotateRate)
+{
+	UE_LOG(LogTemp, Log, TEXT("[SetChickenRotate] %s"), *RotateRate.ToString());
+	ChickenBlade->SetActorRotation(OriginChickenRotation + RotateRate);
+}
+
+void AAHPlayerPawn::ChickenAttackFinish()
+{
+	UE_LOG(LogTemp, Log, TEXT("PlayerPawn : Chicken Attack Finish"));
+	IsAttacking = false;
 }
 
 void AAHPlayerPawn::PlayerMannequinDetect()
@@ -30,10 +83,6 @@ void AAHPlayerPawn::PlayerMannequinDetect()
 	{
 		MannequinDetect.Execute();
 	}
-}
-
-void AAHPlayerPawn::GetWeaponFromBP_Implementation()
-{
 }
 
 void AAHPlayerPawn::GetSkeletalMesh_Implementation()
@@ -56,8 +105,4 @@ UStaticMeshComponent* AAHPlayerPawn::GetMannequinDestMeshComponent()
 	return MannequinDestMeshComponent;
 }
 
-USkeletalMeshComponent* AAHPlayerPawn::GetWeaponComponent()
-{
-	return WeaponComponent;
-}
 
