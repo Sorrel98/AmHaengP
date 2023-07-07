@@ -17,7 +17,7 @@ AAHThrowMannequin::AAHThrowMannequin()
 
 void AAHThrowMannequin::Throw(AActor* From, AAHPlayerPawn* To, AAHMannequin* Mannequin)
 {
-	ThrowSpeed = 10'000.0f;
+	ThrowSpeed = 7'000'000.0f;
 	if(From && To)
 	{
 		UStaticMeshComponent* MannequinMeshComponent = To->GetMannequinDestMeshComponent();
