@@ -72,7 +72,7 @@ void AAHBeforeChase::PlayChaseStartWidget()
 
 void AAHBeforeChase::FinishChaseStartWidget()
 {
-	UE_LOG(LogTemp, Log, TEXT("BeforeCHase CLass에서 전달받았습니다"));
+	UE_LOG(LogTemp, Log, TEXT("ReStart"));
 	SetPause(false);
 	//Throw Mannequin
 	ThrowMannequin();

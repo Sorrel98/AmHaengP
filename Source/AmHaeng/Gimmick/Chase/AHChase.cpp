@@ -5,7 +5,6 @@
 
 #include "AmHaeng/Game/AHGameMode.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
-#include "AmHaeng/Player/Weapon/AHChickenBlade.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "GameFramework/Actor.h"
 #include "NPCTeleport/AHNPCTeleport.h"
@@ -13,22 +12,15 @@
 // Sets default values
 AAHChase::AAHChase()
 {
-	/*static ConstructorHelpers::FClassFinder<AAHChickenBlade> ChickenBladeClassRef(
-	TEXT(
-		"/Script/Engine.Blueprint'/Game/Player/Blade/ChickenBladeActor.ChickenBladeActor_C'"));
-	if (ChickenBladeClassRef.Class)
-	{
-		{
-			ChickenClass = ChickenBladeClassRef.Class;
-		}
-	}*/
 }
 
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 {
 	Initialize(InNPC);
+	//Chicken Blade 셋팅
+	AAHVehiclePlayerController::PlayerPawn->GetChickenBlade()->InitChickenBlade(InNPC);
 	//Teleport하고
-	NPCTeleport();
+	//NPCTeleport();
 	//NPC 상태값 셋팅
 	SetNPCState();
 	//IMC Chase 모드로 변경
@@ -65,21 +57,13 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	StartChaseTimer();
 }
 
-/*
-void AAHChase::SetWeaponClass()
-{
-	if(GetWorld())
-	{
-		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenClass);
-	}
-	ChickenBlade->SetChickenVisible(false);
-	ChickenBlade->InitChickenBlade(ChasedNPC);
-}
-*/
-
 void AAHChase::SetIMC(EGimmickMode InGimmickMode)
 {
-	AAHGameMode::PlayerController->SetChaseIMC();
+	//UE_LOG(LogTemp, Log, TEXT("AHChase : Set IMC"));
+	if(InGimmickMode == EGimmickMode::Chase)
+	{
+		AAHGameMode::PlayerController->SetChaseIMC();
+	}
 }
 
 void AAHChase::StartChaseTimer()
@@ -99,7 +83,6 @@ void AAHChase::ChaseTimerExpired()
 	//타이머 실행되면 코드 작성
 	UE_LOG(LogTemp, Log, TEXT("Chase 제한 시간이 끝났습니다."));
 	Cast<AAHGameMode>(GetWorld()->GetAuthGameMode())->SetGimmickMode(EGimmickMode::Patrol);
-	//todo : 여기서 스폰이 무한대로 되고 있음 왤까
 	ChasedNPCDestroy();
 }
 

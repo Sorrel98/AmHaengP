@@ -292,7 +292,9 @@ void AAHGameMode::CPLoadingFinished()
 			SetGimmickMode(EGimmickMode::Chase);
 			//play pause
 			PlayPause(true);
+			UE_LOG(LogTemp, Log, TEXT("Pause"));
 			//Input 막고
+			PlayerController->FlushPressedKeys();
 			PlayerController->DisableInput(PlayerController);
 			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);
 		}

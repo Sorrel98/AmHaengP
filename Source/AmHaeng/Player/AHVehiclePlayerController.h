@@ -57,6 +57,7 @@ public:
 	//Input mapping
 	void PatrolMouseClick();
 	void PatrolMouseClickReleased();
+	UFUNCTION()
 	void ChaseMouseClick();
 	void ChaseMouseClickReleased();
 
@@ -105,10 +106,4 @@ private:
 	FVector MousePosition;
 
 	AActor* NowHitActor;
-
-	//Input Mappint Context
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input , meta=(AllowPrivateAccess = true))
-	TObjectPtr<UInputMappingContext> ChaseIMC;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input , meta=(AllowPrivateAccess = true))
-	TObjectPtr<UInputMappingContext> PatrolIMC;
 };

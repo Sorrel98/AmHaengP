@@ -3,12 +3,15 @@
 
 #include "AHChickenBlade.h"
 
+#include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 // Sets default values
 AAHChickenBlade::AAHChickenBlade()
 {
 	UE_LOG(LogTemp, Log, TEXT("Chicken Blade가 생성되었습니다"));
+	
 }
 
 void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
@@ -16,6 +19,7 @@ void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 	if(ChasedNPC)
 	{
 		ChaseNPC = ChasedNPC;
+		AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHChickenBlade::MouseClickDelegate);
 	}
 }
 
@@ -37,33 +41,20 @@ void AAHChickenBlade::SetChickenRotate_Implementation(float XRotateRate, AAHChic
 
 void AAHChickenBlade::SetChickenVisible(bool visible)
 {
-	if(!visible)
-	{
-		this->SetHidden(true);
-	}
-	else
-	{
-		this->SetHidden(false);
-	}
+	this->SetHidden(!visible);
 }
 
 void AAHChickenBlade::ChickenAttackSound()
 {
 }
 
+void AAHChickenBlade::MouseClickDelegate(bool IsClick)
+{
+	UE_LOG(LogTemp, Log, TEXT("Chicken Blade : Mouse Delegate %d"), IsClick);
+	IsClicking = IsClick;
+}
+
 void AAHChickenBlade::ChickenAttackDetect_Implementation()
 {
-	
 }
 
-/*void AAHChickenBlade::MouseClick()
-{
-	UE_LOG(LogTemp, Log, TEXT("[Chicken] MouseClick Function"));
-	ChickenBladeDown();
-}
-
-void AAHChickenBlade::MouseClickReleased()
-{
-	//아직은 사용하지 않을 예정.
-	//그냥 Mouse Click 하면 내려갔다 올라오는 걸로
-}*/

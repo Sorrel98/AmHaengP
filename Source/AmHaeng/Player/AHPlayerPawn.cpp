@@ -26,6 +26,7 @@ void AAHPlayerPawn::MouseDelegate(bool IsClick)
 	
 	if(IsClick)
 	{
+		UE_LOG(LogTemp,Log, TEXT("[Chase] Mouse Click"));
 		MouseClick();
 	}
 	else
@@ -101,6 +102,7 @@ void AAHPlayerPawn::SetChickenVisible(bool Invisible)
 void AAHPlayerPawn::SetInputEnable()
 {
 	AAHGameMode::PlayerController->EnableInput(AAHGameMode::PlayerController);
+	this->EnableInput(AAHGameMode::PlayerController);
 }
 
 void AAHPlayerPawn::SetMannequinDestMeshComponent_Implementation()

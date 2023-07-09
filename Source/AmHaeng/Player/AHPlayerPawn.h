@@ -50,6 +50,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInputEnable();
 
+	class AAHChickenBlade* GetChickenBlade(){ return ChickenBlade; }
+
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	USkeletalMeshComponent* WeaponComponent;

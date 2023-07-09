@@ -195,6 +195,7 @@ void AAHVehiclePlayerController::SetupInputComponent()
 
 void AAHVehiclePlayerController::PatrolMouseClick()
 {
+	UE_LOG(LogTemp, Log, TEXT("Patrol Click"));
 	//add Delegate and Start Loading UI
 	if (IsNPCScanning)
 	{
@@ -256,6 +257,7 @@ void AAHVehiclePlayerController::ChaseMouseClickReleased()
 	}
 }
 
+
 void AAHVehiclePlayerController::SetPatrolIMC_Implementation()
 {
 }
@@ -263,21 +265,4 @@ void AAHVehiclePlayerController::SetPatrolIMC_Implementation()
 void AAHVehiclePlayerController::SetChaseIMC_Implementation()
 {
 }
-
-/*void AAHVehiclePlayerController::SetIMC(EGimmickMode NowGimmickMode)
-{
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
-	{
-		Subsystem->ClearAllMappings();
-		if(NowGimmickMode == EGimmickMode::Chase)
-		{
-			Subsystem->AddMappingContext(ChaseIMC, 0);
-		}
-		else if(NowGimmickMode == EGimmickMode::Patrol)
-		{
-			Subsystem->AddMappingContext(PatrolIMC, 0);
-		}
-	}
-	
-}*/
 

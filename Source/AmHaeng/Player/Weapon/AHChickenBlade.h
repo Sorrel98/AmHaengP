@@ -30,6 +30,9 @@ public:
 	void SetChickenVisible(bool visible);
 	
 	void ChickenAttackSound();
+	void MouseClickDelegate(bool IsClick);
+	UFUNCTION(BlueprintCallable)
+	bool GetIsClickng(){return IsClicking;}
 
 	//Attack
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -44,7 +47,9 @@ protected:
 	
 
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
 	bool IsAttacking = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
 	bool IsClicking = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
