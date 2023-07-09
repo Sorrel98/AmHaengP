@@ -9,4 +9,5 @@ void UAHScreenCrashWidget::PlayAnims_Implementation()
 
 void UAHScreenCrashWidget::FinishAnims()
 {
+	UE_LOG(LogTemp, Log, TEXT("Finish Anims"));
 }

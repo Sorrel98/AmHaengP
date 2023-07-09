@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SplineComponent.h"
 #include "GameFramework/Actor.h"
 #include "AHMannequin.generated.h"
 
@@ -12,17 +13,18 @@ class AMHAENG_API AAHMannequin : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
-	AAHMannequin();
-
-	FORCEINLINE USkeletalMeshComponent* GetSkeletalMeshComponent(){ return SkeletalMeshComponent; }
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetSplineRoute(FVector Start, FVector End);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Throw();
+	UFUNCTION(BlueprintCallable)
+	class AAHSpline* GetSplineActor();
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* SkeletalMeshComponent;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USplineComponent* Spline;
 };

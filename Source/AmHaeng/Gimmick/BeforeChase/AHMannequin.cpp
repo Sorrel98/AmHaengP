@@ -2,21 +2,28 @@
 
 
 #include "AHMannequin.h"
+
+#include "AmHaeng/Game/AHGameMode.h"
 #include "Components/SkeletalMeshComponent.h"
 
-// Sets default values
-AAHMannequin::AAHMannequin()
+void AAHMannequin::SetSplineRoute_Implementation(FVector Start, FVector End)
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
-	
-	
 }
 
-// Called when the game starts or when spawned
-void AAHMannequin::BeginPlay()
+void AAHMannequin::Throw_Implementation()
 {
-	Super::BeginPlay();
-	
+}
+
+AAHSpline* AAHMannequin::GetSplineActor()
+{
+	if(AAHGameMode::SplineActor)
+	{
+		return AAHGameMode::SplineActor;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("SplineActor is null"));
+		return nullptr;
+	}
 }
 

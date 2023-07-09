@@ -23,7 +23,6 @@ public:
 	void CameraShake();
 
 	void PlayCrashWidget();
-	void SetInputMode();
 
 	FStartChaseDelegate StartChaseDelegate;
 
@@ -41,11 +40,9 @@ private:
 
 	AAHVehiclePlayerController* PC;
 	AAHNPCVehicleBase* TargetNPC;
-	class AAHPlayerPawn* PlayerPawn;
-	
 	//Ragdoll Mannequin
 	class AAHMannequin* Mannequin;
-	class AAHThrowMannequin* ThrowManager;
+	//class AAHThrowMannequin* ThrowManager;
 
 	//CameraShake
 	UPROPERTY(EditAnywhere)

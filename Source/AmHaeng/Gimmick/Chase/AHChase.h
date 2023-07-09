@@ -23,7 +23,7 @@ public:
 	void SetNPCMaxEngineTorque();
 	void SetNPCCollisionAndMass();
 	void Initialize(AAHNPCVehicleBase* InNPC);
-	void SetWeaponClass();
+	//void SetWeaponClass();
 	void SetIMC(EGimmickMode InGimmickMode);
 	
 	void ChasedNPCDestroy();

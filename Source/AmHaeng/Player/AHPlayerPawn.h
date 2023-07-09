@@ -44,6 +44,12 @@ public:
 
 	UStaticMeshComponent* GetMannequinTarget(){return MannequinTarget;}
 
+	UFUNCTION(BlueprintCallable)
+	void SetChickenVisible(bool Invisible);
+
+	UFUNCTION(BlueprintCallable)
+	void SetInputEnable();
+
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	USkeletalMeshComponent* WeaponComponent;

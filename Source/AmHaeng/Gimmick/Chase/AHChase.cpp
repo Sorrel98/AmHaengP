@@ -13,7 +13,7 @@
 // Sets default values
 AAHChase::AAHChase()
 {
-	static ConstructorHelpers::FClassFinder<AAHChickenBlade> ChickenBladeClassRef(
+	/*static ConstructorHelpers::FClassFinder<AAHChickenBlade> ChickenBladeClassRef(
 	TEXT(
 		"/Script/Engine.Blueprint'/Game/Player/Blade/ChickenBladeActor.ChickenBladeActor_C'"));
 	if (ChickenBladeClassRef.Class)
@@ -21,18 +21,16 @@ AAHChase::AAHChase()
 		{
 			ChickenClass = ChickenBladeClassRef.Class;
 		}
-	}
+	}*/
 }
 
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 {
 	Initialize(InNPC);
 	//Teleport하고
-	//NPCTeleport();
+	NPCTeleport();
 	//NPC 상태값 셋팅
 	SetNPCState();
-	//Chicken Blade 셋팅
-	SetWeaponClass();
 	//IMC Chase 모드로 변경
 	SetIMC(EGimmickMode::Chase);
 }
@@ -67,14 +65,17 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	StartChaseTimer();
 }
 
+/*
 void AAHChase::SetWeaponClass()
 {
 	if(GetWorld())
 	{
 		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenClass);
 	}
+	ChickenBlade->SetChickenVisible(false);
 	ChickenBlade->InitChickenBlade(ChasedNPC);
 }
+*/
 
 void AAHChase::SetIMC(EGimmickMode InGimmickMode)
 {

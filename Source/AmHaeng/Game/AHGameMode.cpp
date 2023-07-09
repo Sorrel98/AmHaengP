@@ -4,6 +4,7 @@
 //#include "Game/AHGameMode.h"
 #include "AHGameMode.h"
 #include "AmHaeng/Gimmick/AHChaseGimmickManager.h"
+#include "AmHaeng/Gimmick/BeforeChase/AHSpline.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -14,6 +15,7 @@
 
 EGimmickMode AAHGameMode::NowGimmickMode = EGimmickMode::Patrol;
 AAHVehiclePlayerController* AAHGameMode::PlayerController = nullptr;
+AAHSpline* AAHGameMode::SplineActor = nullptr;
 AAHGameMode::AAHGameMode()
 {
 	static ConstructorHelpers::FClassFinder<APawn> DefaultPawnClassRef(TEXT(
@@ -128,7 +130,7 @@ void AAHGameMode::BeginPlay()
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
 
-	
+	MakeSpline();
 }
 
 //StartButton Widget Viewport에 띄우기
@@ -312,9 +314,6 @@ const EGimmickMode AAHGameMode::GetGimmickMode()
 	return NowGimmickMode;
 }
 
-/*void AAHGameMode::CameraShake()
-{
-}*/
 
 //Delegate 오면 실행될 함수 (spawning 되고 있는지 mode가 알기 위하여 state 변경)
 void AAHGameMode::SetNPCSpawningState(uint8 NowState)
@@ -332,4 +331,35 @@ void AAHGameMode::InitSpawnNPC()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Spawner is invalid"));
 	}
+}
+
+void AAHGameMode::MakeSpline()
+{
+	if (GetOuter() == nullptr)
+	{
+		return;
+	}
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
+		return;
+	}
+	FSoftObjectPath SplineRef(
+		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/AH_BP_MannequinSpline.AH_BP_MannequinSpline'"));
+	if (!SplineRef.IsValid())
+	{
+		return;
+	}
+	UBlueprint* SplineBP = Cast<UBlueprint>(SplineRef.TryLoad());
+	if (SplineBP == nullptr)
+	{
+		return;
+	}
+	TSubclassOf<UObject> SplineClass = SplineBP->GeneratedClass;
+	if(SplineClass)
+	{
+		SplineActor = World->SpawnActor<AAHSpline>(SplineClass);
+	}
+	
 }

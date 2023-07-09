@@ -50,6 +50,7 @@ void AAHPlayerPawn::BeginPlay()
 				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
 			}
 			OriginChickenRotation = ChickenBlade->GetActorRotation();
+			ChickenBlade->SetChickenVisible(false);
 		}
 	}
 	IsAttacking = false;
@@ -87,6 +88,19 @@ void AAHPlayerPawn::GetSkeletalMesh_Implementation()
 USkeletalMeshComponent* AAHPlayerPawn::GetPlayerPawnSkeletalMesh()
 {
 	return PlayerSkeletalMeshComponent;
+}
+
+void AAHPlayerPawn::SetChickenVisible(bool Invisible)
+{
+	if(ChickenBlade)
+	{
+		ChickenBlade->SetChickenVisible(Invisible);
+	}
+}
+
+void AAHPlayerPawn::SetInputEnable()
+{
+	AAHGameMode::PlayerController->EnableInput(AAHGameMode::PlayerController);
 }
 
 void AAHPlayerPawn::SetMannequinDestMeshComponent_Implementation()

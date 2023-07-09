@@ -26,6 +26,8 @@ public:
 	void ChickenAttackTimelineFinish();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenRotate(float XRotateRate, AAHChickenBlade* ChickenBlade);
+
+	void SetChickenVisible(bool visible);
 	
 	void ChickenAttackSound();
 
@@ -36,8 +38,8 @@ public:
 	
 	ChickenAttackFinish ChickenAttackFinishDelegate;
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	/*// Called when the game starts or when spawned
+	virtual void BeginPlay() override;*/
 
 	
 

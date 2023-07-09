@@ -3,9 +3,7 @@
 
 #include "AHBeforeChase.h"
 
-#include "AmHaeng/Game/AHGameMode.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHMannequin.h"
-#include "AmHaeng/Gimmick/BeforeChase/AHThrowMannequin.h"
 #include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -45,7 +43,7 @@ void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPC
 	AAHVehiclePlayerController::PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
 	PC = InPC;
 	TargetNPC = InTargetNPC;
-	ThrowManager = NewObject<AAHThrowMannequin>();
+	//ThrowManager = NewObject<AAHThrowMannequin>();
 	if(ChaseStartWidgetClass)
 	{
 		PlayChaseStartWidget();
@@ -121,7 +119,26 @@ void AAHBeforeChase::RagdollMannequinSpawn()
 void AAHBeforeChase::ThrowMannequin()
 {
 	RagdollMannequinSpawn();
-	ThrowManager->Throw(TargetNPC, AAHVehiclePlayerController::PlayerPawn, Mannequin);
+	
+	//여기서 마네킹 던집니다.
+	if(TargetNPC && AAHVehiclePlayerController::PlayerPawn && Mannequin)
+	{
+		Mannequin->SetSplineRoute(TargetNPC->GetActorLocation(), AAHVehiclePlayerController::PlayerPawn->GetMannequinTarget()->GetComponentLocation());
+	}
+	if(!TargetNPC)
+	{
+		UE_LOG(LogTemp, Log, TEXT("!TargetNPC"));
+	}
+	if(!AAHVehiclePlayerController::PlayerPawn)
+	{
+		UE_LOG(LogTemp, Log, TEXT("!PlayerPawn"));
+	}
+	if(!Mannequin)
+	{
+		UE_LOG(LogTemp, Log, TEXT("!Mannequin"));
+	}
+	Mannequin->Throw();
+	
 	//하자마자 Delegate로 Chase 시작 알림
 	if(StartChaseDelegate.IsBound())
 	{
@@ -133,9 +150,6 @@ void AAHBeforeChase::CameraShake()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Camera Shake Start"));
 	PC->ClientStartCameraShake(CameraShakeClass, 1000000.0);
-	// 이게 여기 있는 게 맞나
-	FTimerHandle Timer;
-	GetWorldTimerManager().SetTimer(Timer, this, &AAHBeforeChase::SetInputMode, 1.0f, false);
 }
 
 void AAHBeforeChase::PlayCrashWidget()
@@ -151,9 +165,4 @@ void AAHBeforeChase::PlayCrashWidget()
 		}
 	}
 	
-}
-
-void AAHBeforeChase::SetInputMode()
-{
-	PC->EnableInput(PC);
 }

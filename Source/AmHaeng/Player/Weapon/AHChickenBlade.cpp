@@ -3,8 +3,6 @@
 
 #include "AHChickenBlade.h"
 
-#include "AmHaeng/Player/AHPlayerPawn.h"
-#include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 // Sets default values
@@ -37,10 +35,16 @@ void AAHChickenBlade::SetChickenRotate_Implementation(float XRotateRate, AAHChic
 }
 
 
-// Called when the game starts or when spawned
-void AAHChickenBlade::BeginPlay()
+void AAHChickenBlade::SetChickenVisible(bool visible)
 {
-	Super::BeginPlay();
+	if(!visible)
+	{
+		this->SetHidden(true);
+	}
+	else
+	{
+		this->SetHidden(false);
+	}
 }
 
 void AAHChickenBlade::ChickenAttackSound()
