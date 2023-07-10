@@ -66,7 +66,7 @@ void AAHPlayerPawn::ChickenAttack_Implementation()
 
 void AAHPlayerPawn::SetChickenRotate(FRotator RotateRate)
 {
-	ChickenBlade->SetActorRotation(OriginChickenRotation + RotateRate);
+	ChickenBlade->SetActorRelativeRotation(RotateRate);
 }
 
 void AAHPlayerPawn::ChickenAttackFinish()
