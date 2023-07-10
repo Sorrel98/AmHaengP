@@ -41,6 +41,9 @@ public:
 	void SetBadInfoWidgetData(int32 NPCID);
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
 
+	//Set HP Widget
+	void SetHPWidget();
+	
 	//Click Tooltip
 	void AHSetTooltipVisible(bool visible) const;
 
@@ -73,7 +76,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GroggyGageDown();
 	UFUNCTION(BlueprintCallable)
-	int32 GetGroggyGage() { return NPCStat->GetGroggyGage(); };
+	int32 GetGroggyGage() { return NPCStat->GetNPCHP(); };
 
 
 private:
@@ -90,6 +93,12 @@ private:
 
 	TObjectPtr<class UAHNPCInfoWidget> NPCInfoWidget;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	TObjectPtr<class UWidgetComponent> NPCHPWidgetComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	class UAHNPCHPWidget* NPCHPWidget;
 	//Other NPC Detection
 	float DetectionDistance;
 

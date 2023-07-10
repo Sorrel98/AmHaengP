@@ -19,7 +19,7 @@ void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 	if(ChasedNPC)
 	{
 		ChaseNPC = ChasedNPC;
-		AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHChickenBlade::MouseClickDelegate);
+		PlayerPawn = AAHVehiclePlayerController::PlayerPawn;
 	}
 }
 
@@ -34,9 +34,10 @@ void AAHChickenBlade::ChickenAttackTimelineFinish()
 	}
 }
 
-void AAHChickenBlade::SetChickenRotate_Implementation(float XRotateRate, AAHChickenBlade* ChickenBlade)
+void AAHChickenBlade::SetChickenBladeCapsuleComponent_Implementation()
 {
 }
+
 
 
 void AAHChickenBlade::SetChickenVisible(bool visible)
@@ -51,7 +52,6 @@ void AAHChickenBlade::ChickenAttackSound()
 void AAHChickenBlade::MouseClickDelegate(bool IsClick)
 {
 	UE_LOG(LogTemp, Log, TEXT("Chicken Blade : Mouse Delegate %d"), IsClick);
-	IsClicking = IsClick;
 }
 
 void AAHChickenBlade::ChickenAttackDetect_Implementation()

@@ -33,7 +33,7 @@ void UAHNPCStatComponent::StatsSetting(int32 InIDNumber, uint8 IsTarget)
 	SetGoodSpeed();
 
 	//NPC Groggy Setting
-	SetGroggyGage();
+	SetNPCHP();
 
 	//NPCSwaySetting
 	SetGoodSway();
@@ -132,12 +132,12 @@ void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
 	NPCIDNumber = InNumber;
 }
 
-void UAHNPCStatComponent::SetGroggyGage()
+void UAHNPCStatComponent::SetNPCHP()
 {
-	GroggyGage = 100;
+	NPCHP = 100;
 }
 
-void UAHNPCStatComponent::DownGroggyGage()
+void UAHNPCStatComponent::NPCHPDown()
 {
-	GroggyGage -= 10;
+	NPCHP -= 10;
 }

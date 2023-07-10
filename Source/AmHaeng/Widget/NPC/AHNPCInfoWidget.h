@@ -17,7 +17,7 @@ class AMHAENG_API UAHNPCInfoWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
+	//UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
 
 public:
 	//Set Stats

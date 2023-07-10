@@ -4,9 +4,9 @@
 #include "AHNPCInfoWidget.h"
 #include "Components/VerticalBox.h"
 
-UAHNPCInfoWidget::UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+/*UAHNPCInfoWidget::UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-}
+}*/
 
 void UAHNPCInfoWidget::SetTooltipVisible(int8 visible)
 {

@@ -66,7 +66,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetPatrolIMC();
 	
-	//const uint8 GetIsNPCTarget();
+	UFUNCTION(BlueprintCallable)
+	AAHPlayerPawn* GetPlayerPawn(){ return PlayerPawn; }
 	
 	//Delegate
 	FPatrolMouseClickDelegate PatrolMouseClickDelegate;

@@ -19,6 +19,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
 	SetInfoWidget();
+	SetHPWidget();
 
 	DetectionDistance = 1000.f;
 	bIsAnotherNPCForward = false;
@@ -83,6 +84,21 @@ void AAHNPCVehicleBase::SetInfoWidget()
 	}
 }
 
+void AAHNPCVehicleBase::SetHPWidget()
+{
+	static ConstructorHelpers::FClassFinder<UUserWidget> NPCHPWidgetRef(
+		TEXT("/Game/VehicleNPC/Widget/WBP_NPCHP.WBP_NPCHP_C"));
+	if(NPCHPWidgetRef.Succeeded())
+	{
+		NPCHPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPWidgetComponent"));
+		NPCHPWidgetComponent->SetWidgetClass(NPCHPWidgetRef.Class);
+		NPCHPWidgetComponent->SetupAttachment(GetRootComponent());
+		NPCHPWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 180.f));
+		NPCHPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+		NPCHPWidgetComponent->SetDrawSize(FVector2d(150.f, 50.f));
+	}
+}
+
 void AAHNPCVehicleBase::SetGoodInfoWidgetData(int32 NPCID)
 {
 	NPCStat->StatsSetting(NPCID, bIsTargetNPC);
@@ -134,6 +150,8 @@ void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
 		NPCInfoWidgetComponent->SetVisibility(visible);
 	}
 }
+
+
 
 void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible) const
 {
@@ -193,7 +211,9 @@ void AAHNPCVehicleBase::GroggyGageDown()
 {
 	if(NPCStat)
 	{
-		NPCStat->DownGroggyGage();
+		UE_LOG(LogTemp, Log, TEXT("Groggy Gage Down"));
+		NPCStat->NPCHPDown();
+		UE_LOG(LogTemp, Log, TEXT("Groggy Gage : %d"), NPCStat->GetNPCHP());
 	}
 }
 

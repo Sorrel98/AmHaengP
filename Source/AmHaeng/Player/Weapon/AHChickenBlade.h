@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AmHaeng/Interface/Player/AHWeapon.h"
+#include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "GameFramework/Actor.h"
 #include "AHChickenBlade.generated.h"
@@ -24,15 +25,16 @@ public:
 	void ChickenAttackTimeline(AAHChickenBlade* ChickenBlade);
 	UFUNCTION(BlueprintCallable)
 	void ChickenAttackTimelineFinish();
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SetChickenRotate(float XRotateRate, AAHChickenBlade* ChickenBlade);
+	void SetChickenBladeCapsuleComponent();
+
+	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;};
 
 	void SetChickenVisible(bool visible);
 	
 	void ChickenAttackSound();
 	void MouseClickDelegate(bool IsClick);
-	UFUNCTION(BlueprintCallable)
-	bool GetIsClickng(){return IsClicking;}
 
 	//Attack
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -40,18 +42,17 @@ public:
 	
 	
 	ChickenAttackFinish ChickenAttackFinishDelegate;
-protected:
-	/*// Called when the game starts or when spawned
-	virtual void BeginPlay() override;*/
 
 	
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	bool IsAttacking = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	bool IsClicking = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
 	AAHNPCVehicleBase* ChaseNPC = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
+	AAHPlayerPawn* PlayerPawn = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
+	UCapsuleComponent* CapsuleComponent = nullptr;
 };

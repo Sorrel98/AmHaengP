@@ -51,9 +51,9 @@ public:
 	void SetIDNumber(int32 InNumber);
 
 	//NPC info - Groggy Gage
-	void SetGroggyGage();
-	int32 GetGroggyGage(){ return GroggyGage; };
-	void DownGroggyGage();
+	void SetNPCHP();
+	int32 GetNPCHP(){ return NPCHP; };
+	void NPCHPDown();
 
 private:
 	//NPC info - Detail
@@ -72,5 +72,5 @@ private:
 
 	//0 ~ 100
 	UPROPERTY()
-	int32 GroggyGage;
+	int32 NPCHP;
 };

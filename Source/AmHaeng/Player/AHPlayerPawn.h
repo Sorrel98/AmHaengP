@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WheeledVehiclePawn.h"
+#include "Components/CapsuleComponent.h"
 #include "AHPlayerPawn.generated.h"
 
 /**
@@ -16,14 +17,18 @@ class AMHAENG_API AAHPlayerPawn : public AWheeledVehiclePawn
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintNativeEvent)
 	void MouseClick();
 	void MouseClickReleased();
 	void MouseDelegate(bool IsClick);
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Brake();
+
 	//Chicken Blade
-	UFUNCTION(BlueprintNativeEvent)
-	void ChickenAttack();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ChickenRotation();
 	UFUNCTION(BlueprintCallable)
 	void SetChickenRotate(FRotator RotateRate);
 	UFUNCTION(BlueprintCallable)
@@ -44,15 +49,19 @@ public:
 
 	UStaticMeshComponent* GetMannequinTarget(){return MannequinTarget;}
 
+
+	//Chicken Actor
 	UFUNCTION(BlueprintCallable)
 	void SetChickenVisible(bool Invisible);
-
+	
 	UFUNCTION(BlueprintCallable)
 	void SetInputEnable();
-
+	
 	class AAHChickenBlade* GetChickenBlade(){ return ChickenBlade; }
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void Brake();
+	
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetChickenCapsuleComponent();
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
@@ -63,11 +72,16 @@ private:
 	TObjectPtr<AAHChickenBlade> ChickenBlade;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	UCapsuleComponent* ChickenBladeCapsuleComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	class USkeletalMeshComponent* PlayerSkeletalMeshComponent;
 
-	uint8 IsAttacking;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	bool IsChickenRotating;
 
-	FRotator OriginChickenRotation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	bool AlreadyAttacked;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	UStaticMeshComponent* MannequinTarget;

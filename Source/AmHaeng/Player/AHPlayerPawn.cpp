@@ -8,13 +8,8 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Weapon/AHChickenBlade.h"
 
-void AAHPlayerPawn::MouseClick()
+void AAHPlayerPawn::MouseClick_Implementation()
 {
-	if(!IsAttacking)
-	{
-		IsAttacking = true;
-		ChickenAttack();
-	}
 }
 
 void AAHPlayerPawn::MouseClickReleased()
@@ -50,17 +45,18 @@ void AAHPlayerPawn::BeginPlay()
 			{
 				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
 			}
-			OriginChickenRotation = ChickenBlade->GetActorRotation();
 			ChickenBlade->SetChickenVisible(false);
+			ChickenBlade->SetChickenBladeCapsuleComponent();
+			ChickenBladeCapsuleComponent = ChickenBlade->GetChickenBladeCapsuleComponent();
 		}
 	}
-	IsAttacking = false;
+	IsChickenRotating = false;
 	
 	SetMannequinDestMeshComponent();
 	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::MouseDelegate);
 }
 
-void AAHPlayerPawn::ChickenAttack_Implementation()
+void AAHPlayerPawn::ChickenRotation_Implementation()
 {
 }
 
@@ -71,7 +67,7 @@ void AAHPlayerPawn::SetChickenRotate(FRotator RotateRate)
 
 void AAHPlayerPawn::ChickenAttackFinish()
 {
-	IsAttacking = false;
+	IsChickenRotating = false;
 }
 
 void AAHPlayerPawn::PlayerMannequinDetect()
@@ -105,6 +101,10 @@ void AAHPlayerPawn::SetInputEnable()
 	this->EnableInput(AAHGameMode::PlayerController);
 }
 
+
+void AAHPlayerPawn::SetChickenCapsuleComponent_Implementation()
+{
+}
 void AAHPlayerPawn::Brake_Implementation()
 {
 }
