@@ -18,11 +18,10 @@ AAHChaseGimmickManager::AAHChaseGimmickManager()
 void AAHChaseGimmickManager::StartChaseGimmick(AAHVehiclePlayerController* PC, AAHNPCVehicleBase* NPCVehicle, UAHMinimapWidget* Minimap)
 {
 	//처음으로 Chase Gimmick Manager가 불리는 부분(Begin Play)
-	Initialize();
 	ChasedNPC = NPCVehicle;
-	BeforeChase->BeforeChaseProcess(PC, NPCVehicle);
 	MinimapWidget = Minimap;
-	
+	Initialize();
+	BeforeChase->BeforeChaseProcess(PC, NPCVehicle);
 }
 
 void AAHChaseGimmickManager::ChaseStart()
@@ -35,12 +34,19 @@ void AAHChaseGimmickManager::ChaseStart()
 void AAHChaseGimmickManager::Initialize()
 {
 	BeforeChase = NewObject<AAHBeforeChase>();
-	BeforeChase->Rename(TEXT("BeforeChaseOuter"), this);
+	BeforeChase->Rename(TEXT("BeforeChaseOuter")+ChaseCount, this);
 	Chase = NewObject<AAHChase>();
-	Chase->Rename(TEXT("ChaseOuter"), this);
+	Chase->Rename(TEXT("ChaseOuter"+ChaseCount), this);
 	AfterChase = NewObject<AAHAfterChase>();
-	AfterChase->Rename(TEXT("AfterChaseOuter"), this);
+	AfterChase->Rename(TEXT("AfterChaseOuter"+ChaseCount), this);
+	ChaseCount+=1;
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
+	ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHChaseGimmickManager::ChaseFinish);
 }
 
-
+void AAHChaseGimmickManager::ChaseFinish()
+{
+	BeforeChase->Destroy();
+	Chase->Destroy();
+	AfterChase->Destroy();
+}

@@ -22,6 +22,8 @@ public:
 
 	void Initialize();
 
+	void ChaseFinish();
+
 
 protected:
 	
@@ -35,4 +37,6 @@ private:
 	AAHNPCVehicleBase* ChasedNPC;
 
 	UAHMinimapWidget* MinimapWidget;
+
+	uint32 ChaseCount = 0;
 };

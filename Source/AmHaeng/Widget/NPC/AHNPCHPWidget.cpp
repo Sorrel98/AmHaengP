@@ -10,7 +10,7 @@ void UAHNPCHPWidget::SetNPCHP(float InHP)
 	if(NPC_HPBar!=nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%f"), InHP/100.f);
-		NPC_HPBar->SetPercent(InHP/100);
+		NPC_HPBar->SetPercent(InHP/100.f);
 	}
 	else
 	{
