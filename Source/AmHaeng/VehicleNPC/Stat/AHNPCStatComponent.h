@@ -7,6 +7,7 @@
 #include "AHNPCStatComponent.generated.h"
 
 
+DECLARE_MULTICAST_DELEGATE(FNPCDeadDelegateToNPC)
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class AMHAENG_API UAHNPCStatComponent : public UActorComponent
 {
@@ -15,7 +16,8 @@ class AMHAENG_API UAHNPCStatComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UAHNPCStatComponent();
-	
+
+	FNPCDeadDelegateToNPC ZeroHPDelegateToNPC;
 
 protected:
 	// Called when the game starts

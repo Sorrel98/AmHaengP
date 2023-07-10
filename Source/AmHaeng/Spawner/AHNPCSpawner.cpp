@@ -119,11 +119,7 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 	{
 		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCBPClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		if(NPCVehicleSpawnActor==nullptr) return;
-		if(OnNPCSpawnEnd.IsBound())
-		{
-			OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
-		}
-		else UE_LOG(LogTemp, Log, TEXT("NPSSpawnEnd 델리게이트에 등록된 함수가 없습니다"));
+		OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
 		
 		AAHVehiclePlayerController* SpawnedNPCController = GetWorld()->SpawnActor<AAHVehiclePlayerController>();
 		if (SpawnedNPCController)
@@ -144,11 +140,7 @@ void UAHNPCSpawner::NPCVehicleSpawn()
 		}
 
 		++NPCNumber;
-		if(SendNPCNumber.IsBound())
-		{
-			SendNPCNumber.Execute(NPCNumber);
-		}
-		
+		SendNPCNumber.Execute(NPCNumber);
 	}
 }
 

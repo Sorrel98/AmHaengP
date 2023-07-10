@@ -20,7 +20,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void MouseClick();
 	void MouseClickReleased();
-	void MouseDelegate(bool IsClick);
+	void ChaseMouseDelegate(bool IsClick);
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -52,16 +52,16 @@ public:
 
 	//Chicken Actor
 	UFUNCTION(BlueprintCallable)
-	void SetChickenVisible(bool Invisible);
+	void SetChickenVisible(bool Visible);
 	
-	UFUNCTION(BlueprintCallable)
-	void SetInputEnable();
+	/*UFUNCTION(BlueprintCallable)
+	void SetInputEnable();*/
 	
 	class AAHChickenBlade* GetChickenBlade(){ return ChickenBlade; }
 	
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetChickenCapsuleComponent();
+	/*UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SetChickenCapsuleComponent();*/
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))

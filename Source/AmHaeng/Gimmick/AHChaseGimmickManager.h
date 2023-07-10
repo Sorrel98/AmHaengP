@@ -30,6 +30,8 @@ private:
 
 	class AAHChase* Chase;
 
+	class AAHAfterChase* AfterChase;
+	
 	AAHNPCVehicleBase* ChasedNPC;
 
 	UAHMinimapWidget* MinimapWidget;

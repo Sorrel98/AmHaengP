@@ -25,18 +25,18 @@ void UAHNPCClickCPWidget::SetVisibility(ESlateVisibility InVisibility)
 void UAHNPCClickCPWidget::MouseClickDelegateBind()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if (PlayerController == nullptr)
+	if(PlayerController)
 	{
-		return;
-	}
-	if (AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
-	{
-		CastedPlayerController->PatrolMouseClickDelegate.AddUObject(this, &UAHNPCClickCPWidget::MouseClicked);
+		if (AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+		{
+			CastedPlayerController->PatrolMouseClickDelegate.AddUObject(this, &UAHNPCClickCPWidget::MouseClicked);
+		}
 	}
 }
 
 void UAHNPCClickCPWidget::MouseClicked(bool ClickOrReleased)
 {
+	UE_LOG(LogTemp, Log, TEXT("CPWidget Mouse Clicked"));
 	ScanTimer.Invalidate();
 	NowClickTime = 0.0f;
 	SetMouseClickTimer(ClickOrReleased);
@@ -59,7 +59,7 @@ void UAHNPCClickCPWidget::NativeConstruct()
 void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 {
 	//잘 들어옴
-
+	UE_LOG(LogTemp, Log, TEXT("Click CP Timer start"));
 	//click 이었다면
 	if (ClickOrReleased)
 	{
@@ -69,7 +69,7 @@ void UAHNPCClickCPWidget::SetMouseClickTimer(bool ClickOrReleased)
 	//release였다면
 	else
 	{
-		ScanTimer.Invalidate();
 		NowClickTime = 0.0f;
+		ScanTimer.Invalidate();
 	}
 }

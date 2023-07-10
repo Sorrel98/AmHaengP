@@ -16,7 +16,7 @@ void AAHPlayerPawn::MouseClickReleased()
 {
 }
 
-void AAHPlayerPawn::MouseDelegate(bool IsClick)
+void AAHPlayerPawn::ChaseMouseDelegate(bool IsClick)
 {
 	
 	if(IsClick)
@@ -45,15 +45,15 @@ void AAHPlayerPawn::BeginPlay()
 			{
 				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
 			}
-			ChickenBlade->SetChickenVisible(false);
 			ChickenBlade->SetChickenBladeCapsuleComponent();
 			ChickenBladeCapsuleComponent = ChickenBlade->GetChickenBladeCapsuleComponent();
+			ChickenBlade->SetChickenVisible(false);
 		}
 	}
 	IsChickenRotating = false;
 	
 	SetMannequinDestMeshComponent();
-	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::MouseDelegate);
+	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::ChaseMouseDelegate);
 }
 
 void AAHPlayerPawn::ChickenRotation_Implementation()
@@ -72,10 +72,7 @@ void AAHPlayerPawn::ChickenAttackFinish()
 
 void AAHPlayerPawn::PlayerMannequinDetect()
 {
-	if(MannequinDetect.IsBound())
-	{
-		MannequinDetect.Execute();
-	}
+	MannequinDetect.Execute();
 }
 
 void AAHPlayerPawn::GetSkeletalMesh_Implementation()
@@ -87,15 +84,15 @@ USkeletalMeshComponent* AAHPlayerPawn::GetPlayerPawnSkeletalMesh()
 	return PlayerSkeletalMeshComponent;
 }
 
-void AAHPlayerPawn::SetChickenVisible(bool Invisible)
+void AAHPlayerPawn::SetChickenVisible(bool Visible)
 {
 	if(ChickenBlade)
 	{
-		ChickenBlade->SetChickenVisible(Invisible);
+		ChickenBlade->SetChickenVisible(Visible);
 	}
 }
 
-void AAHPlayerPawn::SetInputEnable()
+/*void AAHPlayerPawn::SetInputEnable()
 {
 	AAHGameMode::PlayerController->EnableInput(AAHGameMode::PlayerController);
 	this->EnableInput(AAHGameMode::PlayerController);
@@ -104,7 +101,7 @@ void AAHPlayerPawn::SetInputEnable()
 
 void AAHPlayerPawn::SetChickenCapsuleComponent_Implementation()
 {
-}
+}*/
 void AAHPlayerPawn::Brake_Implementation()
 {
 }

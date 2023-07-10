@@ -43,11 +43,11 @@ void AAHMouseActor::InitCPWidget()
 
 void AAHMouseActor::ClickTimerFinishDelegateBind()
 {
-	SetCPWidgetVisibility(false);
 	if(CPWidget->GetScanTimerValid())
 	{
 		ClickCPLoadingDelegate.Broadcast();
 	}
+	SetCPWidgetVisibility(false);
 }
 
 

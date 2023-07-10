@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "AmHaeng/Prop/AHTypes.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
+#include "Weapon/AHChickenBlade.h"
 
 AAHPlayerPawn* AAHVehiclePlayerController::PlayerPawn = nullptr;
 AAHVehiclePlayerController::AAHVehiclePlayerController()
@@ -200,20 +201,17 @@ void AAHVehiclePlayerController::PatrolMouseClick()
 	if (IsNPCScanning)
 	{
 		IsNPCClicking = true;
-		if (PatrolMouseClickDelegate.IsBound())
-		{
-			PatrolMouseClickDelegate.Broadcast(true);
-		}
+		PatrolMouseClickDelegate.Broadcast(true);
 		if (NowHitActor)
 		{
 			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
 			if (HitActorBase)
 			{
 				HitActorBase->AHSetTooltipVisible(false);
-				if(SendNowClickNPCToGameMode.IsBound())
-				{
-					SendNowClickNPCToGameMode.Execute(HitActorBase);
-				}
+				ChasedNPC = HitActorBase;
+				//얘는 Chase 시작할 때
+				ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHVehiclePlayerController::ChaseFinished);
+				SendNowClickNPCToGameMode.Execute(HitActorBase);
 			}
 		}
 	}
@@ -225,10 +223,8 @@ void AAHVehiclePlayerController::PatrolMouseClickReleased()
 	{
 		IsNPCClicking = false;
 		//add delegate and ShutDown Loading UI
-		if (PatrolMouseClickDelegate.IsBound())
-		{
-			PatrolMouseClickDelegate.Broadcast(false);
-		}
+		PatrolMouseClickDelegate.Broadcast(false);
+		
 		if (NowHitActor)
 		{
 			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
@@ -242,19 +238,21 @@ void AAHVehiclePlayerController::PatrolMouseClickReleased()
 
 void AAHVehiclePlayerController::ChaseMouseClick()
 {
-	if(ChaseMouseClickDelegate.IsBound())
-	{
-		ChaseMouseClickDelegate.Broadcast(true);
-	}
-	
+	ChaseMouseClickDelegate.Broadcast(true);
 }
 
 void AAHVehiclePlayerController::ChaseMouseClickReleased()
 {
-	if(ChaseMouseClickDelegate.IsBound())
-	{
-		ChaseMouseClickDelegate.Broadcast(false);
-	}
+	ChaseMouseClickDelegate.Broadcast(false);
+}
+
+void AAHVehiclePlayerController::ChaseFinished()
+{
+	UE_LOG(LogTemp, Log, TEXT("Controller : Chase Finish"));
+	SetPatrolIMC();
+	PlayerPawn->GetChickenBlade()->SetChickenVisible(false);
+	IsNPCClicking = false;
+	IsNPCScanning = false;
 }
 
 

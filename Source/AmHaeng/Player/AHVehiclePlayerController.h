@@ -68,6 +68,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	AAHPlayerPawn* GetPlayerPawn(){ return PlayerPawn; }
+
+	//Chase Finish
+	void ChaseFinished();
 	
 	//Delegate
 	FPatrolMouseClickDelegate PatrolMouseClickDelegate;
@@ -107,4 +110,6 @@ private:
 	FVector MousePosition;
 
 	AActor* NowHitActor;
+
+	class AAHNPCVehicleBase* ChasedNPC = nullptr;
 };

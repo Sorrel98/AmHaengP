@@ -289,6 +289,8 @@ void AAHGameMode::CPLoadingFinished()
 			//ChasedNPC->SetMassOne();
 			ChasedNPC->SetIsChased(true);
 			ChasedNPC->AHDestroyFrontSphere();
+			//ChasedNPC Finish delegate
+			ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHGameMode::FinishChase);
 			SetGimmickMode(EGimmickMode::Chase);
 			AAHVehiclePlayerController::PlayerPawn->Brake();
 			//play pause
@@ -308,15 +310,21 @@ void AAHGameMode::CPLoadingFinished()
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
 {
 	NowGimmickMode = InGimmickMode;
-	if(GimmickChangeDelegate.IsBound())
-	{
-		GimmickChangeDelegate.Broadcast(InGimmickMode); //Widget Text 바꾸는 기능 밖에 없음 아직
-	}
+	GimmickChangeDelegate.Broadcast(InGimmickMode); //Widget Text 바꾸는 기능 밖에 없음 아직
 }
 
 const EGimmickMode AAHGameMode::GetGimmickMode()
 {
 	return NowGimmickMode;
+}
+
+void AAHGameMode::FinishChase()
+{
+	//todo : Chase Mode 변경, IMC 변경, 평판 update, chase 제한 시간 timer clear
+	UE_LOG(LogTemp, Log, TEXT("AHGameMode : Finish"));
+	UE_LOG(LogTemp, Log, TEXT("Change AHGameMode : Patrol"));
+	SetGimmickMode(EGimmickMode::Patrol);
+	//IMC
 }
 
 

@@ -7,6 +7,7 @@
 #include "Components/WidgetComponent.h"
 #include "AmHaeng/Widget/NPC/AHNPCInfoWidget.h"
 #include "DrawDebugHelpers.h"
+#include "AmHaeng/Widget/NPC/AHNPCHPWidget.h"
 
 AAHNPCVehicleBase::AAHNPCVehicleBase()
 {
@@ -18,6 +19,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
+	NPCStat->ZeroHPDelegateToNPC.AddUObject(this, &AAHNPCVehicleBase::ChaseFinishDelegate);
 	SetInfoWidget();
 	SetHPWidget();
 
@@ -33,6 +35,14 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 void AAHNPCVehicleBase::BeginPlay()
 {
 	Super::BeginPlay();
+	SetNPCHPWidget();
+}
+
+void AAHNPCVehicleBase::ChaseFinishDelegate()
+{
+	UE_LOG(LogTemp, Log, TEXT("NPCVehicleBase : Chase Finish"));
+	DeadNPCDelegate.Broadcast();
+	this->Destroy();
 }
 
 void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
@@ -84,19 +94,31 @@ void AAHNPCVehicleBase::SetInfoWidget()
 	}
 }
 
+void AAHNPCVehicleBase::SetNPCHPWidget()
+{
+	UUserWidget* UserWidget = NPCHPWidgetComponent->GetUserWidgetObject();
+	if(UserWidget)
+	{
+		NPCHPWidget = Cast<UAHNPCHPWidget>(UserWidget);
+		if(NPCHPWidget)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Cast Finished"));
+		}
+	}
+}
+
 void AAHNPCVehicleBase::SetHPWidget()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> NPCHPWidgetRef(
-		TEXT("/Game/VehicleNPC/Widget/WBP_NPCHP.WBP_NPCHP_C"));
-	if(NPCHPWidgetRef.Succeeded())
-	{
-		NPCHPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPWidgetComponent"));
-		NPCHPWidgetComponent->SetWidgetClass(NPCHPWidgetRef.Class);
-		NPCHPWidgetComponent->SetupAttachment(GetRootComponent());
-		NPCHPWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 180.f));
-		NPCHPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-		NPCHPWidgetComponent->SetDrawSize(FVector2d(150.f, 50.f));
-	}
+	NPCHPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPWidgetComponent"));
+	//NPCHPWidgetComponent->SetWidgetClass(NPCHPWidgetClass);
+	NPCHPWidgetComponent->SetupAttachment(GetRootComponent());
+	NPCHPWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
+	NPCHPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	NPCHPWidgetComponent->SetDrawSize(FVector2d(150.f, 50.f));
+	NPCHPWidgetComponent->SetVisibility(false);
+
+	
+	
 }
 
 void AAHNPCVehicleBase::SetGoodInfoWidgetData(int32 NPCID)
@@ -207,13 +229,34 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
 
-void AAHNPCVehicleBase::GroggyGageDown()
+void AAHNPCVehicleBase::SetIsChased(bool IsChased)
+{
+	bIsChased = IsChased;
+	NPCHPWidgetComponent->SetVisibility(true);
+}
+
+void AAHNPCVehicleBase::NPCHPDown()
 {
 	if(NPCStat)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Groggy Gage Down"));
 		NPCStat->NPCHPDown();
-		UE_LOG(LogTemp, Log, TEXT("Groggy Gage : %d"), NPCStat->GetNPCHP());
+		if(NPCHPWidget)
+		{
+			if(KINDA_SMALL_NUMBER < NPCStat->GetNPCHP())
+			{
+				NPCHPWidget->SetNPCHP(NPCStat->GetNPCHP());
+			}
+			else
+			{
+				NPCHPWidget->SetNPCHP(0);
+			}
+			UE_LOG(LogTemp, Log, TEXT("HP : %d"), NPCStat->GetNPCHP());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("NPCHPWidget is null"));
+		}
 	}
 }
 

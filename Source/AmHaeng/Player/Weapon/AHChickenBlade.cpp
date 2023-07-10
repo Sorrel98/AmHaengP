@@ -14,12 +14,20 @@ AAHChickenBlade::AAHChickenBlade()
 	
 }
 
+void AAHChickenBlade::BeginPlay()
+{
+	Super::BeginPlay();
+	SetChickenMesh();
+	SetChickenBladeCapsuleComponent();
+}
+
 void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 {
 	if(ChasedNPC)
 	{
 		ChaseNPC = ChasedNPC;
 		PlayerPawn = AAHVehiclePlayerController::PlayerPawn;
+
 	}
 }
 
@@ -29,9 +37,11 @@ void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* Chic
 
 void AAHChickenBlade::ChickenAttackTimelineFinish()
 {
-	if(ChickenAttackFinishDelegate.IsBound()){
-		ChickenAttackFinishDelegate.Execute();
-	}
+	ChickenAttackFinishDelegate.Execute();
+}
+
+void AAHChickenBlade::SetChickenMesh_Implementation()
+{
 }
 
 void AAHChickenBlade::SetChickenBladeCapsuleComponent_Implementation()
@@ -40,9 +50,33 @@ void AAHChickenBlade::SetChickenBladeCapsuleComponent_Implementation()
 
 
 
-void AAHChickenBlade::SetChickenVisible(bool visible)
+void AAHChickenBlade::SetChickenVisible(bool Visible)
 {
-	this->SetHidden(!visible);
+	UE_LOG(LogTemp, Log, TEXT("SetChickenVisible : %d"), Visible);
+	if(Visible == false)
+	{
+		if(ChickenSkeletal)
+		{
+			ChickenSkeletal->SetVisibility(false);
+		}
+		if(CapsuleComponent)
+		{
+			CapsuleComponent->SetVisibility(false);
+			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}
+	}
+	else
+	{
+		if(ChickenSkeletal)
+		{
+			ChickenSkeletal->SetVisibility(true);
+		}
+		if(CapsuleComponent)
+		{
+			CapsuleComponent->SetVisibility(true);
+			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		}
+	}
 }
 
 void AAHChickenBlade::ChickenAttackSound()

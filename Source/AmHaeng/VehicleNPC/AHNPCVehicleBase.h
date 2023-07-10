@@ -6,12 +6,14 @@
 #include "WheeledVehiclePawn.h"
 #include "AmHaeng/Interface/NPC/AHScannable.h"
 #include "AmHaeng/Interface/NPC/AHTargetNPC.h"
+#include "AmHaeng/Widget/NPC/AHNPCHPWidget.h"
 #include "Stat/AHNPCStatComponent.h"
 #include "AHNPCVehicleBase.generated.h"
 
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE(FDeadNPCDelegate)
 UCLASS()
 class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScannable, public IAHTargetNPC
 {
@@ -20,7 +22,11 @@ class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScan
 public:
 	AAHNPCVehicleBase();
 	virtual void BeginPlay() override;
-	//virtual void Tick(float DeltaSeconds) override;
+
+	void ChaseFinishDelegate();
+
+	FDeadNPCDelegate DeadNPCDelegate;
+	
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AHSetMaxEngineTorque(float InMaxTorque);
@@ -37,6 +43,7 @@ public:
 	
 	//set info widget
 	void SetInfoWidget();
+	void SetNPCHPWidget();
 	void SetGoodInfoWidgetData(int32 NPCID);
 	void SetBadInfoWidgetData(int32 NPCID);
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
@@ -65,7 +72,7 @@ public:
 
 	//Chase 기믹
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetIsChased(bool IsChased){ bIsChased = IsChased; }
+	void SetIsChased(bool IsChased);
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool GetIsChased(){ return bIsChased; }
@@ -74,7 +81,7 @@ public:
 	void FinishChased();
 
 	UFUNCTION(BlueprintCallable)
-	void GroggyGageDown();
+	void NPCHPDown();
 	UFUNCTION(BlueprintCallable)
 	int32 GetGroggyGage() { return NPCStat->GetNPCHP(); };
 
@@ -98,7 +105,9 @@ private:
 	TObjectPtr<class UWidgetComponent> NPCHPWidgetComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
-	class UAHNPCHPWidget* NPCHPWidget;
+	TSubclassOf<UAHNPCHPWidget> NPCHPWidgetClass;
+
+	TObjectPtr<class UAHNPCHPWidget> NPCHPWidget; 
 	//Other NPC Detection
 	float DetectionDistance;
 

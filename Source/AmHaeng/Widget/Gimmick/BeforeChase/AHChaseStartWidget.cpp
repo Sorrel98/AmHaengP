@@ -11,8 +11,5 @@ void UAHChaseStartWidget::PlayAnims_Implementation()
 void UAHChaseStartWidget::FinishAnims()
 {
 	UE_LOG(LogTemp, Log, TEXT("애니메이션이 끝났습니다"));
-	if(SendToBeforeChaseClass.IsBound())
-	{
-		SendToBeforeChaseClass.Execute();
-	}
+	SendToBeforeChaseClass.Execute();
 }

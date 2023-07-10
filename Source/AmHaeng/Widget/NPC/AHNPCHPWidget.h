@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/ProgressBar.h"
 #include "AHNPCHPWidget.generated.h"
 
 /**
@@ -16,10 +15,13 @@ class AMHAENG_API UAHNPCHPWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetNPCHP(uint32 InHP){NPC_HPBar->SetPercent(InHP/100);}
+	void SetNPCHP(float InHP);
+	void NativeConstruct();
+	/*virtual void NativeConstruct() override;*/
+
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UProgressBar> NPC_HPBar;
-	
+
 };

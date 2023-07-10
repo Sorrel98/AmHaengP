@@ -3,6 +3,7 @@
 
 #include "AHChaseGimmickManager.h"
 
+#include "AfterChase/AHAfterChase.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "BeforeChase/AHBeforeChase.h"
 #include "Chase/AHChase.h"
@@ -37,6 +38,8 @@ void AAHChaseGimmickManager::Initialize()
 	BeforeChase->Rename(TEXT("BeforeChaseOuter"), this);
 	Chase = NewObject<AAHChase>();
 	Chase->Rename(TEXT("ChaseOuter"), this);
+	AfterChase = NewObject<AAHAfterChase>();
+	AfterChase->Rename(TEXT("AfterChaseOuter"), this);
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
 }
 

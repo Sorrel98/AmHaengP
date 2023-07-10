@@ -19,6 +19,7 @@ public:
 	// Sets default values for this actor's properties
 	AAHChickenBlade();
 
+	virtual void BeginPlay() override;
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -29,9 +30,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenBladeCapsuleComponent();
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetChickenMesh();
+
 	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;};
 
-	void SetChickenVisible(bool visible);
+	void SetChickenVisible(bool Visible);
 	
 	void ChickenAttackSound();
 	void MouseClickDelegate(bool IsClick);
@@ -54,5 +58,8 @@ private:
 	AAHPlayerPawn* PlayerPawn = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	UCapsuleComponent* CapsuleComponent = nullptr;
+	class UCapsuleComponent* CapsuleComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
+	USkeletalMeshComponent* ChickenSkeletal = nullptr;
 };

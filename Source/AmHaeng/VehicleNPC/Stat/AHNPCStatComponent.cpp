@@ -139,5 +139,13 @@ void UAHNPCStatComponent::SetNPCHP()
 
 void UAHNPCStatComponent::NPCHPDown()
 {
-	NPCHP -= 10;
+	//todo: 공격력 셋팅
+	NPCHP -= 50;
+	UE_LOG(LogTemp, Log, TEXT("HP Set : %d"), NPCHP);
+	if(NPCHP <= 0)
+	{
+		//delegate
+		//할 일 : Destroy NPC
+		ZeroHPDelegateToNPC.Broadcast();
+	}
 }

@@ -140,10 +140,7 @@ void AAHBeforeChase::ThrowMannequin()
 	Mannequin->Throw();
 	
 	//하자마자 Delegate로 Chase 시작 알림
-	if(StartChaseDelegate.IsBound())
-	{
-		StartChaseDelegate.Execute();
-	}
+	StartChaseDelegate.Execute();
 }
 
 void AAHBeforeChase::CameraShake()
