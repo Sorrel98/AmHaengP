@@ -105,6 +105,10 @@ void AAHPlayerPawn::SetInputEnable()
 	this->EnableInput(AAHGameMode::PlayerController);
 }
 
+void AAHPlayerPawn::Brake_Implementation()
+{
+}
+
 void AAHPlayerPawn::SetMannequinDestMeshComponent_Implementation()
 {
 }

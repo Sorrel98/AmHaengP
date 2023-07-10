@@ -290,12 +290,15 @@ void AAHGameMode::CPLoadingFinished()
 			ChasedNPC->SetIsChased(true);
 			ChasedNPC->AHDestroyFrontSphere();
 			SetGimmickMode(EGimmickMode::Chase);
+			AAHVehiclePlayerController::PlayerPawn->Brake();
 			//play pause
 			PlayPause(true);
 			UE_LOG(LogTemp, Log, TEXT("Pause"));
 			//Input 막고
 			PlayerController->FlushPressedKeys();
 			PlayerController->DisableInput(PlayerController);
+			//AAHVehiclePlayerController::PlayerPawn->DisableInput(PlayerController);
+			
 			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());

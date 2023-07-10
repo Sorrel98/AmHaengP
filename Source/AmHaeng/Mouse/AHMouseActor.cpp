@@ -54,11 +54,9 @@ void AAHMouseActor::ClickTimerFinishDelegateBind()
 void AAHMouseActor::SetBindDelegate()
 {
 	//클릭 유무 delegate with controller
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	if(PlayerController==nullptr) return;
-	if(AAHVehiclePlayerController* CastedPlayerController = CastChecked<AAHVehiclePlayerController>(PlayerController))
+	if(AAHGameMode::PlayerController)
 	{
-		CastedPlayerController->PatrolMouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
+		AAHGameMode::PlayerController->PatrolMouseClickDelegate.AddUObject(this, &AAHMouseActor::SetCPWidgetVisibility);
 	}
 
 	//timer 끝남 delegate with click cp widget

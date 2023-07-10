@@ -51,6 +51,8 @@ public:
 	void SetInputEnable();
 
 	class AAHChickenBlade* GetChickenBlade(){ return ChickenBlade; }
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Brake();
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
