@@ -70,7 +70,7 @@ void AAHChase::StartChaseTimer()
 {
 	//Timer 측정 -> 몇초로 할까.. 일단 30초로 하자
 	//30초 뒤에 End
-	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 3.f, false);
+	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, ChaseTime, false);
 }
 
 void AAHChase::EndChaseTimer()

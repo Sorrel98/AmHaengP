@@ -46,4 +46,6 @@ private:
 
 	FTimerHandle ChaseTimerHandle;
 
+	float ChaseTime = 30.f;
+
 };

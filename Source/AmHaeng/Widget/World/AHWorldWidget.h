@@ -18,7 +18,7 @@ class AMHAENG_API UAHWorldWidget : public UUserWidget
 public:
 	void BindWorldWidgetDelegate();
 	void SetReputation(uint32 InReputation);
-	void SetWorldTime(FString InWorldTime){WorldTime->SetText(FText::FromString(InWorldTime));}
+	void SetWorldTime(uint32 InWorldTime);
 	
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))

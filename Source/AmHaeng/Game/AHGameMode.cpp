@@ -14,6 +14,7 @@
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 #include "AmHaeng/Widget/World/AHWorldWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 EGimmickMode AAHGameMode::NowGimmickMode = EGimmickMode::Patrol;
 AAHVehiclePlayerController* AAHGameMode::PlayerController = nullptr;
@@ -27,8 +28,7 @@ AAHGameMode::AAHGameMode()
 		DefaultPawnClass = DefaultPawnClassRef.Class;
 	}
 
-	static ConstructorHelpers::FClassFinder<AAHVehiclePlayerController> PlayerControllerRef(
-		TEXT(
+	static ConstructorHelpers::FClassFinder<AAHVehiclePlayerController> PlayerControllerRef(TEXT(
 			"/Script/Engine.Blueprint'/Game/Player/VehiclePlayerController2.VehiclePlayerController2_C'"));
 	if (PlayerControllerRef.Class)
 	{
@@ -92,10 +92,40 @@ void AAHGameMode::PlayPause(bool IsPause)
 	}
 }
 
+void AAHGameMode::SetWorldTimer()
+{
+	WorldTimeOutDelegate.BindUObject(WorldWidget, &UAHWorldWidget::SetWorldTime);
+	UE_LOG(LogTemp, Warning, TEXT("SetWorldTimer"));
+	GetWorld()->GetTimerManager().SetTimer(WorldTimer, this, &AAHGameMode::WorldTimerTickTok, 1.0f, true);
+}
+
+void AAHGameMode::WorldTimerTickTok()
+{
+	PastSecond-=1;
+	UE_LOG(LogTemp, Log, TEXT("TickTok : %d"), PastSecond);
+	//Delegate World Widget에게 알림
+	WorldTimeOutDelegate.Execute(PastSecond);
+	
+	if(PastSecond<=0)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(WorldTimer);
+		OpenLobbyLevel();
+	}
+}
+
+void AAHGameMode::OpenLobbyLevel()
+{
+	//OpenLobby
+	UGameplayStatics::OpenLevel(this, *LobbyLevelName);
+}
+
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
+	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
+	
+	
+	
 	//Gimmick Mode Setting
 	NowGimmickMode = EGimmickMode::Patrol;
 	
@@ -129,6 +159,9 @@ void AAHGameMode::BeginPlay()
 	InitSpawnNPC();
 	Spawner->TestSpawnNPC();
 
+	//TimerSetting
+	SetWorldTimer();
+	
 	MakeSpline();
 }
 
@@ -281,6 +314,7 @@ void AAHGameMode::WorldWidgetOnViewport()
 			//WorldWidget->BindWorldWidgetDelegate();
 			AAHPlayerPawn::Reputation = InitReputationValue;
 			WorldWidget->SetReputation(InitReputationValue);
+			WorldWidget->SetWorldTime(PastSecond);
 			WorldWidget->InvalidateLayoutAndVolatility();
 		}
 	}
