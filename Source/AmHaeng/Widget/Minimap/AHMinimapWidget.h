@@ -29,6 +29,10 @@ public:
 
 	void SetNPCCursorRed(AAHNPCVehicleBase* InTarget);
 
+	UFUNCTION(BlueprintCallable, Category="NPCIcon")
+	void CheckAndDestroyIcon();
+
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	TMap<AAHNPCVehicleBase*, UAHNPCMinimapCursor*> NPCCursorMap;

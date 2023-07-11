@@ -44,18 +44,36 @@ void UAHMinimapWidget::SetNPCCursorRed(AAHNPCVehicleBase* InTarget)
 {
 	if(InTarget)
 	{
-		//Map에서 Intarget 찾아서 Cursor에게 Tint 변경 요청
-		UE_LOG(LogTemp, Log, TEXT("npc is in map"));
-		if(NPCCursorMap.Num()) // 왜 NPCCursorMap 자체에 접근이 안되는 걸까요
+		if(NPCCursorMap.Num())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("NPCCursorMap is %d"), NPCCursorMap.Num());
 			UAHNPCMinimapCursor** TempCursor = NPCCursorMap.Find(InTarget);
 			if(TempCursor!=nullptr)
 			{
 				UAHNPCMinimapCursor* AHCursor = *TempCursor;
-				AHCursor->SetNPCCursorRed();
+				if(AHCursor)
+				{
+					AHCursor->SetNPCCursorRed();
+				}
 			}
 		}
+	}
+}
+
+void UAHMinimapWidget::CheckAndDestroyIcon()
+{
+	if(NPCCursorMap.Num())
+	{
+		UE_LOG(LogTemp, Log, TEXT("[start] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
+		for(auto it : NPCCursorMap)
+		{
+			if(!it.Value->GetIsVisible())
+			{
+				UE_LOG(LogTemp, Log, TEXT("NPC %s는 현재 없는 상태이므로 icon remove 합니다."), *it.Key->GetName());
+				it.Value->RemoveFromParent();
+				NPCCursorMap.Remove(it.Key);
+			}
+		}
+		UE_LOG(LogTemp, Log, TEXT("[End] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
 	}
 }
 

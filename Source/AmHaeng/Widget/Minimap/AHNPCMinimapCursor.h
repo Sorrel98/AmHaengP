@@ -20,11 +20,19 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetNPCCursorRed();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void GetNPC();
+	void NPCCursorDestroy();
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsVisibleFalse(){IsVisible = false;}
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsVisibleTrue(){IsVisible = true;}
+
+	bool GetIsVisible(){return IsVisible;}
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	AAHNPCVehicleBase* NPCActor;
-	
+
+	bool IsVisible = true;
 };
