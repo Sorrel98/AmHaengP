@@ -11,6 +11,8 @@
  * 
  */
 DECLARE_DELEGATE(FMannequinDetect)
+DECLARE_MULTICAST_DELEGATE_OneParam(FReputationChangeDelegate, uint32)
+
 UCLASS()
 class AMHAENG_API AAHPlayerPawn : public AWheeledVehiclePawn
 {
@@ -33,7 +35,16 @@ public:
 	void SetChickenRotate(FRotator RotateRate);
 	UFUNCTION(BlueprintCallable)
 	void ChickenAttackFinish();
+
+
+	//Reputation
+	static uint32 Reputation;
+	FReputationChangeDelegate ReputationChangeDelegate;
+	uint32 ReputationInitValue = 30;
+	void SetReputationInitValue();
+
 	
+	//Mennequin
 	FMannequinDetect MannequinDetect;
 
 	UFUNCTION(BlueprintCallable)
@@ -54,14 +65,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetChickenVisible(bool Visible);
 	
-	/*UFUNCTION(BlueprintCallable)
-	void SetInputEnable();*/
-	
 	class AAHChickenBlade* GetChickenBlade(){ return ChickenBlade; }
-	
 
-	/*UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void SetChickenCapsuleComponent();*/
+	//Gimmick
+	void RaisingReputation();
+	void DecreasingReputation();
+
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
@@ -85,4 +94,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	UStaticMeshComponent* MannequinTarget;
+
+	
 };

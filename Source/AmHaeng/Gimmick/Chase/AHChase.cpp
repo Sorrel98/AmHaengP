@@ -70,31 +70,19 @@ void AAHChase::StartChaseTimer()
 {
 	//Timer 측정 -> 몇초로 할까.. 일단 30초로 하자
 	//30초 뒤에 End
-	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 30.f, false);
+	GetWorld()->GetTimerManager().SetTimer(ChaseTimerHandle, this, &AAHChase::ChaseTimerExpired, 3.f, false);
 }
 
 void AAHChase::EndChaseTimer()
 {
+	UE_LOG(LogTemp, Log, TEXT("[AAHChase] Chase 제한 시간을 clear 합니다."));
 	GetWorld()->GetTimerManager().ClearTimer(ChaseTimerHandle);
 }
 
 void AAHChase::ChaseTimerExpired()
 {
 	//타이머 실행되면 코드 작성
-	UE_LOG(LogTemp, Log, TEXT("Chase 제한 시간이 끝났습니다."));
-	Cast<AAHGameMode>(GetWorld()->GetAuthGameMode())->SetGimmickMode(EGimmickMode::Patrol);
-	ChasedNPCDestroy();
-}
-
-void AAHChase::ChasedNPCDestroy()
-{
-	if(ChasedNPC)
-	{
-		ChasedNPC->Destroy();
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Chased NPC Is Null"));
-	}
+	UE_LOG(LogTemp, Log, TEXT("[AAHChase] Chase 제한 시간이 끝났습니다."));
+	FTimeOutDelegate.Broadcast(false);
 }
 

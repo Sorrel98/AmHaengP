@@ -5,6 +5,7 @@
 #include "AHGameMode.h"
 #include "AmHaeng/Gimmick/AHChaseGimmickManager.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHSpline.h"
+#include "AmHaeng/Gimmick/Chase/AHChase.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -12,6 +13,7 @@
 #include "AmHaeng/Widget/Gimmick/AHGimmickModeWidget.h"
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
+#include "AmHaeng/Widget/World/AHWorldWidget.h"
 
 EGimmickMode AAHGameMode::NowGimmickMode = EGimmickMode::Patrol;
 AAHVehiclePlayerController* AAHGameMode::PlayerController = nullptr;
@@ -34,19 +36,17 @@ AAHGameMode::AAHGameMode()
 			PlayerControllerClass = PlayerControllerRef.Class;
 		}
 	}
-
 	
 
-
-	//Start Button Test
+	//WorldWidget Ref
 	//위젯 블루프린트 클래스를 받아옴
-	static ConstructorHelpers::FClassFinder<UAHStartBtnWidget> StartBtnRef(
-		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_StartBtn.WBP_StartBtn_C'"));
+	static ConstructorHelpers::FClassFinder<UAHWorldWidget> WorldWidgetRef(
+		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_WorldTimeWidget.WBP_WorldTimeWidget_C'"));
 
 	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
-	if (StartBtnRef.Succeeded())
+	if (WorldWidgetRef.Succeeded())
 	{
-		StartBtnWidgetClass = StartBtnRef.Class;
+		WorldWidgetClass = WorldWidgetRef.Class;
 	}
 
 	//Gimmick Text Reference
@@ -71,7 +71,7 @@ AAHGameMode::AAHGameMode()
 
 	//Minimap Widget Ref
 	static ConstructorHelpers::FClassFinder<UAHMinimapWidget> MinimapWidgetRef(
-	TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Minimap/WBP_Minimap.WBP_Minimap_C'"));
+	TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Minimap/WBP_Minimap.WBP_Minimap_C'"));
 
 	//TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어줌
 	if (MinimapWidgetRef.Succeeded())
@@ -102,19 +102,18 @@ void AAHGameMode::BeginPlay()
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
 	
 	Spawner = NewObject<UAHNPCSpawner>();
-	//Spawner->Initialize(PlayerController);
 	Spawner->SetNPCNumber(NPCNumber); //동기화
 
 	//Chase Gimmick Setting
-	ChaseGimmickClass = NewObject<AAHChaseGimmickManager>();
-	ChaseGimmickClass->Rename(TEXT("ChaseGimmick"), this);
+	ChaseGimmickManager = NewObject<AAHChaseGimmickManager>();
+	ChaseGimmickManager->Rename(TEXT("ChaseGimmick"), this);
 
 	//Mouse
 	MouseActorSpawn();
 
 	//Widgets
 	//Todo : 위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
-	SpawnButtonOnViewport();
+	WorldWidgetOnViewport();
 	GimmickTextOnViewport();
 	IsTargetTextOnViewport();
 	MinimapOnViewport();
@@ -134,7 +133,7 @@ void AAHGameMode::BeginPlay()
 }
 
 //StartButton Widget Viewport에 띄우기
-void AAHGameMode::SpawnButtonOnViewport()
+/*void AAHGameMode::SpawnButtonOnViewport()
 {
 	if (IsValid(StartBtnWidgetClass))
 	{
@@ -144,18 +143,18 @@ void AAHGameMode::SpawnButtonOnViewport()
 			SpawnStartButton->AddToViewport();
 		}
 	}
-}
+}*/
 
 void AAHGameMode::GimmickTextOnViewport()
 {
 	if (IsValid(GimmickModeWidgetClass))
+    {
+    	GimmickModeWidget = Cast<UAHGimmickModeWidget>(CreateWidget(GetWorld(), GimmickModeWidgetClass));
+    	if (IsValid(GimmickModeWidget))
     	{
-    		GimmickModeWidget = Cast<UAHGimmickModeWidget>(CreateWidget(GetWorld(), GimmickModeWidgetClass));
-    		if (IsValid(GimmickModeWidget))
-    		{
-    			GimmickModeWidget->AddToViewport();
-    		}
+    		GimmickModeWidget->AddToViewport();
     	}
+    }
 }
 
 void AAHGameMode::IsTargetTextOnViewport()
@@ -200,7 +199,7 @@ void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingDelegates()
 {
-	SpawnStartButton->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"), bIsNPCSpawning);
+	//SpawnStartButton->PushedStartButton.AddUFunction(this, FName("SetNPCSpawningState"), bIsNPCSpawning);
 	//SpawnStartButton->PushedStartButton.AddUFunction(Spawner, FName("GetDelegateFromWidget"));
 
 	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
@@ -271,6 +270,22 @@ void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 	NPCNumber = InNPCNumber;
 }
 
+void AAHGameMode::WorldWidgetOnViewport()
+{
+	if (WorldWidgetClass)
+	{
+		WorldWidget = Cast<UAHWorldWidget>(CreateWidget(GetWorld(), WorldWidgetClass));
+		if (IsValid(WorldWidget))
+		{
+			WorldWidget->AddToViewport();
+			//WorldWidget->BindWorldWidgetDelegate();
+			AAHPlayerPawn::Reputation = InitReputationValue;
+			WorldWidget->SetReputation(InitReputationValue);
+			WorldWidget->InvalidateLayoutAndVolatility();
+		}
+	}
+}
+
 void AAHGameMode::CPLoadingFinished()
 {
 	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
@@ -285,23 +300,27 @@ void AAHGameMode::CPLoadingFinished()
 		//Chase
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
+			//ChasedNPC Setting
 			ChasedNPC = HitVehicleBase;
-			//ChasedNPC->SetMassOne();
 			ChasedNPC->SetIsChased(true);
 			ChasedNPC->AHDestroyFrontSphere();
-			//ChasedNPC Finish delegate
-			ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+			ChasedNPC->NPCArrestedDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+
+			//ChaseMode Setting
 			SetGimmickMode(EGimmickMode::Chase);
 			AAHVehiclePlayerController::PlayerPawn->Brake();
+			
 			//play pause
 			PlayPause(true);
 			UE_LOG(LogTemp, Log, TEXT("Pause"));
+			
 			//Input 막고
 			PlayerController->FlushPressedKeys();
 			PlayerController->DisableInput(PlayerController);
-			//AAHVehiclePlayerController::PlayerPawn->DisableInput(PlayerController);
 			
-			ChaseGimmickClass->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);
+			//GimmickManagerSetting
+			ChaseGimmickManager->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);
+			ChaseGimmickManager->GetChase()->FTimeOutDelegate.AddUObject(this, &AAHGameMode::FinishChase);
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
@@ -318,13 +337,32 @@ const EGimmickMode AAHGameMode::GetGimmickMode()
 	return NowGimmickMode;
 }
 
-void AAHGameMode::FinishChase()
+void AAHGameMode::FinishChase(bool IsChaseSuccess)
 {
-	//todo : Chase Mode 변경, IMC 변경, 평판 update, chase 제한 시간 timer clear
-	UE_LOG(LogTemp, Log, TEXT("AHGameMode : Finish"));
-	UE_LOG(LogTemp, Log, TEXT("Change AHGameMode : Patrol"));
+	UE_LOG(LogTemp, Log, TEXT("Chase 결과 : %d"), IsChaseSuccess);
+	//Chase Mode 변경
 	SetGimmickMode(EGimmickMode::Patrol);
-	//IMC
+	//IMC 변경
+	PlayerController->SetPatrolIMC();
+	PlayerController->PlayerPawn->SetChickenVisible(false);
+	if(IsChaseSuccess)
+	{
+		//평판 update
+		PlayerController->PlayerPawn->RaisingReputation();
+		//chase 제한 시간 timer clear
+		ChaseGimmickManager->GetChase()->EndChaseTimer();
+	}
+	else
+	{
+		PlayerController->PlayerPawn->DecreasingReputation();
+	}
+	WorldWidget->SetReputation(AAHPlayerPawn::Reputation);
+	ChaseGimmickManager->DestroyChaseClasses();
+	//NPC Destroy
+	ChasedNPC->Destroy();
+	//Respawn
+	//Minimap icon Destroy
+	//Hidden만 시키고 CheckAndDestroyIcon이 꾸준히 체크하여 한번에 destroy 하게 함
 }
 
 

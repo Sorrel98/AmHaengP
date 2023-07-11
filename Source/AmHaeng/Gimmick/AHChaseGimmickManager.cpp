@@ -41,10 +41,9 @@ void AAHChaseGimmickManager::Initialize()
 	AfterChase->Rename(TEXT("AfterChaseOuter"+ChaseCount), this);
 	ChaseCount+=1;
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
-	ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHChaseGimmickManager::ChaseFinish);
 }
 
-void AAHChaseGimmickManager::ChaseFinish()
+void AAHChaseGimmickManager::DestroyChaseClasses()
 {
 	BeforeChase->Destroy();
 	Chase->Destroy();

@@ -13,7 +13,7 @@
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE(FDeadNPCDelegate)
+DECLARE_MULTICAST_DELEGATE_OneParam(FDeadNPCDelegate, bool)
 UCLASS()
 class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScannable, public IAHTargetNPC
 {
@@ -23,9 +23,9 @@ public:
 	AAHNPCVehicleBase();
 	virtual void BeginPlay() override;
 
-	void ChaseFinishDelegate();
+	void BroadCastNPCArrestedDelegate();
 
-	FDeadNPCDelegate DeadNPCDelegate;
+	FDeadNPCDelegate NPCArrestedDelegate;
 	
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -77,8 +77,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool GetIsChased(){ return bIsChased; }
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void FinishChased();
+	/*UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void FinishChased();*/
 
 	UFUNCTION(BlueprintCallable)
 	void NPCHPDown();

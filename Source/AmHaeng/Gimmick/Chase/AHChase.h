@@ -9,6 +9,7 @@
 #include "GameFramework/Actor.h"
 #include "AHChase.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FTimeOutDelegate, bool)
 UCLASS()
 class AMHAENG_API AAHChase : public AActor
 {
@@ -26,13 +27,16 @@ public:
 	//void SetWeaponClass();
 	void SetIMC(EGimmickMode InGimmickMode);
 	
-	void ChasedNPCDestroy();
+	//void ChasedNPCDestroy();
 
 	//Timer
 	void StartChaseTimer();
 	void EndChaseTimer();
 	void ChaseTimerExpired();
 
+
+	//Delegate
+	FTimeOutDelegate FTimeOutDelegate;
 private:
 	class UAHNPCTeleport* TeleportClass;
 	AAHNPCVehicleBase* ChasedNPC;

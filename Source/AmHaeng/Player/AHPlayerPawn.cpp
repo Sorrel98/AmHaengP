@@ -8,6 +8,8 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Weapon/AHChickenBlade.h"
 
+uint32 AAHPlayerPawn::Reputation = 30;
+
 void AAHPlayerPawn::MouseClick_Implementation()
 {
 }
@@ -54,6 +56,8 @@ void AAHPlayerPawn::BeginPlay()
 	
 	SetMannequinDestMeshComponent();
 	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::ChaseMouseDelegate);
+
+	Reputation = 30;
 }
 
 void AAHPlayerPawn::ChickenRotation_Implementation()
@@ -69,6 +73,11 @@ void AAHPlayerPawn::ChickenAttackFinish()
 {
 	IsChickenRotating = false;
 }
+
+/*void AAHPlayerPawn::SetReputationInitValue()
+{
+	Reputation = ReputationInitValue;
+}*/
 
 void AAHPlayerPawn::PlayerMannequinDetect()
 {
@@ -92,16 +101,22 @@ void AAHPlayerPawn::SetChickenVisible(bool Visible)
 	}
 }
 
-/*void AAHPlayerPawn::SetInputEnable()
+void AAHPlayerPawn::RaisingReputation()
 {
-	AAHGameMode::PlayerController->EnableInput(AAHGameMode::PlayerController);
-	this->EnableInput(AAHGameMode::PlayerController);
+	Reputation+=10;
+	UE_LOG(LogTemp, Log, TEXT("RaisingReputation : %d"), Reputation);
+	//Delegate로 위젯에 reputation 변경 알림
+	ReputationChangeDelegate.Broadcast(Reputation);
 }
 
-
-void AAHPlayerPawn::SetChickenCapsuleComponent_Implementation()
+void AAHPlayerPawn::DecreasingReputation()
 {
-}*/
+	Reputation-=10;
+	UE_LOG(LogTemp, Log, TEXT("DecreasingReputation : %d"), Reputation);
+	//Delegate로 위젯에 reputation 변경 알림
+	ReputationChangeDelegate.Broadcast(Reputation);
+}
+
 void AAHPlayerPawn::Brake_Implementation()
 {
 }

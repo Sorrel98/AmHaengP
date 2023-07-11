@@ -22,7 +22,9 @@ public:
 
 	void Initialize();
 
-	void ChaseFinish();
+	void DestroyChaseClasses();
+
+	class AAHChase* GetChase(){return Chase;}
 
 
 protected:

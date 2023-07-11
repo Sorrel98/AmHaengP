@@ -210,7 +210,6 @@ void AAHVehiclePlayerController::PatrolMouseClick()
 				HitActorBase->AHSetTooltipVisible(false);
 				ChasedNPC = HitActorBase;
 				//얘는 Chase 시작할 때
-				ChasedNPC->DeadNPCDelegate.AddUObject(this, &AAHVehiclePlayerController::ChaseFinished);
 				SendNowClickNPCToGameMode.Execute(HitActorBase);
 			}
 		}

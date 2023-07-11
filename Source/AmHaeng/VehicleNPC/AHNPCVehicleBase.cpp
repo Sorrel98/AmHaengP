@@ -19,7 +19,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
-	NPCStat->ZeroHPDelegateToNPC.AddUObject(this, &AAHNPCVehicleBase::ChaseFinishDelegate);
+	NPCStat->ZeroHPDelegateToNPC.AddUObject(this, &AAHNPCVehicleBase::BroadCastNPCArrestedDelegate);
 	SetInfoWidget();
 	SetHPWidget();
 
@@ -38,11 +38,11 @@ void AAHNPCVehicleBase::BeginPlay()
 	SetNPCHPWidget();
 }
 
-void AAHNPCVehicleBase::ChaseFinishDelegate()
+void AAHNPCVehicleBase::BroadCastNPCArrestedDelegate()
 {
-	UE_LOG(LogTemp, Log, TEXT("NPCVehicleBase : Chase Finish"));
-	DeadNPCDelegate.Broadcast();
-	this->Destroy();
+	UE_LOG(LogTemp, Log, TEXT("NPCVehicleBase : NPC Arresting"));
+	//NPC 체포 성공 GameMode에게 알림
+	NPCArrestedDelegate.Broadcast(true);
 }
 
 void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
@@ -261,9 +261,9 @@ void AAHNPCVehicleBase::NPCHPDown()
 }
 
 
-void AAHNPCVehicleBase::FinishChased_Implementation()
+/*void AAHNPCVehicleBase::FinishChased_Implementation()
 {
-}
+}*/
 
 void AAHNPCVehicleBase::DetectNothing_Implementation()
 {

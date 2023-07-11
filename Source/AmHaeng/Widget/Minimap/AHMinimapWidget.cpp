@@ -61,20 +61,19 @@ void UAHMinimapWidget::SetNPCCursorRed(AAHNPCVehicleBase* InTarget)
 
 void UAHMinimapWidget::CheckAndDestroyIcon()
 {
-	if(NPCCursorMap.Num())
+	/*UE_LOG(LogTemp, Log, TEXT("[start] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
+	for(auto it : NPCCursorMap)
 	{
-		UE_LOG(LogTemp, Log, TEXT("[start] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
-		for(auto it : NPCCursorMap)
+		if(!it.Value->GetIsVisible()) //NPC Vehicle이 살아있지 않다면
 		{
-			if(!it.Value->GetIsVisible())
-			{
-				UE_LOG(LogTemp, Log, TEXT("NPC %s는 현재 없는 상태이므로 icon remove 합니다."), *it.Key->GetName());
-				it.Value->RemoveFromParent();
-				NPCCursorMap.Remove(it.Key);
-			}
+		UE_LOG(LogTemp, Log, TEXT("NPC는 현재 없는 상태이므로 icon remove 합니다."));
+		it.Value->RemoveFromParent();
+		NPCCursorMap.Remove(it.Key);
 		}
-		UE_LOG(LogTemp, Log, TEXT("[End] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
 	}
+	UE_LOG(LogTemp, Log, TEXT("[End] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
+	*/
+	
 }
 
 
