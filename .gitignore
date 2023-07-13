@@ -83,3 +83,6 @@ Content/Assets/NorwayMaple/*
 Content/Assets/ProceduralBuildingGenerator/*
 !Content/Assets/ProceduralBuildingGenerator/.gitkeep
 /Content/Assets/InfinityBladeWeapons/*
+
+#package
+Package/*

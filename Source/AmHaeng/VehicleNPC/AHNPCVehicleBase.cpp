@@ -15,7 +15,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
 	//3:7 비율로 Target NPC Setting
 	//Debug 위해 모든 NPC target
-	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 10) ? true : false);
+	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 0) ? true : false);
 
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
@@ -28,8 +28,6 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	BrakeDistance = 10000.f;
 	bIsDetected = false;
 	bIsChased = false;
-
-	
 }
 
 void AAHNPCVehicleBase::BeginPlay()
@@ -82,16 +80,11 @@ void AAHNPCVehicleBase::SetMassOne()
 //=================================================
 void AAHNPCVehicleBase::SetInfoWidget()
 {
-	ConstructorHelpers::FClassFinder<UAHNPCInfoWidget> NPCInfoWidgetRef(
-		TEXT("/Game/VehicleNPC/Widget/WBP_AIInfo.WBP_AIInfo_C"));
-	if (NPCInfoWidgetRef.Succeeded())
-	{
-		NPCInfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
-		NPCInfoWidgetComponent->SetWidgetClass(NPCInfoWidgetRef.Class);
-		NPCInfoWidgetComponent->SetupAttachment(GetRootComponent());
-		NPCInfoWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-		NPCInfoWidgetComponent->SetVisibility(false);
-	}
+	NPCInfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
+	NPCInfoWidgetComponent->SetWidgetClass(NPCInfoWidgetClass);
+	NPCInfoWidgetComponent->SetupAttachment(GetRootComponent());
+	NPCInfoWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	NPCInfoWidgetComponent->SetVisibility(false);
 }
 
 void AAHNPCVehicleBase::SetNPCHPWidget()
@@ -110,15 +103,11 @@ void AAHNPCVehicleBase::SetNPCHPWidget()
 void AAHNPCVehicleBase::SetHPWidget()
 {
 	NPCHPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPWidgetComponent"));
-	//NPCHPWidgetComponent->SetWidgetClass(NPCHPWidgetClass);
 	NPCHPWidgetComponent->SetupAttachment(GetRootComponent());
 	NPCHPWidgetComponent->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
 	NPCHPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	NPCHPWidgetComponent->SetDrawSize(FVector2d(150.f, 50.f));
 	NPCHPWidgetComponent->SetVisibility(false);
-
-	
-	
 }
 
 void AAHNPCVehicleBase::SetGoodInfoWidgetData(int32 NPCID)

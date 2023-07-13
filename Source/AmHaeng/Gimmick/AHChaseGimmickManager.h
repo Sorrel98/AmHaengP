@@ -30,12 +30,12 @@ public:
 protected:
 	
 private:
-	class AAHBeforeChase* BeforeChase;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AAHBeforeChase> BeforeChaseClass;
+	AAHBeforeChase* BeforeChase;
 
 	class AAHChase* Chase;
 
-	class AAHAfterChase* AfterChase;
-	
 	AAHNPCVehicleBase* ChasedNPC;
 
 	UAHMinimapWidget* MinimapWidget;

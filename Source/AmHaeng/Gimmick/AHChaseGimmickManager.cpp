@@ -33,12 +33,10 @@ void AAHChaseGimmickManager::ChaseStart()
 
 void AAHChaseGimmickManager::Initialize()
 {
-	BeforeChase = NewObject<AAHBeforeChase>();
+	BeforeChase = NewObject<AAHBeforeChase>(this, BeforeChaseClass);
 	BeforeChase->Rename(TEXT("BeforeChaseOuter")+ChaseCount, this);
 	Chase = NewObject<AAHChase>();
 	Chase->Rename(TEXT("ChaseOuter"+ChaseCount), this);
-	AfterChase = NewObject<AAHAfterChase>();
-	AfterChase->Rename(TEXT("AfterChaseOuter"+ChaseCount), this);
 	ChaseCount+=1;
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
 }
@@ -47,5 +45,4 @@ void AAHChaseGimmickManager::DestroyChaseClasses()
 {
 	BeforeChase->Destroy();
 	Chase->Destroy();
-	AfterChase->Destroy();
 }

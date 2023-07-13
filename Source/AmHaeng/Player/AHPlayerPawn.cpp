@@ -106,7 +106,7 @@ void AAHPlayerPawn::RaisingReputation()
 	Reputation+=10;
 	UE_LOG(LogTemp, Log, TEXT("RaisingReputation : %d"), Reputation);
 	//Delegate로 위젯에 reputation 변경 알림
-	ReputationChangeDelegate.Broadcast(Reputation);
+	//ReputationChangeDelegate.Broadcast(Reputation);
 }
 
 void AAHPlayerPawn::DecreasingReputation()
@@ -114,7 +114,7 @@ void AAHPlayerPawn::DecreasingReputation()
 	Reputation-=10;
 	UE_LOG(LogTemp, Log, TEXT("DecreasingReputation : %d"), Reputation);
 	//Delegate로 위젯에 reputation 변경 알림
-	ReputationChangeDelegate.Broadcast(Reputation);
+	//ReputationChangeDelegate.Broadcast(Reputation);
 }
 
 void AAHPlayerPawn::Brake_Implementation()
@@ -124,4 +124,3 @@ void AAHPlayerPawn::Brake_Implementation()
 void AAHPlayerPawn::SetMannequinDestMeshComponent_Implementation()
 {
 }
-

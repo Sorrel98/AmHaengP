@@ -37,15 +37,16 @@ private:
 	TSubclassOf<class UAHScreenCrashWidget> CameraCrashClass;
 	class UAHScreenCrashWidget* CameraCrashWidget;
 
-
-	AAHVehiclePlayerController* PC;
-	AAHNPCVehicleBase* TargetNPC;
-	//Ragdoll Mannequin
-	class AAHMannequin* Mannequin;
-	//class AAHThrowMannequin* ThrowManager;
-
 	//CameraShake
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> CameraShakeClass;
+
+	AAHVehiclePlayerController* PC;
+	AAHNPCVehicleBase* TargetNPC;
+	
+	//Ragdoll Mannequin
+	class AAHMannequin* Mannequin;
+
+	
 
 };

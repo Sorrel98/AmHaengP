@@ -35,10 +35,6 @@ public:
 	//TArray를 반환하는 함수
 	const TArray<NPCOwnerNames>& GetNPCOwnerNameArray() const;
 
-	//Enum을 input으로 하여 해당 Enum의 DisplayName을 반환하는 함수
-	const FString GetNPCEnumName(NPCOwnerNames InNPCOwnerName) const;
-
-
 private:
 	//랜덤성을 위한 TArray -> 생성자 코드에서 한번에 넣을 수 있게 수정해야 함
 	TArray<NPCOwnerNames> NPCOwnerNamesArray = {

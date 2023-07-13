@@ -31,18 +31,18 @@ public:
 	//Chicken Blade
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChickenRotation();
+	
 	UFUNCTION(BlueprintCallable)
 	void SetChickenRotate(FRotator RotateRate);
+	
 	UFUNCTION(BlueprintCallable)
 	void ChickenAttackFinish();
 
 
 	//Reputation
 	static uint32 Reputation;
-	FReputationChangeDelegate ReputationChangeDelegate;
+	//FReputationChangeDelegate ReputationChangeDelegate;
 	uint32 ReputationInitValue = 30;
-	void SetReputationInitValue();
-
 	
 	//Mennequin
 	FMannequinDetect MannequinDetect;

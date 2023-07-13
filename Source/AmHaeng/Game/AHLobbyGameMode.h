@@ -21,6 +21,7 @@ class AMHAENG_API AAHLobbyGameMode : public AGameMode
 
 	void OpenAHGameLevel();
 private:
+	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> LobbyWidgetClass;
 	class UAHLobbyWidget* LobbyWidget;
 

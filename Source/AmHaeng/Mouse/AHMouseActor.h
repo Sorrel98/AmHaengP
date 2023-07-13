@@ -37,5 +37,8 @@ private:
 	void SetBindDelegate();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	TSubclassOf<UAHNPCClickCPWidget> CPWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
+	
 };

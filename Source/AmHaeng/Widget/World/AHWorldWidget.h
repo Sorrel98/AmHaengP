@@ -19,7 +19,7 @@ public:
 	void BindWorldWidgetDelegate();
 	void SetReputation(uint32 InReputation);
 	void SetWorldTime(uint32 InWorldTime);
-	
+
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UTextBlock> Reputation;

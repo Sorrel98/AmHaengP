@@ -18,39 +18,6 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 	ScanDistance = 2000.0f;
 	MousePrevActor = nullptr;
 
-
-	//Mouse Click Input Ref Find
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionPatrolClickRef(
-		TEXT("/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Patrol/IA_Patrol_Click.IA_Patrol_Click'"));
-	if (InputActionPatrolClickRef.Object != nullptr)
-	{
-		PatrolClickAction = InputActionPatrolClickRef.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionPatrolClickReleasedRef(
-		TEXT(
-			"/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Patrol/IA_Patrol_ClickReleased.IA_Patrol_ClickReleased'"));
-	if (InputActionPatrolClickReleasedRef.Object != nullptr)
-	{
-		PatrolClickReleasedAction = InputActionPatrolClickReleasedRef.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionChaseClickRef(
-	TEXT("/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Chase/IA_Chase_Click.IA_Chase_Click'"));
-	if (InputActionChaseClickRef.Object != nullptr)
-	{
-		ChaseClickAction = InputActionChaseClickRef.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionChaseClickReleasedRef(
-		TEXT(
-			"/Script/EnhancedInput.InputAction'/Game/Input/InputAction/Chase/IA_Chase_ClickReleased.IA_Chase_ClickReleased'"));
-	if (InputActionChaseClickReleasedRef.Object != nullptr)
-	{
-		ChaseClickReleasedAction = InputActionChaseClickReleasedRef.Object;
-	}
-
-	// IMC
 }
 
 void AAHVehiclePlayerController::BeginPlay()
@@ -68,16 +35,6 @@ void AAHVehiclePlayerController::Tick(float DeltaTime)
 		MouseScan();
 	}
 }
-
-/*void AAHVehiclePlayerController::InVisiblePrevWidget(AActor* PrevActor)
-{
-	AAHNPCVehicleBase* HitPrevActor = Cast<AAHNPCVehicleBase>(PrevActor);
-	if (HitPrevActor != nullptr)
-	{
-		//UE_LOG(LogTemp, Log, TEXT("기존 Widget을 끕니다"));
-		HitPrevActor->SetNPCInfoWidgetVisible(false);
-	}
-}*/
 
 void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 {
@@ -113,7 +70,7 @@ void AAHVehiclePlayerController::MouseScan()
 
 			
 			//다른 물체로 변경됨
-			if(NowHitActor->GetActorLabel() != *MousePrevActor->GetActorLabel())
+			if(NowHitActor != MousePrevActor)
 			{
 				if (IsNPCClicking)
 				{
@@ -187,6 +144,7 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	{
 		return;
 	}
+	UE_LOG(LogTemp, Log, TEXT("SetupInputComponent"));
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(PatrolClickAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClick);
 	EnhancedInputComponent->BindAction(PatrolClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClickReleased);

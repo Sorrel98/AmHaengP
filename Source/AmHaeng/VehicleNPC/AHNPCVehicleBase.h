@@ -92,6 +92,8 @@ private:
 	uint8 bIsTargetNPC : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	TSubclassOf<class UAHNPCInfoWidget> NPCInfoWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> NPCInfoWidgetComponent;
 
 	//NPC Stat Component

@@ -12,27 +12,12 @@ bool AAHLobbyGameMode::IsFirstLobby = true;
 
 AAHLobbyGameMode::AAHLobbyGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APlayerController> LobbyControllerRef(
-	TEXT(
-		"/Script/Engine.Blueprint'/Game/GameManager/Lobby/PC_Lobby.PC_Lobby_C'"));
-	if (LobbyControllerRef.Class)
-	{
-		{
-			PlayerControllerClass = LobbyControllerRef.Class;
-		}
-	}
-	
-	static ConstructorHelpers::FClassFinder<UUserWidget> LobbyWidgetRef(TEXT(
-		"/Script/UMGEditor.WidgetBlueprint'/Game/UI/Lobby/WBP_LobbyWidget.WBP_LobbyWidget_C'"));
-	if (LobbyWidgetRef.Succeeded())
-	{
-		LobbyWidgetClass = LobbyWidgetRef.Class;
-	}
 }
 
 void AAHLobbyGameMode::BeginPlay()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Lobby BeginPlay"));
+	UE_LOG(LogTemp, Log, TEXT("IsFirstLobby : %d"), IsFirstLobby);
 	Super::BeginPlay();
 	LobbyWidgetOnViewport();
 	
@@ -51,11 +36,13 @@ void AAHLobbyGameMode::LobbyWidgetOnViewport()
 			LobbyWidget->AddToViewport();
 			if(IsFirstLobby)
 			{
+				UE_LOG(LogTemp, Log, TEXT("IsFirstLobby"));
 				LobbyWidget->InVisibleReputation();
 				IsFirstLobby = false;
 			}
 			else
 			{
+				UE_LOG(LogTemp, Log, TEXT("IsNotFirstLobby"));
 				LobbyWidget->VisibleReputation();
 			}
 		}

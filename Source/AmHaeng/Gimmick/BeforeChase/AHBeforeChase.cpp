@@ -12,28 +12,6 @@
 
 AAHBeforeChase::AAHBeforeChase()
 {
-	static ConstructorHelpers::FClassFinder<UAHChaseStartWidget> ChaseStartRef(
-		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_ChaseStartCutscene.WBP_ChaseStartCutscene_C'"));
-	if (ChaseStartRef.Succeeded())
-	{
-		ChaseStartWidgetClass = ChaseStartRef.Class;
-	}
-
-	static  ConstructorHelpers::FClassFinder<UCameraShakeBase> CameraShakeRef(
-		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/CameraShake/BP_CrashCameraShake.BP_CrashCameraShake_C'"));
-	if(CameraShakeRef.Succeeded())
-	{
-		CameraShakeClass = CameraShakeRef.Class;
-	}
-	static  ConstructorHelpers::FClassFinder<UAHScreenCrashWidget> CameraCrashRef(
-		TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_CrashGlass.WBP_CrashGlass_C'"));
-	if(CameraCrashRef.Succeeded())
-	{
-		UE_LOG(LogTemp, Log, TEXT("CameraCrashClass is OK"));
-		CameraCrashClass = CameraCrashRef.Class;
-	}
-	
-	
 }
 
 
@@ -43,7 +21,6 @@ void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPC
 	AAHVehiclePlayerController::PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
 	PC = InPC;
 	TargetNPC = InTargetNPC;
-	//ThrowManager = NewObject<AAHThrowMannequin>();
 	if(ChaseStartWidgetClass)
 	{
 		PlayChaseStartWidget();

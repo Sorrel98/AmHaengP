@@ -17,7 +17,7 @@ const TArray<NPCOwnerNames>& AHTypes::GetNPCOwnerNameArray() const
 }
 
 
-const FString AHTypes::GetNPCEnumName(NPCOwnerNames InNPCOwnerName) const
+/*const FString AHTypes::GetNPCEnumName(NPCOwnerNames InNPCOwnerName) const
 {
 	const UEnum* OwnerEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("NPCOwnerNames"), true);
 	if (OwnerEnum)
@@ -25,4 +25,4 @@ const FString AHTypes::GetNPCEnumName(NPCOwnerNames InNPCOwnerName) const
 		return OwnerEnum->GetDisplayNameTextByValue(static_cast<int32>(InNPCOwnerName)).ToString();
 	}
 	return "InValid";
-}
+}*/

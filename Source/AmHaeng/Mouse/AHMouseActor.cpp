@@ -12,13 +12,8 @@ AAHMouseActor::AAHMouseActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FClassFinder<UAHNPCClickCPWidget> CPWidgetRef(TEXT("/Game/Player/Widget/WBP_ClickLoading.WBP_ClickLoading_C"));
-	if(CPWidgetRef.Succeeded())
-	{
-		CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
-		CPWidgetComponent->SetupAttachment(this->GetRootComponent());
-		CPWidgetComponent->SetWidgetClass(CPWidgetRef.Class);
-	}
+	CPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("CPWidgetComponent"));
+	CPWidgetComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
