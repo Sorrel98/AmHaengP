@@ -83,7 +83,7 @@ void AAHGameMode::BeginPlay()
 	//Widgets
 	//Todo : 위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
 	WorldWidgetOnViewport();
-	GimmickTextOnViewport();
+	//GimmickTextOnViewport();
 	IsTargetTextOnViewport();
 	MinimapOnViewport();
 
@@ -103,7 +103,7 @@ void AAHGameMode::BeginPlay()
 	
 	MakeSpline();
 }
-void AAHGameMode::GimmickTextOnViewport()
+/*void AAHGameMode::GimmickTextOnViewport()
 {
 	if (IsValid(GimmickModeWidgetClass))
     {
@@ -113,7 +113,7 @@ void AAHGameMode::GimmickTextOnViewport()
     		GimmickModeWidget->AddToViewport();
     	}
     }
-}
+}*/
 
 void AAHGameMode::IsTargetTextOnViewport()
 {
