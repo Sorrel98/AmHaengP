@@ -9,13 +9,15 @@
 #include "DrawDebugHelpers.h"
 #include "AmHaeng/Widget/NPC/AHNPCHPWidget.h"
 
+/*AAHNPCVehicleBase::AAHNPCVehicleBase()
+{
+
+}*/
+
+
 AAHNPCVehicleBase::AAHNPCVehicleBase()
 {
-	//Main Info Setting
-	uint32 bIsTargetNPCPercentage = UKismetMathLibrary::RandomIntegerInRange(1, 10);
-	//3:7 비율로 Target NPC Setting
 	//Debug 위해 모든 NPC target
-	AAHNPCVehicleBase::SetIsTargetNPC((bIsTargetNPCPercentage <= 10) ? true : false);
 
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
@@ -93,10 +95,6 @@ void AAHNPCVehicleBase::SetNPCHPWidget()
 	if(UserWidget)
 	{
 		NPCHPWidget = Cast<UAHNPCHPWidget>(UserWidget);
-		if(NPCHPWidget)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Cast Finished"));
-		}
 	}
 }
 
@@ -110,48 +108,23 @@ void AAHNPCVehicleBase::SetHPWidget()
 	NPCHPWidgetComponent->SetVisibility(false);
 }
 
-void AAHNPCVehicleBase::SetGoodInfoWidgetData(int32 NPCID)
+//Stat 정보를 갖고 Widget 값을 셋팅합니다
+void AAHNPCVehicleBase::SetNPCStatAndInfoWidget(int32 NPCID)
 {
 	NPCStat->StatsSetting(NPCID, bIsTargetNPC);
 	UUserWidget* NPCWidget = NPCInfoWidgetComponent->GetUserWidgetObject();
-	if (NPCWidget == nullptr)
+	if (NPCWidget)
 	{
-		UE_LOG(LogTemp, Log, TEXT("GetUserWidgetObject이 안됩니다"));
-		return;
+		NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCWidget);
+		if (NPCInfoWidget)
+		{
+			NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
+			NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
+			NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
+			NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
+			NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
+		}
 	}
-	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCWidget);
-	if (NPCInfoWidget == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("NPCInfoWidget 캐스팅이 안됩니다"));
-		return;
-	}
-	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
-	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
-	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
-	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
-	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
-}
-
-void AAHNPCVehicleBase::SetBadInfoWidgetData(int32 NPCID)
-{
-	NPCStat->StatsSetting(NPCID, bIsTargetNPC);
-	UUserWidget* NPCWidget = NPCInfoWidgetComponent->GetUserWidgetObject();
-	if (NPCWidget == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("GetUserWidgetObject이 안됩니다"));
-		return;
-	}
-	NPCInfoWidget = Cast<UAHNPCInfoWidget>(NPCWidget);
-	if (NPCInfoWidget == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("NPCInfoWidget 캐스팅이 안됩니다"));
-		return;
-	}
-	NPCInfoWidget->SetNPCOwnerName(NPCStat->GetOwnerName());
-	NPCInfoWidget->SetNPCLicenseNumber(NPCStat->GetLicenseNumber());
-	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
-	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
-	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
 }
 
 void AAHNPCVehicleBase::SetNPCInfoWidgetVisible(bool visible)
@@ -240,19 +213,14 @@ void AAHNPCVehicleBase::NPCHPDown()
 			{
 				NPCHPWidget->SetNPCHP(0);
 			}
-			UE_LOG(LogTemp, Log, TEXT("HP : %d"), NPCStat->GetNPCHP());
 		}
-		else
+		/*else
 		{
 			UE_LOG(LogTemp, Log, TEXT("NPCHPWidget is null"));
-		}
+		}*/
 	}
 }
 
-
-/*void AAHNPCVehicleBase::FinishChased_Implementation()
-{
-}*/
 
 void AAHNPCVehicleBase::DetectNothing_Implementation()
 {

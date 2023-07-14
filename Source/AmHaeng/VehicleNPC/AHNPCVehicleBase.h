@@ -24,15 +24,7 @@ public:
 	virtual void BeginPlay() override;
 
 	void BroadCastNPCArrestedDelegate();
-
 	FDeadNPCDelegate NPCArrestedDelegate;
-	
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void AHSetMaxEngineTorque(float InMaxTorque);
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	
-	void AHDestroyFrontSphere();
 
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
@@ -44,8 +36,8 @@ public:
 	//set info widget
 	void SetInfoWidget();
 	void SetNPCHPWidget();
-	void SetGoodInfoWidgetData(int32 NPCID);
-	void SetBadInfoWidgetData(int32 NPCID);
+	void SetNPCStatAndInfoWidget(int32 NPCID);
+	//void SetBadInfoWidgetData(int32 NPCID);
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
 
 	//Set HP Widget
@@ -71,15 +63,16 @@ public:
 	void DetectNothing();
 
 	//Chase 기믹
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AHSetMaxEngineTorque(float InMaxTorque);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void AHDestroyFrontSphere();
 	UFUNCTION(BlueprintCallable)
 	void SetIsChased(bool IsChased);
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool GetIsChased(){ return bIsChased; }
-
-	/*UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void FinishChased();*/
-
+	
 	UFUNCTION(BlueprintCallable)
 	void NPCHPDown();
 	UFUNCTION(BlueprintCallable)
