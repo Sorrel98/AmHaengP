@@ -10,7 +10,6 @@
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/AHStartBtnWidget.h"
-#include "AmHaeng/Widget/Gimmick/AHGimmickModeWidget.h"
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 #include "AmHaeng/Widget/World/AHWorldWidget.h"
@@ -71,7 +70,6 @@ void AAHGameMode::BeginPlay()
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
 	
 	Spawner = NewObject<UAHNPCSpawner>();
-	Spawner->SetNPCNumber(NPCNumber); //동기화
 
 	//Chase Gimmick Setting
 	ChaseGimmickManager = NewObject<AAHChaseGimmickManager>(this, ChaseGimmickManagerClass);
@@ -276,7 +274,7 @@ void AAHGameMode::CPLoadingFinished()
 			AAHVehiclePlayerController::PlayerPawn->Brake();
 			
 			//play pause
-			PlayPause(true);
+			PlayerController->SetPause(true);
 			UE_LOG(LogTemp, Log, TEXT("Pause"));
 			
 			//Input 막고
@@ -296,7 +294,7 @@ void AAHGameMode::CPLoadingFinished()
 			//해당 npc destroy
 			HitVehicleBase->Destroy();
 			//good npc respawn
-			
+			Spawner->DecreaseGoodNPC();
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
@@ -338,6 +336,7 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 	
 	//Respawn
 	//todo:Bad NPC Respawn
+	Spawner->DecreaseBadNPC();
 }
 
 
@@ -351,7 +350,7 @@ void AAHGameMode::InitSpawnNPC()
 {
 	if(Spawner!=nullptr)
 	{
-		Spawner->NPCVehicleSpawn();
+		Spawner->InitNPCSpawn(BadNPCNumber);
 	}
 	else
 	{

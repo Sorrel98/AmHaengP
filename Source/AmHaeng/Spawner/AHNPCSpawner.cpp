@@ -32,6 +32,15 @@ AActor* UAHNPCSpawner::GetSpawnLocationActor(int32 Index)
 	return nullptr;
 }
 
+AActor* UAHNPCSpawner::GetTeleportLocationActor(int32 Index)
+{
+	if(NPCTeleportLocationActors.Num() > Index && Index >= 0)
+	{
+		return NPCTeleportLocationActors[Index];
+	}
+	return nullptr;
+}
+
 void UAHNPCSpawner::DecreaseGoodNPC()
 {
 	UE_LOG(LogTemp, Log, TEXT("DecreaseGoodNPC"));
@@ -290,6 +299,7 @@ bool UAHNPCSpawner::IsHitActorOnSpawnActor(int32 InSpawnIndex)
 		SpawnActorCollision = Cast<UBoxComponent>(Components[0]);
 		if(GetWorld())
 		{
+			UE_LOG(LogTemp, Log, TEXT("검사 시작"));
 			FHitResult OutHitResult;
 			FVector Start = SpawnActorCollision->GetComponentLocation();
 			FCollisionShape Box = FCollisionShape::MakeBox(SpawnActorCollision->GetScaledBoxExtent()/2);

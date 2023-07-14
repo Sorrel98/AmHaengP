@@ -34,6 +34,7 @@ public:
 	FORCEINLINE int32 GetSpawnLocationNumber(){ return SpawnLocations.Num(); }
 	FORCEINLINE FVector GetSpawnLocationByIndex(int32 Index){ return SpawnLocations[Index];}
 	AActor* GetSpawnLocationActor(int32 Index);
+	AActor* GetTeleportLocationActor(int32 Index);
 
 	//NPC 갯수
 	//void SetNPCNumber(int32 InNPCNumber);
