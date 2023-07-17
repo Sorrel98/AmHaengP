@@ -34,6 +34,8 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AAHBeforeChase> BeforeChaseClass;
+
+	UPROPERTY()
 	AAHBeforeChase* BeforeChase;
 
 	class AAHChase* Chase;

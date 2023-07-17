@@ -37,8 +37,9 @@ void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC, UAHMinim
 	MinimapWidget = Minimap;
 	PlayerController = PC;
 	BeforeChase = NewObject<AAHBeforeChase>(this, BeforeChaseClass);
+	BeforeChase->Rename(TEXT("BeforeChase"), this);
 	Chase = NewObject<AAHChase>();
-	Chase->Rename(TEXT("ChaseOuter"), this);
+	Chase->Rename(TEXT("Chase"), this);
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
 	BeforeChase->SettingChaseStartWidget();
 }

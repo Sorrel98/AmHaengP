@@ -16,6 +16,7 @@ public:
 	void PlayChaseStartAnim();
 	void SettingChaseStartWidget();
 
+	UFUNCTION()
 	void FinishChaseStartWidget();
 
 	void SetPause(bool InPause);
