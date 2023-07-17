@@ -68,23 +68,28 @@ void AAHGameMode::BeginPlay()
 	NowGimmickMode = EGimmickMode::Patrol;
 	
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
+	PlayerController->SetPlayerPawn();
 	
 	Spawner = NewObject<UAHNPCSpawner>();
+
+	
+	MinimapOnViewport();
 
 	//Chase Gimmick Setting
 	ChaseGimmickManager = NewObject<AAHChaseGimmickManager>(this, ChaseGimmickManagerClass);
 	ChaseGimmickManager->Rename(TEXT("ChaseGimmick"), this);
-
+	if(PlayerController && MinimapWidget)
+	{
+		ChaseGimmickManager->Initialize(PlayerController, MinimapWidget);
+	}
+	
 	//Mouse
 	MouseActorSpawn();
 
 	//Widgets
-	//Todo : 위젯만 따로 Setting 하는 클래스 만들어도 될듯 GameModeWidgetSetting
 	WorldWidgetOnViewport();
-	//GimmickTextOnViewport();
 	IsTargetTextOnViewport();
-	MinimapOnViewport();
-
+	
 	//Bind Delegate
 	BindingDelegates();
 
@@ -101,17 +106,6 @@ void AAHGameMode::BeginPlay()
 	
 	MakeSpline();
 }
-/*void AAHGameMode::GimmickTextOnViewport()
-{
-	if (IsValid(GimmickModeWidgetClass))
-    {
-    	GimmickModeWidget = Cast<UAHGimmickModeWidget>(CreateWidget(GetWorld(), GimmickModeWidgetClass));
-    	if (IsValid(GimmickModeWidget))
-    	{
-    		GimmickModeWidget->AddToViewport();
-    	}
-    }
-}*/
 
 void AAHGameMode::IsTargetTextOnViewport()
 {
@@ -172,16 +166,6 @@ void AAHGameMode::BindingDelegates()
 	{
 		Spawner->SendNPCNumber.BindUObject(this, &AAHGameMode::SetNPCNumber);
 	}
-
-	/*
-	if(WorldWidget)
-	{
-		if(PlayerController->PlayerPawn)
-		{
-			PlayerController->PlayerPawn->ReputationChangeDelegate.AddUObject(WorldWidget, &UAHWorldWidget::SetReputation);
-			UE_LOG(LogTemp, Log, TEXT("SetReputation Bind"));
-		}
-	}*/
 }
 
 void AAHGameMode::MouseActorSpawn()
@@ -253,6 +237,7 @@ void AAHGameMode::CPLoadingFinished()
 {
 	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
 
+	
 	//CP가 끝났을 때
 	if(HitVehicleBase==nullptr)
 	{
@@ -282,8 +267,8 @@ void AAHGameMode::CPLoadingFinished()
 			PlayerController->DisableInput(PlayerController);
 			
 			//GimmickManagerSetting
-			ChaseGimmickManager->StartChaseGimmick(PlayerController, HitVehicleBase, MinimapWidget);
-			ChaseGimmickManager->GetChase()->FTimeOutDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+			ChaseGimmickManager->StartChaseGimmick(HitVehicleBase);
+			//ChaseGimmickManager->GetChase()->FTimeOutDelegate.AddUObject(this, &AAHGameMode::FinishChase);
 		}
 		else
 		{
@@ -331,7 +316,7 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 		PlayerController->PlayerPawn->DecreasingReputation();
 	}
 	WorldWidget->SetReputation(AAHPlayerPawn::Reputation);
-	ChaseGimmickManager->DestroyChaseClasses();
+	//ChaseGimmickManager->DestroyChaseClasses();
 	ChasedNPC->Destroy();
 	
 	//Respawn

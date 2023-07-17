@@ -16,7 +16,9 @@ AAHChase::AAHChase()
 
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 {
-	Initialize(InNPC);
+	//Chased NPC Update
+	ChasedNPC = InNPC;
+	//Initialize(InNPC);
 	//Chicken Blade 셋팅
 	AAHVehiclePlayerController::PlayerPawn->GetChickenBlade()->InitChickenBlade(InNPC);
 	//Teleport하고
@@ -54,7 +56,7 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	TeleportClass = NewObject<UAHNPCTeleport>();
 	ChasedNPC = InNPC;
 	TeleportClass->Rename(TEXT("TeleportOuter"), this);
-	StartChaseTimer();
+	//StartChaseTimer();
 }
 
 void AAHChase::SetIMC(EGimmickMode InGimmickMode)
@@ -75,14 +77,12 @@ void AAHChase::StartChaseTimer()
 
 void AAHChase::EndChaseTimer()
 {
-	UE_LOG(LogTemp, Log, TEXT("[AAHChase] Chase 제한 시간을 clear 합니다."));
 	GetWorld()->GetTimerManager().ClearTimer(ChaseTimerHandle);
 }
 
 void AAHChase::ChaseTimerExpired()
 {
 	//타이머 실행되면 코드 작성
-	UE_LOG(LogTemp, Log, TEXT("[AAHChase] Chase 제한 시간이 끝났습니다."));
 	FTimeOutDelegate.Broadcast(false);
 }
 

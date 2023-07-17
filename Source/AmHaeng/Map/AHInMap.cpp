@@ -10,13 +10,17 @@ class UBoxComponent;
 
 void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 {
-	/*if(Spawner==nullptr)
+	if(OutNPC->GetIsChased())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Out of Map이지만 chased npc라 무시합니다"));
+		return;
+	}
+	if(Spawner==nullptr)
 	{
 		SetSpawner();
 	}
+	Spawner->SpawnNewNPC(OutNPC->GetIsTargetNPC());
 	OutNPC->Destroy();
-	GetWorld()->GetTimerManager().SetTimer(FindSpawnerTimerHandle, this, &AAHInMap::SpawnNewNPC, 5.0f, true);
-*/
 }
 
 void AAHInMap::SetSpawner()
@@ -34,10 +38,6 @@ void AAHInMap::SetSpawner()
 
 void AAHInMap::SpawnNewNPC()
 {
-	/*if(Spawner)
-	{
-		Spawner->SpawnNewNPC(
-	}*/
 }
 
 // Called when the game starts or when spawned

@@ -25,6 +25,7 @@ class AMHAENG_API AAHVehiclePlayerController : public APlayerController
 public:
 	//sets default values for this character controller's properties
 	AAHVehiclePlayerController();
+	void SetPlayerPawn();
 
 	//Static
 	static AAHPlayerPawn* PlayerPawn;

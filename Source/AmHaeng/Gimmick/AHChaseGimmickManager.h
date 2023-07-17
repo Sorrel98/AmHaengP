@@ -16,15 +16,17 @@ public:
 	// Sets default values for this actor's properties
 	AAHChaseGimmickManager();
 
-	void StartChaseGimmick(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* NPCVehicle, class UAHMinimapWidget* Minimap);
+	void StartChaseGimmick(AAHNPCVehicleBase* NPCVehicle);
 
 	void ChaseStart();
 
-	void Initialize();
+	void Initialize(AAHVehiclePlayerController* PC, UAHMinimapWidget* Minimap);
 
-	void DestroyChaseClasses();
+	//void DestroyChaseClasses();
 
 	class AAHChase* GetChase(){return Chase;}
+	
+	class AAHBeforeChase* GetBeforeChase(){return BeforeChase;};
 
 
 protected:
@@ -41,4 +43,6 @@ private:
 	UAHMinimapWidget* MinimapWidget;
 
 	uint32 ChaseCount = 0;
+
+	AAHVehiclePlayerController* PlayerController;
 };

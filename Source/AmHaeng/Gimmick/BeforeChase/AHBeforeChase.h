@@ -13,7 +13,8 @@ class AMHAENG_API AAHBeforeChase : public AActor
 public:
 	AAHBeforeChase();
 	void BeforeChaseProcess(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* InTargetNPC);
-	void PlayChaseStartWidget();
+	void PlayChaseStartAnim();
+	void SettingChaseStartWidget();
 
 	void FinishChaseStartWidget();
 
@@ -25,6 +26,8 @@ public:
 	void PlayCrashWidget();
 
 	FStartChaseDelegate StartChaseDelegate;
+
+	void CheckSendToBeforeChaseClassDelegate();
 
 
 private:
@@ -41,11 +44,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> CameraShakeClass;
 
-	AAHVehiclePlayerController* PC;
-	AAHNPCVehicleBase* TargetNPC;
+	AAHVehiclePlayerController* PlayerController;
+	AAHNPCVehicleBase* ChasedNPC;
 	
 	//Ragdoll Mannequin
 	class AAHMannequin* Mannequin;
+
+	FTimerHandle TempTimer;
 
 	
 

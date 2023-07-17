@@ -20,11 +20,15 @@ AAHVehiclePlayerController::AAHVehiclePlayerController()
 
 }
 
+void AAHVehiclePlayerController::SetPlayerPawn()
+{
+	PlayerPawn = Cast<AAHPlayerPawn>(GetPawn());
+}
+
 void AAHVehiclePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInitMousePrevActor();
-	PlayerPawn = Cast<AAHPlayerPawn>(GetPawn());
 }
 
 void AAHVehiclePlayerController::Tick(float DeltaTime)
@@ -144,7 +148,7 @@ void AAHVehiclePlayerController::SetupInputComponent()
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Log, TEXT("SetupInputComponent"));
+	//UE_LOG(LogTemp, Log, TEXT("SetupInputComponent"));
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(PatrolClickAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClick);
 	EnhancedInputComponent->BindAction(PatrolClickReleasedAction, ETriggerEvent::Triggered, this, &AAHVehiclePlayerController::PatrolMouseClickReleased);

@@ -17,30 +17,33 @@ AAHBeforeChase::AAHBeforeChase()
 
 void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPCVehicleBase* InTargetNPC)
 {
-	UE_LOG(LogTemp, Log, TEXT("Before Chase Class"));
-	AAHVehiclePlayerController::PlayerPawn->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
-	PC = InPC;
-	TargetNPC = InTargetNPC;
-	if(ChaseStartWidgetClass)
+	if(InPC->GetPlayerPawn())
 	{
-		PlayChaseStartWidget();
+		InPC->GetPlayerPawn()->MannequinDetect.BindUObject(this, &AAHBeforeChase::PlayCrashWidget);
+	}
+	PlayerController = InPC;
+	ChasedNPC = InTargetNPC;
+}
+
+void AAHBeforeChase::PlayChaseStartAnim()
+{
+	if(ChaseStartWidget)
+	{
+		ChaseStartWidget->PlayAnims();
 	}
 }
 
-void AAHBeforeChase::PlayChaseStartWidget()
+void AAHBeforeChase::SettingChaseStartWidget()
 {
 	if(ChaseStartWidgetClass)
 	{
-		UE_LOG(LogTemp, Log, TEXT("ChaseStartWidgetClass Is Valid"));
 		if(GetWorld())
 		{
-			UE_LOG(LogTemp, Log, TEXT("GetWorld Is Valid"));
 			ChaseStartWidget = Cast<UAHChaseStartWidget>(CreateWidget(GetWorld(), ChaseStartWidgetClass));
 			if(IsValid(ChaseStartWidget))
 			{
 				ChaseStartWidget->SendToBeforeChaseClass.BindUObject(this, &AAHBeforeChase::FinishChaseStartWidget);
 				ChaseStartWidget->AddToViewport();
-				ChaseStartWidget->PlayAnims();
 			}
 		}
 		
@@ -49,15 +52,23 @@ void AAHBeforeChase::PlayChaseStartWidget()
 
 void AAHBeforeChase::FinishChaseStartWidget()
 {
-	UE_LOG(LogTemp, Log, TEXT("ReStart"));
-	SetPause(false);
+	UE_LOG(LogTemp, Log, TEXT("Finish Chase Start Widget Anim"));
+	if(PlayerController)
+	{
+		UE_LOG(LogTemp, Log, TEXT("UnPause"));
+		PlayerController->SetPause(false);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Player Controller 가 없습니다"));
+	}
 	//Throw Mannequin
 	ThrowMannequin();
 }
 
 void AAHBeforeChase::SetPause(bool InPause)
 {
-	PC->SetPause(InPause);
+	PlayerController->SetPause(InPause);
 }
 
 void AAHBeforeChase::RagdollMannequinSpawn()
@@ -90,7 +101,7 @@ void AAHBeforeChase::RagdollMannequinSpawn()
 	{
 		return;
 	}
-	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, TargetNPC->GetActorLocation(), TargetNPC->GetActorRotation());
+	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, ChasedNPC->GetActorLocation(), ChasedNPC->GetActorRotation());
 }
 
 void AAHBeforeChase::ThrowMannequin()
@@ -98,11 +109,11 @@ void AAHBeforeChase::ThrowMannequin()
 	RagdollMannequinSpawn();
 	
 	//여기서 마네킹 던집니다.
-	if(TargetNPC && AAHVehiclePlayerController::PlayerPawn && Mannequin)
+	if(ChasedNPC && AAHVehiclePlayerController::PlayerPawn && Mannequin)
 	{
-		Mannequin->SetSplineRoute(TargetNPC->GetActorLocation(), AAHVehiclePlayerController::PlayerPawn->GetMannequinTarget()->GetComponentLocation());
+		Mannequin->SetSplineRoute(ChasedNPC->GetActorLocation(), AAHVehiclePlayerController::PlayerPawn->GetMannequinTarget()->GetComponentLocation());
 	}
-	if(!TargetNPC)
+	if(!ChasedNPC)
 	{
 		UE_LOG(LogTemp, Log, TEXT("!TargetNPC"));
 	}
@@ -123,7 +134,13 @@ void AAHBeforeChase::ThrowMannequin()
 void AAHBeforeChase::CameraShake()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Camera Shake Start"));
-	PC->ClientStartCameraShake(CameraShakeClass, 1000000.0);
+	if(PlayerController)
+	{
+		if(CameraCrashClass)
+		{
+			PlayerController->ClientStartCameraShake(CameraShakeClass, 1000000.0);
+		}
+	}
 }
 
 void AAHBeforeChase::PlayCrashWidget()
@@ -140,3 +157,4 @@ void AAHBeforeChase::PlayCrashWidget()
 	}
 	
 }
+
