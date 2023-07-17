@@ -291,21 +291,27 @@ void UAHNPCSpawner::SpawnNewNPC(bool IsTarget)
 bool UAHNPCSpawner::IsHitActorOnSpawnActor(int32 InSpawnIndex)
 {
 	AActor* SpawnActor = this->GetSpawnLocationActor(InSpawnIndex);
+	UE_LOG(LogTemp, Log, TEXT("Spawn Actor Name : %s"), *SpawnActor->GetName());
 	TArray<UActorComponent*> Components = SpawnActor->GetComponentsByTag(UActorComponent::StaticClass(), FName(TEXT("NPCCollision")));
+	
 	UBoxComponent* SpawnActorCollision = nullptr;
 	bool bResult = false;
 	if(!Components.IsEmpty())
 	{
 		SpawnActorCollision = Cast<UBoxComponent>(Components[0]);
-		if(GetWorld())
+		if(GetWorld() && SpawnActorCollision)
 		{
 			UE_LOG(LogTemp, Log, TEXT("검사 시작"));
 			FHitResult OutHitResult;
 			FVector Start = SpawnActorCollision->GetComponentLocation();
 			FCollisionShape Box = FCollisionShape::MakeBox(SpawnActorCollision->GetScaledBoxExtent()/2);
 			FVector End = Start;
-			bResult = GetWorld()->SweepSingleByProfile(OutHitResult, Start, End, SpawnActorCollision->GetComponentRotation().Quaternion(), FName(TEXT("BlockAll")), Box);
-			DrawDebugBox(GetWorld(), Start, SpawnActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 30.f);
+			bResult = GetWorld()->SweepSingleByProfile(OutHitResult, Start, End, SpawnActorCollision->GetComponentRotation().Quaternion(), FName(TEXT("NPCBody")), Box);
+			if(OutHitResult.GetActor())
+			{
+				UE_LOG(LogTemp, Log, TEXT("There is Something : %s"), *OutHitResult.GetActor()->GetName());
+			}
+			DrawDebugBox(GetWorld(), Start, SpawnActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 1.f);
 			//무엇인가 있었다면 true
 		}
 	}
