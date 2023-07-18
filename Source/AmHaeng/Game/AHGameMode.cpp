@@ -269,14 +269,9 @@ void AAHGameMode::CPLoadingFinished()
 			//ChaseMode Setting
 			SetGimmickMode(EGimmickMode::Chase);
 			AAHVehiclePlayerController::PlayerPawn->Brake();
-			
-			//play pause
-			PlayerController->SetPause(true);
-			UE_LOG(LogTemp, Log, TEXT("Pause"));
-			
-			//GimmickManagerSetting
-			ChaseGimmickManager->StartChaseGimmick(HitVehicleBase);
-			//ChaseGimmickManager->GetChase()->FTimeOutDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+			UE_LOG(LogTemp, Log, TEXT("Player Pawn Speed : "));
+			//타이머 돌려서 플레이어가 멈추면 SetPause
+			IsPlayerSpeedZero();
 		}
 		else
 		{
@@ -335,6 +330,26 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 	//Respawn
 	//todo:Bad NPC Respawn
 	Spawner->DecreaseBadNPC();
+}
+
+void AAHGameMode::IsPlayerSpeedZero()
+{
+	UE_LOG(LogTemp, Log, TEXT("IsPlayerSpeedZero function"));
+	PlayerController->GetPlayerPawn()->SetNowSpeedFromBP();
+	if(PlayerController->GetPlayerPawn()->GetNowSpeed() < 5)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Speed 거의 zero입니다."));
+		//play pause
+		PlayerController->SetPause(true);
+		UE_LOG(LogTemp, Log, TEXT("Pause"));
+			
+		//GimmickManagerSetting
+		ChaseGimmickManager->StartChaseGimmick(HitVehicleBase);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(PlayerSpeedZeroTimer, FTimerDelegate::CreateUObject(this, &AAHGameMode::IsPlayerSpeedZero), 0.1f, false);
+	}
 }
 
 

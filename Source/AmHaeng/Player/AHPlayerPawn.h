@@ -28,6 +28,11 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Brake();
 
+	UFUNCTION(BlueprintNativeEvent)
+	void SetNowSpeedFromBP();
+
+	float GetNowSpeed(){return PlayerNowSpeed;}
+
 	//Chicken Blade
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChickenRotation();
@@ -94,6 +99,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	UStaticMeshComponent* MannequinTarget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	float PlayerNowSpeed;
 
 	
 };

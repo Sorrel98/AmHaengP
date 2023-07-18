@@ -35,7 +35,7 @@ void AAHPlayerPawn::ChaseMouseDelegate(bool IsClick)
 void AAHPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	PlayerNowSpeed = 0;
 	if(ChickenBladeClass)
 	{
 		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenBladeClass);
@@ -58,6 +58,10 @@ void AAHPlayerPawn::BeginPlay()
 	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::ChaseMouseDelegate);
 
 	Reputation = 30;
+}
+
+void AAHPlayerPawn::SetNowSpeedFromBP_Implementation()
+{
 }
 
 void AAHPlayerPawn::ChickenRotation_Implementation()
