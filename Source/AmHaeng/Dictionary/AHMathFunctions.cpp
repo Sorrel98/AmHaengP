@@ -128,7 +128,7 @@ FString AHMathFunctions::WrongRandomYear()
 	case 1:
 		return FString::FromInt(FMath::RandRange(2024, 2040));
 	case 2:
-		return FString::FromInt(FMath::RandRange(-2023, -1990));
+		return FString::FromInt(FMath::RandRange(19900, 20230));
 	case 3:
 		return FString::FromInt(0);
 	default:
@@ -141,7 +141,7 @@ FString AHMathFunctions::WrongRandomMonth()
 	bool random = FMath::RandBool();
 	if(random)
 	{
-		return FString::FromInt(FMath::RandRange(-12, -1));
+		return FString::FromInt(FMath::RandRange(1, 12))+"0";
 	}
 	else
 	{
@@ -154,7 +154,7 @@ FString AHMathFunctions::WrongRandomDay()
 	bool random = FMath::RandBool();
 	if(random)
 	{
-		return FString::FromInt(FMath::RandRange(-30, -1));
+		return FString::FromInt(FMath::RandRange(1, 30))+"0";
 	}
 	else
 	{
