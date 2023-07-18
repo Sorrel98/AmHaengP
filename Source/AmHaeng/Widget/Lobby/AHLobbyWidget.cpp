@@ -15,6 +15,14 @@ void UAHLobbyWidget::VisibleReputation_Implementation()
 {
 }
 
+void UAHLobbyWidget::InVisibleKeyBindBox_Implementation()
+{
+}
+
+void UAHLobbyWidget::VisibleKeyBindBox_Implementation()
+{
+}
+
 void UAHLobbyWidget::StartBtnClicked()
 {
 	StartBtnClickedDelegate.Execute();

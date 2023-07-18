@@ -22,7 +22,13 @@ public:
 	void InVisibleReputation();
 
 	UFUNCTION(BlueprintNativeEvent)
+	void InVisibleKeyBindBox();
+
+	UFUNCTION(BlueprintNativeEvent)
 	void VisibleReputation();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void VisibleKeyBindBox();
 
 	UFUNCTION(BlueprintCallable)
 	void StartBtnClicked();

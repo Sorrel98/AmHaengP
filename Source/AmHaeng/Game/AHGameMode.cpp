@@ -254,6 +254,10 @@ void AAHGameMode::CPLoadingFinished()
 			ChasedNPC->AHDestroyFrontSphere();
 			ChasedNPC->NPCArrestedDelegate.AddUObject(this, &AAHGameMode::FinishChase);
 
+			//Input 막고
+			PlayerController->FlushPressedKeys();
+			PlayerController->DisableInput(PlayerController);
+			
 			//ChaseMode Setting
 			SetGimmickMode(EGimmickMode::Chase);
 			AAHVehiclePlayerController::PlayerPawn->Brake();
@@ -261,10 +265,6 @@ void AAHGameMode::CPLoadingFinished()
 			//play pause
 			PlayerController->SetPause(true);
 			UE_LOG(LogTemp, Log, TEXT("Pause"));
-			
-			//Input 막고
-			PlayerController->FlushPressedKeys();
-			PlayerController->DisableInput(PlayerController);
 			
 			//GimmickManagerSetting
 			ChaseGimmickManager->StartChaseGimmick(HitVehicleBase);
