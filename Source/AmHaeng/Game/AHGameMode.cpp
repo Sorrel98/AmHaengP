@@ -59,6 +59,14 @@ void AAHGameMode::OpenLobbyLevel()
 	UGameplayStatics::OpenLevel(this, *LobbyLevelName);
 }
 
+void AAHGameMode::CorrectSound_Implementation()
+{
+}
+
+void AAHGameMode::InCorrectSound_Implementation()
+{
+}
+
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -272,6 +280,7 @@ void AAHGameMode::CPLoadingFinished()
 		}
 		else
 		{
+			InCorrectSound();
 			//target이 아니었다면
 			//평판 하락
 			PlayerController->PlayerPawn->DecreasingReputation();
@@ -299,6 +308,10 @@ const EGimmickMode AAHGameMode::GetGimmickMode()
 void AAHGameMode::FinishChase(bool IsChaseSuccess)
 {
 	UE_LOG(LogTemp, Log, TEXT("Chase 결과 : %d"), IsChaseSuccess);
+	if(IsChaseSuccess)
+	{
+		CorrectSound();
+	}
 	//Chase Mode 변경
 	SetGimmickMode(EGimmickMode::Patrol);
 	//IMC 변경
