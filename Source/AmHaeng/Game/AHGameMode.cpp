@@ -71,6 +71,8 @@ void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
+
+	
 	
 	//Gimmick Mode Setting
 	NowGimmickMode = EGimmickMode::Patrol;
@@ -287,6 +289,18 @@ void AAHGameMode::CPLoadingFinished()
 		}
 		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
 	}
+}
+
+void AAHGameMode::SetAllNPCNumber()
+{
+	TArray<AActor*> NPCSpawnLocationActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("NPCSpawnLocation"), NPCSpawnLocationActors);
+	AllNPCNumber = NPCSpawnLocationActors.Num();
+}
+
+void AAHGameMode::SetBadNPCNumber()
+{
+	BadNPCNumber = 3/AllNPCNumber;
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)

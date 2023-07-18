@@ -66,7 +66,7 @@ void AAHVehiclePlayerController::MouseScan()
 		this->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
 		if (HitResult.bBlockingHit)
 		{
-			DrawShpere(HitResult);
+			//DrawShpere(HitResult);
 			NowHitActor = HitResult.GetActor();
 			if (NowHitActor == nullptr) return;
 			if(MousePrevActor == nullptr) return;
