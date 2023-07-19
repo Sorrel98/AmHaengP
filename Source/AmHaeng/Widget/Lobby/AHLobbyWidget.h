@@ -15,6 +15,8 @@ class AMHAENG_API UAHLobbyWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	FStartBtnClickedDelegate StartBtnClickedDelegate;
+	
 	UFUNCTION(BlueprintNativeEvent)
 	void SetReputationTextValue(int32 InReputation);
 
@@ -32,6 +34,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StartBtnClicked();
-
-	FStartBtnClickedDelegate StartBtnClickedDelegate;
 };

@@ -46,8 +46,6 @@ public:
 	static FString WrongRandomYear();
 	static FString WrongRandomMonth();
 	static FString WrongRandomDay();
-private:
-	//inline static TArray<uint32> LicenseWordNumber = {4, 2, 2, 1};
 };
 
 

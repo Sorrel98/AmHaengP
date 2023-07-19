@@ -16,11 +16,11 @@ class AMHAENG_API UAHChaseStartWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	FWidgetAnimationDynamicEvent FinishWidgetAnimationEvent;
+	FFinishChaseAnim SendToBeforeChaseClass;
+	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void PlayAnims();
 	UFUNCTION(BlueprintCallable)
 	void FinishAnims();
-
-	FWidgetAnimationDynamicEvent FinishWidgetAnimationEvent;
-	FFinishChaseAnim SendToBeforeChaseClass;
 };

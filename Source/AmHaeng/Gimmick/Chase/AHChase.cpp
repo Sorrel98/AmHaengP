@@ -9,11 +9,6 @@
 #include "GameFramework/Actor.h"
 #include "NPCTeleport/AHNPCTeleport.h"
 
-// Sets default values
-AAHChase::AAHChase()
-{
-}
-
 void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 {
 	//Chased NPC Update
@@ -21,8 +16,6 @@ void AAHChase::ChaseStart(AAHNPCVehicleBase* InNPC)
 	//Initialize(InNPC);
 	//Chicken Blade 셋팅
 	AAHVehiclePlayerController::PlayerPawn->GetChickenBlade()->InitChickenBlade(InNPC);
-	//Teleport하고
-	//NPCTeleport();
 	//NPC 상태값 셋팅
 	SetNPCState();
 	//IMC Chase 모드로 변경
@@ -56,7 +49,6 @@ void AAHChase::Initialize(AAHNPCVehicleBase* InNPC)
 	TeleportClass = NewObject<UAHNPCTeleport>();
 	ChasedNPC = InNPC;
 	TeleportClass->Rename(TEXT("TeleportOuter"), this);
-	//StartChaseTimer();
 }
 
 void AAHChase::SetIMC(EGimmickMode InGimmickMode)

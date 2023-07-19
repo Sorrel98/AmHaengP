@@ -30,14 +30,14 @@ public:
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;
 
-
-	void SetMassOne();
+	//MouseScan
+	void MouseScaned();
+	void MouseUnscaned();
 	
 	//set info widget
 	void SetInfoWidget();
 	void SetNPCHPWidget();
 	void SetNPCStatAndInfoWidget(int32 NPCID);
-	//void SetBadInfoWidgetData(int32 NPCID);
 	virtual void SetNPCInfoWidgetVisible(bool visible) override;
 
 	//Set HP Widget
@@ -46,9 +46,9 @@ public:
 	//Click Tooltip
 	void AHSetTooltipVisible(bool visible) const;
 
-	//Test NPC Setting
-	void TESTGoodNPCInfoSetting();
-	void TESTBadNPCInfoSetting();
+	//Test NPC Setting, 사용 안 함
+	/*void TESTGoodNPCInfoSetting();
+	void TESTBadNPCInfoSetting();*/
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void SetOutline(bool bOutlineEnabled);
@@ -78,15 +78,13 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void NPCHPDown();
-	/*UFUNCTION(BlueprintCallable)
-	int32 GetGroggyGage() { return NPCStat->GetNPCHP(); };*/
-
 
 private:
 	//NPC info - Main
-	//true(1) : 범법, false(2) : 일반
+	//true : 범법, false : 일반
 	uint8 bIsTargetNPC : 1;
 
+	//Info Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TSubclassOf<class UAHNPCInfoWidget> NPCInfoWidgetClass;
 	UPROPERTY(EditAnywhere)
@@ -97,7 +95,8 @@ private:
 	//NPC Stat Component
 	UPROPERTY(VisibleAnywhere, Category=Stat)
 	TObjectPtr<UAHNPCStatComponent> NPCStat;
-	
+
+	//HP Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TSubclassOf<UAHNPCHPWidget> NPCHPWidgetClass;
 	UPROPERTY(EditAnywhere)
@@ -106,13 +105,10 @@ private:
 	TObjectPtr<UWidgetComponent> NPCHPWidgetComponent;
 	
 	//Other NPC Detection
-	float DetectionDistance;
-
+	/*float DetectionDistance;
 	float BrakeDistance;
-
 	uint8 bIsAnotherNPCForward;
-
-	uint8 bIsDetected;
+	uint8 bIsDetected;*/
 
 	//Chase 기믹
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))

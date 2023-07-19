@@ -12,13 +12,11 @@ class AMHAENG_API AAHChaseGimmickManager : public AActor
 	
 public:
 	void StartChaseGimmick(class AAHNPCVehicleBase* NPCVehicle);
-
 	void ChaseStart();
-
 	void Initialize(class AAHVehiclePlayerController* PC);
-	
+
+	//Get
 	class AAHChase* GetChase(){return Chase;}
-	
 	class AAHBeforeChase* GetBeforeChase(){return BeforeChase;};
 
 private:

@@ -7,13 +7,6 @@
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
-// Sets default values
-AAHChickenBlade::AAHChickenBlade()
-{
-	UE_LOG(LogTemp, Log, TEXT("Chicken Blade가 생성되었습니다"));
-	
-}
-
 void AAHChickenBlade::BeginPlay()
 {
 	Super::BeginPlay();

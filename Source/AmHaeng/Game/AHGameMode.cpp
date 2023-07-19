@@ -22,7 +22,7 @@ AAHSpline* AAHGameMode::SplineActor = nullptr;
 AAHGameMode::AAHGameMode()
 {
 	bIsNPCSpawning = false;
-	NPCNumber = 0; //0부터 시작
+	SpawnedNPCNumber = 0; //0부터 시작
 }
 
 /*void AAHGameMode::PlayPause(bool IsPause)
@@ -112,7 +112,7 @@ void AAHGameMode::BeginPlay()
 
 	//Spawn NPC
 	InitSpawnNPC();
-	Spawner->TestSpawnNPC();
+	//Spawner->TestSpawnNPC();
 
 	//TimerSetting
 	SetWorldTimer();
@@ -130,7 +130,6 @@ void AAHGameMode::PlayCrashGlassAnimation_Implementation()
 
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetHitVehicleBase"));
 	HitVehicleBase = InHitVehicleBase;
 }
 
@@ -205,7 +204,7 @@ UAHNPCSpawner* AAHGameMode::GetSpawner()
 
 void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 {
-	NPCNumber = InNPCNumber;
+	SpawnedNPCNumber = InNPCNumber;
 }
 
 void AAHGameMode::CPLoadingFinished()
@@ -266,12 +265,12 @@ void AAHGameMode::SetAllNPCNumber()
 {
 	TArray<AActor*> NPCSpawnLocationActors;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("NPCSpawnLocation"), NPCSpawnLocationActors);
-	AllNPCNumber = NPCSpawnLocationActors.Num();
+	InitAllNPCNumber = NPCSpawnLocationActors.Num();
 }
 
 void AAHGameMode::SetBadNPCNumber()
 {
-	BadNPCNumber = AllNPCNumber/3;
+	BadNPCNumber = InitAllNPCNumber/3;
 	UE_LOG(LogTemp, Log, TEXT("BadNPCNumber : %d"), BadNPCNumber);
 }
 

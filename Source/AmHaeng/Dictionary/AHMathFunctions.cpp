@@ -126,7 +126,7 @@ FString AHMathFunctions::WrongRandomYear()
 	switch (random)
 	{
 	case 1:
-		return FString::FromInt(FMath::RandRange(2024, 2040));
+		return FString::FromInt(FMath::RandRange(2025, 2040));
 	case 2:
 		return FString::FromInt(FMath::RandRange(19900, 20230));
 	case 3:

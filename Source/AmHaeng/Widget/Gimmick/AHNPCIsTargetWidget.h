@@ -19,6 +19,8 @@ public:
 	void AllTextInvisible();
 
 private:
+	FTimerHandle WidgetInvisibleTimer;
+	
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UTextBlock> CorrectTargetText;
 
@@ -26,6 +28,4 @@ private:
 	TObjectPtr<UTextBlock> FailTargetText;
 
 	uint8 IsTargetNPC;
-
-	FTimerHandle WidgetInvisibleTimer;
 };

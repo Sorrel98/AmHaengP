@@ -24,8 +24,6 @@ enum class NPCOwnerNames : uint8
 };
 
 
-
-
 class AMHAENG_API AHTypes
 {
 public:

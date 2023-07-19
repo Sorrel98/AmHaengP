@@ -17,19 +17,11 @@ class AMHAENG_API UAHWorldWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	void BindWorldWidgetDelegate();
+	void TextChangeDelegateBind();
+	
 	void SetReputation(uint32 InReputation);
 	void SetWorldTime(uint32 InWorldTime);
-	
 	void SetGimmickWidgetText(EGimmickMode InGimmick);
-
-	void TextChangeDelegateBind();
-
-private:
-	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UTextBlock> TextPatrol;
-
-	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<UTextBlock> TextChase;
 	
 protected:
 	virtual void NativeConstruct() override;
@@ -40,4 +32,10 @@ private:
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<UTextBlock> WorldTime;
+	
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<UTextBlock> TextPatrol;
+
+	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
+	TObjectPtr<UTextBlock> TextChase;
 };

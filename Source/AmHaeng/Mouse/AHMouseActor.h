@@ -23,22 +23,18 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets")
-	TObjectPtr<UAHNPCClickCPWidget> CPWidget;
+	FClickCPLoadingDelegate ClickCPLoadingDelegate;
+	void ClickTimerFinishDelegateBind();
+	void SetBindDelegate();
 
 	void SetCPWidgetVisibility(bool Visible) const;
 	void InitCPWidget();
-	
-	void ClickTimerFinishDelegateBind();
-
-	FClickCPLoadingDelegate ClickCPLoadingDelegate;
 
 private:
-	void SetBindDelegate();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TSubclassOf<UAHNPCClickCPWidget> CPWidgetClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets", meta=(AllowPrivateAccess = true))
+	TObjectPtr<UAHNPCClickCPWidget> CPWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> CPWidgetComponent;
-	
 };

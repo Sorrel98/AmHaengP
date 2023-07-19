@@ -78,7 +78,7 @@ void UAHNPCSpawner::CheckNPCNumber(bool IsTarget)
 	}
 }
 
-void UAHNPCSpawner::TestSpawnNPC()
+/*void UAHNPCSpawner::TestSpawnNPC()
 {
 	UWorld* World = GetWorld();
 	check(World);
@@ -106,9 +106,9 @@ void UAHNPCSpawner::TestSpawnNPC()
 	AActor* TestBadNPC = World->SpawnActor<AActor>(MakeNPCBPClass(), BadNPCLocation, BadNPCRotator, SpawnParams);
 	AAHNPCVehicleBase* TestBadAHNPC = Cast<AAHNPCVehicleBase>(TestBadNPC);
 	TestBadAHNPC->TESTBadNPCInfoSetting();
-}
+}*/
 
-void UAHNPCSpawner::SuffleArray(TArray<int32>& Array)
+void UAHNPCSpawner::ShuffleArray(TArray<int32>& Array)
 {
 	const int32 LastIndex = Array.Num() - 1;
  
@@ -147,7 +147,7 @@ void UAHNPCSpawner::SetTargetNPCIndex(int32 BadNPCNumber)
 	{
 		RandomIndex[i] = i;
 	}
-	SuffleArray(RandomIndex);
+	ShuffleArray(RandomIndex);
 	for(int32 i = 0; i<BadNPCNumber; ++i)
 	{
 		//UE_LOG(LogTemp, Log, TEXT("NPC Target Index : %d"), RandomIndex[i]);
@@ -266,7 +266,7 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator R
 	IsTarget? ++NowBadNPCNumber : ++NowGoodNPCNumber;
 }
 
-int32 UAHNPCSpawner::SetRandomIndex()
+int32 UAHNPCSpawner::RandomSpawnIndex()
 {
 	int32 TempIndex = FMath::RandRange(0, GetSpawnLocationNumber()-1);
 	return TempIndex;
@@ -275,7 +275,7 @@ int32 UAHNPCSpawner::SetRandomIndex()
 void UAHNPCSpawner::SpawnNewNPC(bool IsTarget)
 {
 	//Spawn될 지역 Index
-	int32 SpawnLocationIndex = SetRandomIndex();
+	int32 SpawnLocationIndex = RandomSpawnIndex();
 	if(!IsHitActorOnSpawnActor(SpawnLocationIndex))
 	{
 		UE_LOG(LogTemp, Log, TEXT("Spawn 가능한 위치입니다"));

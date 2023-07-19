@@ -10,11 +10,6 @@
 #include "AmHaeng/Widget/Gimmick/BeforeChase/AHChaseStartWidget.h"
 #include "AmHaeng/Widget/Gimmick/BeforeChase/AHScreenCrashWidget.h"
 
-AAHBeforeChase::AAHBeforeChase()
-{
-}
-
-
 void AAHBeforeChase::BeforeChaseProcess(AAHVehiclePlayerController* InPC, AAHNPCVehicleBase* InTargetNPC)
 {
 	if(InPC->GetPlayerPawn())
@@ -66,10 +61,11 @@ void AAHBeforeChase::FinishChaseStartWidget()
 	ThrowMannequin();
 }
 
+/*
 void AAHBeforeChase::SetPause(bool InPause)
 {
 	PlayerController->SetPause(InPause);
-}
+}*/
 
 void AAHBeforeChase::RagdollMannequinSpawn()
 {

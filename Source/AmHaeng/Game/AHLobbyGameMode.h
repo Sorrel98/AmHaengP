@@ -14,18 +14,19 @@ class AMHAENG_API AAHLobbyGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	AAHLobbyGameMode();
-
+	static bool IsFirstLobby;
+	
+protected:
 	virtual void BeginPlay() override;
-
+	
+public:
 	void LobbyWidgetOnViewport();
-
 	void OpenAHGameLevel();
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> LobbyWidgetClass;
 	TObjectPtr<class UAHLobbyWidget> LobbyWidget;
 
 	FString AHGameLevelName = "AmHaengLevel";
-
-	static bool IsFirstLobby;
 };

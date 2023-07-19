@@ -11,10 +11,7 @@ UCLASS()
 class AMHAENG_API AAHSpline : public AActor
 {
 	GENERATED_BODY()
-
-
-private:
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ThrowMannequin", meta=(AllowPrivateAccess = true))
 	float ThrowSpeed;
-
 };

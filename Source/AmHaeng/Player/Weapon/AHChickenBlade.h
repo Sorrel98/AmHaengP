@@ -15,11 +15,11 @@ class AMHAENG_API AAHChickenBlade : public AActor, public IAHWeapon
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AAHChickenBlade();
-
+public:
 	virtual void BeginPlay() override;
+
+	ChickenAttackFinish ChickenAttackFinishDelegate;
+	void MouseClickDelegate(bool IsClick);
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
 	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -27,27 +27,26 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChickenAttackTimelineFinish();*/
 
+	//Capsule Component
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenBladeCapsuleComponent();
+	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;}
 
+	//Mesh
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenMesh();
 
-	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;};
-
+	//Visible
 	void SetChickenVisible(bool Visible);
-	
+
+	//Sound
 	void ChickenAttackSound();
-	void MouseClickDelegate(bool IsClick);
 
 	//Attack
 	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChickenAttackDetect();*/
 	
-	ChickenAttackFinish ChickenAttackFinishDelegate;
-
 private:
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
 	TObjectPtr<AAHNPCVehicleBase> ChaseNPC = nullptr;
 

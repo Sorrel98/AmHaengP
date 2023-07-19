@@ -21,10 +21,11 @@ public:
 	class AAHSpline* GetSplineActor();
 	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<USplineComponent> Spline;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta=(AllowPrivateAccess = true))
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 };

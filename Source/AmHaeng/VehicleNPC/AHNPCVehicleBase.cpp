@@ -8,13 +8,6 @@
 #include "AmHaeng/Widget/NPC/AHNPCInfoWidget.h"
 #include "DrawDebugHelpers.h"
 #include "AmHaeng/Widget/NPC/AHNPCHPWidget.h"
-
-/*AAHNPCVehicleBase::AAHNPCVehicleBase()
-{
-
-}*/
-
-
 AAHNPCVehicleBase::AAHNPCVehicleBase()
 {
 	//Debug 위해 모든 NPC target
@@ -26,10 +19,10 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	SetInfoWidget();
 	SetHPWidget();
 
-	DetectionDistance = 1000.f;
+	/*DetectionDistance = 1000.f;
 	bIsAnotherNPCForward = false;
 	BrakeDistance = 10000.f;
-	bIsDetected = false;
+	bIsDetected = false;*/
 	bIsChased = false;
 }
 
@@ -65,19 +58,19 @@ void AAHNPCVehicleBase::SetIsTargetNPC(const uint8& IsTargetNPC)
 	bIsTargetNPC = IsTargetNPC;
 }
 
-void AAHNPCVehicleBase::SetMassOne()
+void AAHNPCVehicleBase::MouseScaned()
 {
-	this->GetMesh()->SetSimulatePhysics(false);
-	// 물리 시뮬레이션 컴포넌트 가져오기
-	UMeshComponent* RC = Cast<UMeshComponent>(GetRootComponent());
-	if (RC)
-	{
-		float NewMassScale = 0.000000000000000000000000000000001f; // 변경할 무게 비율
-		RC->SetMassScale(NAME_None, NewMassScale);
-	}
-	this->GetMesh()->SetSimulatePhysics(true);
+	SetNPCInfoWidgetVisible(true);
+	AHSetTooltipVisible(true);
+	SetOutline(true);
 }
 
+void AAHNPCVehicleBase::MouseUnscaned()
+{
+	SetNPCInfoWidgetVisible(false);
+	AHSetTooltipVisible(false);
+	SetOutline(false);
+}
 
 //=================================================
 //NPC Info Widget
@@ -148,7 +141,7 @@ void AAHNPCVehicleBase::AHSetTooltipVisible(bool visible) const
 }
 
 
-void AAHNPCVehicleBase::TESTGoodNPCInfoSetting()
+/*void AAHNPCVehicleBase::TESTGoodNPCInfoSetting()
 {
 	bIsTargetNPC = false;
 
@@ -191,7 +184,7 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
 	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
-}
+}*/
 
 void AAHNPCVehicleBase::JustMaxEngineTorque_Implementation(float InMaxTorque)
 {
@@ -220,10 +213,6 @@ void AAHNPCVehicleBase::NPCHPDown()
 				NPCHPWidget->SetNPCHP(0);
 			}
 		}
-		/*else
-		{
-			UE_LOG(LogTemp, Log, TEXT("NPCHPWidget is null"));
-		}*/
 	}
 }
 

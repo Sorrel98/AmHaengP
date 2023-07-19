@@ -23,15 +23,11 @@ public:
 	void MinimapSettingEnd();
 
 	UFUNCTION(BlueprintNativeEvent, Category="NPCIcon")
-	void AddNPCIcon(class AAHNPCVehicleBase* InNPCVehicleBase);
+	void AddNPCIcon(AAHNPCVehicleBase* InNPCVehicleBase);
 
 	void CallAddNPCIcon(AAHNPCVehicleBase* InNPCVehicleBase);
 
 	void SetNPCCursorRed(AAHNPCVehicleBase* InTarget);
-
-	/*UFUNCTION(BlueprintCallable, Category="NPCIcon")
-	void CheckAndDestroyIcon();*/
-
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))

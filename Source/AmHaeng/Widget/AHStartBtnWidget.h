@@ -10,6 +10,8 @@ DECLARE_MULTICAST_DELEGATE(FStartButtonDelegate);
 /**
  * 
  */
+
+//사용 안 함
 UCLASS()
 class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 {
@@ -17,8 +19,6 @@ class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 
 public:
 	FStartButtonDelegate PushedStartButton;
-
-	virtual void NativeOnInitialized() override;
 
 	UFUNCTION(BlueprintCallable)
 	void TextButtonCallback();

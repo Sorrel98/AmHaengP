@@ -17,22 +17,12 @@ public:
 	void NPCIsOutOfMap(class AAHNPCVehicleBase* OutNPC);
 
 	void SetSpawner();
-	void SpawnNewNPC();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	//todo:tick 사용되는지 확인
-	virtual void Tick(float DeltaTime) override;
-
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
 	TObjectPtr<class UAHNPCSpawner> Spawner;
-
-	
-
-	
 };
