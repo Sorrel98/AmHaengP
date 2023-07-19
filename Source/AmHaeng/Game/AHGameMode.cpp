@@ -9,6 +9,7 @@
 #include "AmHaeng/HUD/AHHUD.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
@@ -24,13 +25,13 @@ AAHGameMode::AAHGameMode()
 	NPCNumber = 0; //0부터 시작
 }
 
-void AAHGameMode::PlayPause(bool IsPause)
+/*void AAHGameMode::PlayPause(bool IsPause)
 {
 	if(PlayerController)
 	{
 		PlayerController->SetPause(IsPause);
 	}
-}
+}*/
 
 void AAHGameMode::SetWorldTimer()
 {
@@ -75,6 +76,8 @@ void AAHGameMode::BeginPlay()
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
 
+	SetAllNPCNumber();
+	SetBadNPCNumber();
 	
 	
 	//Gimmick Mode Setting
@@ -117,13 +120,13 @@ void AAHGameMode::BeginPlay()
 	MakeSpline();
 }
 
-void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
+/*void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
 {
 }
 
 void AAHGameMode::PlayCrashGlassAnimation_Implementation()
 {
-}
+}*/
 
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
@@ -268,7 +271,8 @@ void AAHGameMode::SetAllNPCNumber()
 
 void AAHGameMode::SetBadNPCNumber()
 {
-	BadNPCNumber = 3/AllNPCNumber;
+	BadNPCNumber = AllNPCNumber/3;
+	UE_LOG(LogTemp, Log, TEXT("BadNPCNumber : %d"), BadNPCNumber);
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
@@ -312,7 +316,6 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 	ChasedNPC->Destroy();
 	
 	//Respawn
-	//todo:Bad NPC Respawn
 	Spawner->DecreaseBadNPC();
 }
 
