@@ -11,7 +11,7 @@
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Weapon/AHChickenBlade.h"
 
-AAHPlayerPawn* AAHVehiclePlayerController::PlayerPawn = nullptr;
+TObjectPtr<AAHPlayerPawn> AAHVehiclePlayerController::PlayerPawn = nullptr;
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
 	bShowMouseCursor = true;

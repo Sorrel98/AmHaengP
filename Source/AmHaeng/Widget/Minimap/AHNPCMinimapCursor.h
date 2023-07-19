@@ -32,7 +32,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	AAHNPCVehicleBase* NPCActor;
+	TObjectPtr<AAHNPCVehicleBase> NPCActor;
 
 	bool IsVisible = true;
 };

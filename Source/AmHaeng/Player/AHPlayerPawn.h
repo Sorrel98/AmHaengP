@@ -79,17 +79,17 @@ public:
 
 private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	USkeletalMeshComponent* WeaponComponent;
+	TObjectPtr<USkeletalMeshComponent> WeaponComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	TSubclassOf<class AAHChickenBlade> ChickenBladeClass;
 	TObjectPtr<AAHChickenBlade> ChickenBlade;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	UCapsuleComponent* ChickenBladeCapsuleComponent;
+	TObjectPtr<UCapsuleComponent> ChickenBladeCapsuleComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	class USkeletalMeshComponent* PlayerSkeletalMeshComponent;
+	TObjectPtr<USkeletalMeshComponent> PlayerSkeletalMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	bool IsChickenRotating;
@@ -98,7 +98,7 @@ private:
 	bool AlreadyAttacked;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	UStaticMeshComponent* MannequinTarget;
+	TObjectPtr<UStaticMeshComponent> MannequinTarget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	float PlayerNowSpeed;

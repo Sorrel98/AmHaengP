@@ -18,7 +18,7 @@ class AMHAENG_API AAHChase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AAHChase();
-	void ChaseStart(class AAHNPCVehicleBase* InNPC);
+	void ChaseStart(AAHNPCVehicleBase* InNPC);
 	void NPCTeleport();
 	void SetNPCState();
 	void SetNPCMaxEngineTorque();
@@ -38,11 +38,11 @@ public:
 	//Delegate
 	FTimeOutDelegate FTimeOutDelegate;
 private:
-	class UAHNPCTeleport* TeleportClass;
-	AAHNPCVehicleBase* ChasedNPC;
+	TObjectPtr<class UAHNPCTeleport> TeleportClass;
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	class UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
+	TObjectPtr<UChaosVehicleMovementComponent> NowNPCChaosVehicleMovementComponent;
 
 	FTimerHandle ChaseTimerHandle;
 

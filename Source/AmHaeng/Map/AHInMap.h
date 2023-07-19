@@ -17,12 +17,6 @@ public:
 	void NPCIsOutOfMap(class AAHNPCVehicleBase* OutNPC);
 
 	void SetSpawner();
-
-	//bool IsHitActorOnSpawnActor(int32 TeleportLocationIndex);
-
-	//UFUNCTION()
-	//int32 SetRandomIndex();
-
 	void SpawnNewNPC();
 
 protected:
@@ -31,11 +25,12 @@ protected:
 
 public:	
 	// Called every frame
+	//todo:tick 사용되는지 확인
 	virtual void Tick(float DeltaTime) override;
 
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	class UAHNPCSpawner* Spawner;
+	TObjectPtr<class UAHNPCSpawner> Spawner;
 
 	
 

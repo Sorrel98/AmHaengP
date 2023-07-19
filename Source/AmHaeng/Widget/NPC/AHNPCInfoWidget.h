@@ -17,9 +17,6 @@ class AMHAENG_API UAHNPCInfoWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	//UAHNPCInfoWidget(const FObjectInitializer& ObjectInitializer);
-
-public:
 	//Set Stats
 	FORCEINLINE void SetNPCOwnerName(const FString NewName) { TB_Owner->SetText(FText::FromString(NewName)); }
 	FORCEINLINE void SetNPCLicenseNumber(const FString NewLicenseNumber)
@@ -48,19 +45,19 @@ protected:
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TB_Owner;
+	TObjectPtr<UTextBlock> TB_Owner;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TB_License;
+	TObjectPtr<UTextBlock> TB_License;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TB_MinSpeed;
+	TObjectPtr<UTextBlock> TB_MinSpeed;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TB_MaxSpeed;
+	TObjectPtr<UTextBlock> TB_MaxSpeed;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TB_Sway;
+	TObjectPtr<UTextBlock> TB_Sway;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UVerticalBox> BackGroundVerticalBox;

@@ -89,23 +89,22 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TSubclassOf<class UAHNPCInfoWidget> NPCInfoWidgetClass;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAHNPCInfoWidget> NPCInfoWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TObjectPtr<class UWidgetComponent> NPCInfoWidgetComponent;
 
 	//NPC Stat Component
 	UPROPERTY(VisibleAnywhere, Category=Stat)
-	class UAHNPCStatComponent* NPCStat;
-
-	TObjectPtr<class UAHNPCInfoWidget> NPCInfoWidget;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
-	TObjectPtr<class UWidgetComponent> NPCHPWidgetComponent;
-
+	TObjectPtr<UAHNPCStatComponent> NPCStat;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	TSubclassOf<UAHNPCHPWidget> NPCHPWidgetClass;
-
-	TObjectPtr<class UAHNPCHPWidget> NPCHPWidget; 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAHNPCHPWidget> NPCHPWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	TObjectPtr<UWidgetComponent> NPCHPWidgetComponent;
+	
 	//Other NPC Detection
 	float DetectionDistance;
 
@@ -120,5 +119,5 @@ private:
 	bool bIsChased;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	UChaosVehicleMovementComponent* NowNPCChaosVehicleMovementComponent;
+	TObjectPtr<UChaosVehicleMovementComponent> NowNPCChaosVehicleMovementComponent;
 };

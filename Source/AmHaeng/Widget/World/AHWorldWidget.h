@@ -19,27 +19,25 @@ public:
 	void BindWorldWidgetDelegate();
 	void SetReputation(uint32 InReputation);
 	void SetWorldTime(uint32 InWorldTime);
-
-
-public:
+	
 	void SetGimmickWidgetText(EGimmickMode InGimmick);
 
 	void TextChangeDelegateBind();
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TextPatrol;
+	TObjectPtr<UTextBlock> TextPatrol;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> TextChase;
+	TObjectPtr<UTextBlock> TextChase;
 	
 protected:
 	virtual void NativeConstruct() override;
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> Reputation;
+	TObjectPtr<UTextBlock> Reputation;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> WorldTime;
+	TObjectPtr<UTextBlock> WorldTime;
 };

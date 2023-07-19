@@ -22,9 +22,9 @@ public:
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	USkeletalMeshComponent* SkeletalMeshComponent;
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USplineComponent* Spline;
+	TObjectPtr<USplineComponent> Spline;
 };

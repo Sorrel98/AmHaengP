@@ -24,7 +24,7 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widgets")
-	UAHNPCClickCPWidget* CPWidget;
+	TObjectPtr<UAHNPCClickCPWidget> CPWidget;
 
 	void SetCPWidgetVisibility(bool Visible) const;
 	void InitCPWidget();

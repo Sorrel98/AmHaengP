@@ -28,28 +28,25 @@ public:
 
 	FStartChaseDelegate StartChaseDelegate;
 
-	void CheckSendToBeforeChaseClassDelegate();
-
-
 private:
 	//Gimmick Mode Widget
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UAHChaseStartWidget> ChaseStartWidgetClass;
-	UAHChaseStartWidget* ChaseStartWidget = nullptr;
+	TObjectPtr<UAHChaseStartWidget> ChaseStartWidget = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UAHScreenCrashWidget> CameraCrashClass;
-	class UAHScreenCrashWidget* CameraCrashWidget;
+	TObjectPtr<UAHScreenCrashWidget> CameraCrashWidget;
 
 	//CameraShake
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> CameraShakeClass;
 
 	AAHVehiclePlayerController* PlayerController;
-	AAHNPCVehicleBase* ChasedNPC;
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC;
 	
 	//Ragdoll Mannequin
-	class AAHMannequin* Mannequin;
+	TObjectPtr<class AAHMannequin> Mannequin;
 
 	FTimerHandle TempTimer;
 

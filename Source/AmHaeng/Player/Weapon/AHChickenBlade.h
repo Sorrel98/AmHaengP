@@ -22,10 +22,10 @@ public:
 	virtual void BeginPlay() override;
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChickenAttackTimeline(AAHChickenBlade* ChickenBlade);
 	UFUNCTION(BlueprintCallable)
-	void ChickenAttackTimelineFinish();
+	void ChickenAttackTimelineFinish();*/
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenBladeCapsuleComponent();
@@ -41,25 +41,22 @@ public:
 	void MouseClickDelegate(bool IsClick);
 
 	//Attack
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChickenAttackDetect();
-	
+	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ChickenAttackDetect();*/
 	
 	ChickenAttackFinish ChickenAttackFinishDelegate;
-
-	
 
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	AAHNPCVehicleBase* ChaseNPC = nullptr;
+	TObjectPtr<AAHNPCVehicleBase> ChaseNPC = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	AAHPlayerPawn* PlayerPawn = nullptr;
+	TObjectPtr<AAHPlayerPawn> PlayerPawn = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	class UCapsuleComponent* CapsuleComponent = nullptr;
+	TObjectPtr<UCapsuleComponent> CapsuleComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	USkeletalMeshComponent* ChickenSkeletal = nullptr;
+	TObjectPtr<USkeletalMeshComponent> ChickenSkeletal = nullptr;
 };

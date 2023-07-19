@@ -31,14 +31,14 @@ void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 	}
 }
 
-void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
+/*void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
 {
 }
 
 void AAHChickenBlade::ChickenAttackTimelineFinish()
 {
 	ChickenAttackFinishDelegate.Execute();
-}
+}*/
 
 void AAHChickenBlade::SetChickenMesh_Implementation()
 {
@@ -88,7 +88,7 @@ void AAHChickenBlade::MouseClickDelegate(bool IsClick)
 	UE_LOG(LogTemp, Log, TEXT("Chicken Blade : Mouse Delegate %d"), IsClick);
 }
 
-void AAHChickenBlade::ChickenAttackDetect_Implementation()
+/*void AAHChickenBlade::ChickenAttackDetect_Implementation()
 {
-}
+}*/
 

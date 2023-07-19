@@ -29,8 +29,8 @@ public:
 
 	void SetNPCCursorRed(AAHNPCVehicleBase* InTarget);
 
-	UFUNCTION(BlueprintCallable, Category="NPCIcon")
-	void CheckAndDestroyIcon();
+	/*UFUNCTION(BlueprintCallable, Category="NPCIcon")
+	void CheckAndDestroyIcon();*/
 
 
 private:
@@ -38,8 +38,8 @@ private:
 	TMap<AAHNPCVehicleBase*, UAHNPCMinimapCursor*> NPCCursorMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	class UAHNPCSpawner* Spawner;
+	TObjectPtr<class UAHNPCSpawner> Spawner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	AAHNPCVehicleBase* NPCActor;
+	TObjectPtr<AAHNPCVehicleBase> NPCActor;
 };

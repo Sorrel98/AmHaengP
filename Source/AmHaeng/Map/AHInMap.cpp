@@ -4,6 +4,7 @@
 #include "AHInMap.h"
 
 #include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 class UBoxComponent;

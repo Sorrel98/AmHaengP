@@ -23,7 +23,7 @@ private:
 	TObjectPtr<class UTextBlock> CorrectTargetText;
 
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
-	TObjectPtr<class UTextBlock> FailTargetText;
+	TObjectPtr<UTextBlock> FailTargetText;
 
 	uint8 IsTargetNPC;
 

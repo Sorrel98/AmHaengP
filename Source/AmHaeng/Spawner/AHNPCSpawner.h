@@ -100,7 +100,7 @@ private:
 	TArray<AActor*> GoodNPCSpawnLocationActors;
 	TArray<AActor*> BadNPCSpawnLocationActors;
 
-	AHMathFunctions* MathFunctions;
+	TObjectPtr<AHMathFunctions> MathFunctions;
 
 	//NPC 마다 붙이는 Index 번호
 	int32 NPCNumber = 0;

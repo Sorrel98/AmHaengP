@@ -28,7 +28,7 @@ public:
 	void SetPlayerPawn();
 
 	//Static
-	static AAHPlayerPawn* PlayerPawn;
+	static TObjectPtr<AAHPlayerPawn> PlayerPawn;
 
 protected:
 	//Called when the game starts or when spawned
@@ -86,7 +86,7 @@ private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCScanning = false;
 
-	AActor* MousePrevActor;
+	TObjectPtr<AActor> MousePrevActor;
 
 
 	//mouse input system
@@ -110,7 +110,7 @@ private:
 	//click Circular Progressbar UI
 	FVector MousePosition;
 
-	AActor* NowHitActor;
+	TObjectPtr<AActor> NowHitActor;
 
-	class AAHNPCVehicleBase* ChasedNPC = nullptr;
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC = nullptr;
 };

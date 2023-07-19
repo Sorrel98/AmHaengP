@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/Game/AHGameMode.h"
-#include "GameFramework/Actor.h"
 #include "AHChaseGimmickManager.generated.h"
 
 UCLASS()
@@ -12,39 +10,33 @@ class AMHAENG_API AAHChaseGimmickManager : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AAHChaseGimmickManager();
-
-	void StartChaseGimmick(AAHNPCVehicleBase* NPCVehicle);
+public:
+	void StartChaseGimmick(class AAHNPCVehicleBase* NPCVehicle);
 
 	void ChaseStart();
 
-	void Initialize(AAHVehiclePlayerController* PC);
-
-	//void DestroyChaseClasses();
-
+	void Initialize(class AAHVehiclePlayerController* PC);
+	
 	class AAHChase* GetChase(){return Chase;}
 	
 	class AAHBeforeChase* GetBeforeChase(){return BeforeChase;};
 
-
-protected:
-	
 private:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AAHBeforeChase> BeforeChaseClass;
-
-	UPROPERTY()
-	AAHBeforeChase* BeforeChase;
-
-	class AAHChase* Chase;
-
-	AAHNPCVehicleBase* ChasedNPC;
-
-	UAHMinimapWidget* MinimapWidget;
+	TSubclassOf<AAHBeforeChase> BeforeChaseClass;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AAHBeforeChase> BeforeChase;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AAHChase> Chase;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UAHMinimapWidget> MinimapWidget;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<AAHVehiclePlayerController> PlayerController;
 
 	uint32 ChaseCount = 0;
-
-	AAHVehiclePlayerController* PlayerController;
 };
