@@ -7,13 +7,6 @@
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
-// Sets default values
-AAHChickenBlade::AAHChickenBlade()
-{
-	UE_LOG(LogTemp, Log, TEXT("Chicken Blade가 생성되었습니다"));
-	
-}
-
 void AAHChickenBlade::BeginPlay()
 {
 	Super::BeginPlay();
@@ -31,14 +24,14 @@ void AAHChickenBlade::InitChickenBlade(AAHNPCVehicleBase* ChasedNPC)
 	}
 }
 
-void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
+/*void AAHChickenBlade::ChickenAttackTimeline_Implementation(AAHChickenBlade* ChickenBlade)
 {
 }
 
 void AAHChickenBlade::ChickenAttackTimelineFinish()
 {
 	ChickenAttackFinishDelegate.Execute();
-}
+}*/
 
 void AAHChickenBlade::SetChickenMesh_Implementation()
 {
@@ -88,7 +81,7 @@ void AAHChickenBlade::MouseClickDelegate(bool IsClick)
 	UE_LOG(LogTemp, Log, TEXT("Chicken Blade : Mouse Delegate %d"), IsClick);
 }
 
-void AAHChickenBlade::ChickenAttackDetect_Implementation()
+/*void AAHChickenBlade::ChickenAttackDetect_Implementation()
 {
-}
+}*/
 

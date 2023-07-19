@@ -22,8 +22,7 @@ public:
 	
 private:
 	TArray<AActor*> NPCTeleportLocationActors;
-
-	//Todo: Delete
+	
 	TArray<FVector> TeleportLocations;
 	TArray<FRotator> TeleportRotations;
 };

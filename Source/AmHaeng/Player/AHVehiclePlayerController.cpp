@@ -11,7 +11,7 @@
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Weapon/AHChickenBlade.h"
 
-AAHPlayerPawn* AAHVehiclePlayerController::PlayerPawn = nullptr;
+TObjectPtr<AAHPlayerPawn> AAHVehiclePlayerController::PlayerPawn = nullptr;
 AAHVehiclePlayerController::AAHVehiclePlayerController()
 {
 	bShowMouseCursor = true;
@@ -42,7 +42,7 @@ void AAHVehiclePlayerController::Tick(float DeltaTime)
 
 void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 {
-	//sphere 그리기
+	/*//sphere 그리기
 	DrawDebugSphere(
 		GetWorld(),
 		HitResult.ImpactPoint,
@@ -50,7 +50,7 @@ void AAHVehiclePlayerController::DrawShpere(FHitResult HitResult)
 		12,
 		FColor::Red,
 		false,
-		-1.f);
+		-1.f);*/
 }
 
 void AAHVehiclePlayerController::SetInitMousePrevActor()
@@ -88,7 +88,7 @@ void AAHVehiclePlayerController::MouseScan()
 					if (IsNPCScanning)
 					{
 						IsNPCScanning = false;
-						WidgetInVisibleByMouseScan(MousePrevActor);
+						NPCMouseUnscaned(MousePrevActor);
 					}
 					MousePrevActor = NowHitActor;
 				}
@@ -97,7 +97,7 @@ void AAHVehiclePlayerController::MouseScan()
 				{
 					if(IsNPCScanning)
 					{
-						WidgetInVisibleByMouseScan(MousePrevActor);
+						NPCMouseUnscaned(MousePrevActor);
 					}
 					//이 Pawn은 현재 주인공 Pawn
 					APawn* VehiclePawn = GetPawn();
@@ -106,7 +106,7 @@ void AAHVehiclePlayerController::MouseScan()
 					{
 						//MousePrevActor update
 						MousePrevActor = NowHitActor;
-						WidgetVisibleByMouseScan(NowHitActor);
+						NPCMouseScaned(NowHitActor);
 						IsNPCScanning = true;
 					}
 				}
@@ -115,30 +115,24 @@ void AAHVehiclePlayerController::MouseScan()
 	}
 }
 
-void AAHVehiclePlayerController::WidgetVisibleByMouseScan(AActor* HitActor)
+void AAHVehiclePlayerController::NPCMouseScaned(AActor* HitActor)
 {
 	//새로운 Widget Visible
 	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(HitActor);
-	if (HitActorBase == nullptr)
+	if (HitActorBase)
 	{
-		return;
+		HitActorBase->MouseScaned();
 	}
-	HitActorBase->SetNPCInfoWidgetVisible(true);
-	HitActorBase->AHSetTooltipVisible(true);
-	HitActorBase->SetOutline(true);
 }
 
-void AAHVehiclePlayerController::WidgetInVisibleByMouseScan(AActor* HitActor)
+void AAHVehiclePlayerController::NPCMouseUnscaned(AActor* HitActor)
 {
 	//새로운 Widget Visible
 	AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(HitActor);
-	if (HitActorBase == nullptr)
+	if (HitActorBase)
 	{
-		return;
+		HitActorBase->MouseUnscaned();
 	}
-	HitActorBase->SetNPCInfoWidgetVisible(false);
-	HitActorBase->AHSetTooltipVisible(false);
-	HitActorBase->SetOutline(false);
 }
 
 void AAHVehiclePlayerController::SetupInputComponent()

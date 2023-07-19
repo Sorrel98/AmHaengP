@@ -25,14 +25,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetIsVisibleFalse(){IsVisible = false;}
 
-	UFUNCTION(BlueprintCallable)
-	void SetIsVisibleTrue(){IsVisible = true;}
+	/*UFUNCTION(BlueprintCallable)
+	void SetIsVisibleTrue(){IsVisible = true;}*/
 
 	bool GetIsVisible(){return IsVisible;}
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	AAHNPCVehicleBase* NPCActor;
+	TObjectPtr<AAHNPCVehicleBase> NPCActor;
 
 	bool IsVisible = true;
 };

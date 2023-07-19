@@ -15,51 +15,47 @@ class AMHAENG_API AAHChickenBlade : public AActor, public IAHWeapon
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AAHChickenBlade();
-
+public:
 	virtual void BeginPlay() override;
+
+	ChickenAttackFinish ChickenAttackFinishDelegate;
+	void MouseClickDelegate(bool IsClick);
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void ChickenAttackTimeline(AAHChickenBlade* ChickenBlade);
 	UFUNCTION(BlueprintCallable)
-	void ChickenAttackTimelineFinish();
+	void ChickenAttackTimelineFinish();*/
 
+	//Capsule Component
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenBladeCapsuleComponent();
+	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;}
 
+	//Mesh
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void SetChickenMesh();
 
-	UCapsuleComponent* GetChickenBladeCapsuleComponent(){return CapsuleComponent;};
-
+	//Visible
 	void SetChickenVisible(bool Visible);
-	
+
+	//Sound
 	void ChickenAttackSound();
-	void MouseClickDelegate(bool IsClick);
 
 	//Attack
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChickenAttackDetect();
+	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void ChickenAttackDetect();*/
 	
-	
-	ChickenAttackFinish ChickenAttackFinishDelegate;
-
-	
-
 private:
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	AAHNPCVehicleBase* ChaseNPC = nullptr;
+	TObjectPtr<AAHNPCVehicleBase> ChaseNPC = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	AAHPlayerPawn* PlayerPawn = nullptr;
+	TObjectPtr<AAHPlayerPawn> PlayerPawn = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	class UCapsuleComponent* CapsuleComponent = nullptr;
+	TObjectPtr<UCapsuleComponent> CapsuleComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))
-	USkeletalMeshComponent* ChickenSkeletal = nullptr;
+	TObjectPtr<USkeletalMeshComponent> ChickenSkeletal = nullptr;
 };

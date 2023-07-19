@@ -6,10 +6,11 @@
 #include "AmHaeng/Gimmick/AHChaseGimmickManager.h"
 #include "AmHaeng/Gimmick/BeforeChase/AHSpline.h"
 #include "AmHaeng/Gimmick/Chase/AHChase.h"
+#include "AmHaeng/HUD/AHHUD.h"
 #include "AmHaeng/Mouse/AHMouseActor.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
-#include "AmHaeng/Widget/AHStartBtnWidget.h"
 #include "AmHaeng/Widget/Gimmick/AHNPCIsTargetWidget.h"
 #include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 #include "AmHaeng/Widget/World/AHWorldWidget.h"
@@ -21,22 +22,25 @@ AAHSpline* AAHGameMode::SplineActor = nullptr;
 AAHGameMode::AAHGameMode()
 {
 	bIsNPCSpawning = false;
-	NPCNumber = 0; //0부터 시작
+	SpawnedNPCNumber = 0; //0부터 시작
 }
 
-void AAHGameMode::PlayPause(bool IsPause)
+/*void AAHGameMode::PlayPause(bool IsPause)
 {
 	if(PlayerController)
 	{
 		PlayerController->SetPause(IsPause);
 	}
-}
+}*/
 
 void AAHGameMode::SetWorldTimer()
 {
-	WorldTimeOutDelegate.BindUObject(WorldWidget, &UAHWorldWidget::SetWorldTime);
-	UE_LOG(LogTemp, Warning, TEXT("SetWorldTimer"));
-	GetWorld()->GetTimerManager().SetTimer(WorldTimer, this, &AAHGameMode::WorldTimerTickTok, 1.0f, true);
+	if(AHHUD->GetWorldWidget())
+	{
+		WorldTimeOutDelegate.BindUObject(AHHUD->GetWorldWidget(), &UAHWorldWidget::SetWorldTime);
+		UE_LOG(LogTemp, Warning, TEXT("SetWorldTimer"));
+		GetWorld()->GetTimerManager().SetTimer(WorldTimer, this, &AAHGameMode::WorldTimerTickTok, 1.0f, true);
+	}
 }
 
 void AAHGameMode::WorldTimerTickTok()
@@ -72,6 +76,8 @@ void AAHGameMode::BeginPlay()
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
 
+	SetAllNPCNumber();
+	SetBadNPCNumber();
 	
 	
 	//Gimmick Mode Setting
@@ -82,23 +88,20 @@ void AAHGameMode::BeginPlay()
 	
 	Spawner = NewObject<UAHNPCSpawner>();
 
+	//Widgets
+	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
+	AHHUD->HUDOnViewport(InitReputationValue, PastSecond);
 	
-	MinimapOnViewport();
-
 	//Chase Gimmick Setting
 	ChaseGimmickManager = NewObject<AAHChaseGimmickManager>(this, ChaseGimmickManagerClass);
 	ChaseGimmickManager->Rename(TEXT("ChaseGimmick"), this);
-	if(PlayerController && MinimapWidget)
+	if(PlayerController)
 	{
-		ChaseGimmickManager->Initialize(PlayerController, MinimapWidget);
+		ChaseGimmickManager->Initialize(PlayerController);
 	}
 	
 	//Mouse
 	MouseActorSpawn();
-
-	//Widgets
-	WorldWidgetOnViewport();
-	IsTargetTextOnViewport();
 	
 	//Bind Delegate
 	BindingDelegates();
@@ -109,7 +112,7 @@ void AAHGameMode::BeginPlay()
 
 	//Spawn NPC
 	InitSpawnNPC();
-	Spawner->TestSpawnNPC();
+	//Spawner->TestSpawnNPC();
 
 	//TimerSetting
 	SetWorldTimer();
@@ -117,42 +120,16 @@ void AAHGameMode::BeginPlay()
 	MakeSpline();
 }
 
-void AAHGameMode::IsTargetTextOnViewport()
-{
-	if (IsValid(NPCIsTargetWidgetClass))
-	{
-		NPCIsTargetWidget = Cast<UAHNPCIsTargetWidget>(CreateWidget(GetWorld(), NPCIsTargetWidgetClass));
-		if (IsValid(NPCIsTargetWidget))
-		{
-			NPCIsTargetWidget->AddToViewport();
-			NPCIsTargetWidget->AllTextInvisible();
-		}
-	}
-}
-
-void AAHGameMode::MinimapOnViewport()
-{
-	if (IsValid(MinimapWidgetClass))
-	{
-		MinimapWidget = Cast<UAHMinimapWidget>(CreateWidget(GetWorld(), MinimapWidgetClass));
-		if (IsValid(MinimapWidget))
-		{
-			MinimapWidget->AddToViewport();
-		}
-	}
-}
-
-void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
+/*void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
 {
 }
 
 void AAHGameMode::PlayCrashGlassAnimation_Implementation()
 {
-}
+}*/
 
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
-	UE_LOG(LogTemp, Warning, TEXT("SetHitVehicleBase"));
 	HitVehicleBase = InHitVehicleBase;
 }
 
@@ -166,10 +143,13 @@ void AAHGameMode::BindingDelegates()
 		//Timer 실행될 때마다 갈아끼우게 됨
 		PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
 	}
-	if(MinimapWidget)
+	if(AHHUD)
 	{
-		//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
-		MinimapWidget->MinimapSettingEnd();
+		if(AHHUD->GetMinimap())
+		{
+			//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
+			AHHUD->GetMinimap()->MinimapSettingEnd();
+		}
 	}
 
 	if(Spawner)
@@ -224,23 +204,7 @@ UAHNPCSpawner* AAHGameMode::GetSpawner()
 
 void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 {
-	NPCNumber = InNPCNumber;
-}
-
-void AAHGameMode::WorldWidgetOnViewport()
-{
-	if (WorldWidgetClass)
-	{
-		WorldWidget = Cast<UAHWorldWidget>(CreateWidget(GetWorld(), WorldWidgetClass));
-		if (IsValid(WorldWidget))
-		{
-			WorldWidget->AddToViewport();
-			AAHPlayerPawn::Reputation = InitReputationValue;
-			WorldWidget->SetReputation(InitReputationValue);
-			WorldWidget->SetWorldTime(PastSecond);
-			WorldWidget->InvalidateLayoutAndVolatility();
-		}
-	}
+	SpawnedNPCNumber = InNPCNumber;
 }
 
 void AAHGameMode::CPLoadingFinished()
@@ -281,13 +245,19 @@ void AAHGameMode::CPLoadingFinished()
 			//target이 아니었다면
 			//평판 하락
 			PlayerController->PlayerPawn->DecreasingReputation();
-			WorldWidget->SetReputation(AAHPlayerPawn::Reputation);
+			if(AHHUD->GetWorldWidget())
+			{
+				AHHUD->GetWorldWidget()->SetReputation(AAHPlayerPawn::Reputation);
+			}
 			//해당 npc destroy
 			HitVehicleBase->Destroy();
 			//good npc respawn
 			Spawner->DecreaseGoodNPC();
 		}
-		NPCIsTargetWidget->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
+		if(AHHUD->GetIsTargetWidget())
+		{
+			AHHUD->GetIsTargetWidget()->SetNPCIsTargetWidget(HitVehicleBase->GetIsTargetNPC());
+		}
 	}
 }
 
@@ -295,12 +265,13 @@ void AAHGameMode::SetAllNPCNumber()
 {
 	TArray<AActor*> NPCSpawnLocationActors;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("NPCSpawnLocation"), NPCSpawnLocationActors);
-	AllNPCNumber = NPCSpawnLocationActors.Num();
+	InitAllNPCNumber = NPCSpawnLocationActors.Num();
 }
 
 void AAHGameMode::SetBadNPCNumber()
 {
-	BadNPCNumber = 3/AllNPCNumber;
+	BadNPCNumber = InitAllNPCNumber/3;
+	UE_LOG(LogTemp, Log, TEXT("BadNPCNumber : %d"), BadNPCNumber);
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
@@ -337,12 +308,13 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 	{
 		PlayerController->PlayerPawn->DecreasingReputation();
 	}
-	WorldWidget->SetReputation(AAHPlayerPawn::Reputation);
-	//ChaseGimmickManager->DestroyChaseClasses();
+	if(AHHUD->GetWorldWidget())
+	{
+		AHHUD->GetWorldWidget()->SetReputation(AAHPlayerPawn::Reputation);
+	}
 	ChasedNPC->Destroy();
 	
 	//Respawn
-	//todo:Bad NPC Respawn
 	Spawner->DecreaseBadNPC();
 }
 

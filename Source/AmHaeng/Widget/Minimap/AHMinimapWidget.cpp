@@ -4,6 +4,7 @@
 #include "AHMinimapWidget.h"
 
 #include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "Containers/Map.h"
 #include "AmHaeng/Widget/Minimap/AHNPCMinimapCursor.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -59,8 +60,8 @@ void UAHMinimapWidget::SetNPCCursorRed(AAHNPCVehicleBase* InTarget)
 	}
 }
 
-void UAHMinimapWidget::CheckAndDestroyIcon()
-{
+/*void UAHMinimapWidget::CheckAndDestroyIcon()
+{*/
 	/*UE_LOG(LogTemp, Log, TEXT("[start] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
 	for(auto it : NPCCursorMap)
 	{
@@ -74,6 +75,6 @@ void UAHMinimapWidget::CheckAndDestroyIcon()
 	UE_LOG(LogTemp, Log, TEXT("[End] GarbagaCollector NPCCursorMap num : %d"), NPCCursorMap.Num());
 	*/
 	
-}
+/*}*/
 
 

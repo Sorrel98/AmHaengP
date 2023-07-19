@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "AHAfterChase.generated.h"
 
+//************************
+//todo
+//************************
 UCLASS()
 class AMHAENG_API AAHAfterChase : public AActor
 {

@@ -42,7 +42,7 @@ void AAHPlayerPawn::BeginPlay()
 		ChickenBlade->ChickenAttackFinishDelegate.BindUObject(this, &AAHPlayerPawn::ChickenAttackFinish);
 		if(ChickenBlade)
 		{
-			GetSkeletalMesh();
+			SetSkeletalMesh();
 			if(const auto BladeSocket = PlayerSkeletalMeshComponent->GetSocketByName("Blade"))
 			{
 				BladeSocket->AttachActor(ChickenBlade, PlayerSkeletalMeshComponent);
@@ -78,17 +78,12 @@ void AAHPlayerPawn::ChickenAttackFinish()
 	IsChickenRotating = false;
 }
 
-/*void AAHPlayerPawn::SetReputationInitValue()
-{
-	Reputation = ReputationInitValue;
-}*/
-
 void AAHPlayerPawn::PlayerMannequinDetect()
 {
 	MannequinDetect.Execute();
 }
 
-void AAHPlayerPawn::GetSkeletalMesh_Implementation()
+void AAHPlayerPawn::SetSkeletalMesh_Implementation()
 {
 }
 

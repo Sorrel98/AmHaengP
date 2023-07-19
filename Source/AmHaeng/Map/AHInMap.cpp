@@ -4,6 +4,7 @@
 #include "AHInMap.h"
 
 #include "AmHaeng/Game/AHGameMode.h"
+#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 
 class UBoxComponent;
@@ -36,20 +37,11 @@ void AAHInMap::SetSpawner()
 	}
 }
 
-void AAHInMap::SpawnNewNPC()
-{
-}
 
 // Called when the game starts or when spawned
 void AAHInMap::BeginPlay()
 {
 	Super::BeginPlay();
 	SetSpawner();
-}
-
-// Called every frame
-void AAHInMap::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 

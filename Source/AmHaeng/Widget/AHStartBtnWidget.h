@@ -10,6 +10,8 @@ DECLARE_MULTICAST_DELEGATE(FStartButtonDelegate);
 /**
  * 
  */
+
+//사용 안 함
 UCLASS()
 class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 {
@@ -18,19 +20,10 @@ class AMHAENG_API UAHStartBtnWidget : public UUserWidget
 public:
 	FStartButtonDelegate PushedStartButton;
 
-protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	class UButton* SpawnStartBtn;
-
-	//나중에 사용
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	//class UButton* SpawnFinBtn;
-
-
-public:
-	virtual void NativeOnInitialized() override;
-
-public:
 	UFUNCTION(BlueprintCallable)
 	void TextButtonCallback();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UButton> SpawnStartBtn;
 };

@@ -11,48 +11,47 @@ class AMHAENG_API AAHBeforeChase : public AActor
 {
 	GENERATED_BODY()
 public:
-	AAHBeforeChase();
+	FStartChaseDelegate StartChaseDelegate;
+	
 	void BeforeChaseProcess(class AAHVehiclePlayerController* PC, class AAHNPCVehicleBase* InTargetNPC);
+
+	//Chase Start Widget & Anim
 	void PlayChaseStartAnim();
 	void SettingChaseStartWidget();
-
 	UFUNCTION()
 	void FinishChaseStartWidget();
 
-	void SetPause(bool InPause);
+	//Pause
+	//void SetPause(bool InPause);
+	
+	//Mannequin
 	void RagdollMannequinSpawn();
 	void ThrowMannequin();
-	void CameraShake();
 
+	//Crash
+	void CameraShake();
 	void PlayCrashWidget();
 
-	FStartChaseDelegate StartChaseDelegate;
-
-	void CheckSendToBeforeChaseClassDelegate();
-
-
 private:
+	FTimerHandle TempTimer;
+	
 	//Gimmick Mode Widget
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UAHChaseStartWidget> ChaseStartWidgetClass;
-	UAHChaseStartWidget* ChaseStartWidget = nullptr;
+	TObjectPtr<UAHChaseStartWidget> ChaseStartWidget = nullptr;
 
+	//Camera Crash Widget
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UAHScreenCrashWidget> CameraCrashClass;
-	class UAHScreenCrashWidget* CameraCrashWidget;
+	TObjectPtr<UAHScreenCrashWidget> CameraCrashWidget;
 
 	//CameraShake
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> CameraShakeClass;
-
+	
 	AAHVehiclePlayerController* PlayerController;
-	AAHNPCVehicleBase* ChasedNPC;
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC;
 	
 	//Ragdoll Mannequin
-	class AAHMannequin* Mannequin;
-
-	FTimerHandle TempTimer;
-
-	
-
+	TObjectPtr<class AAHMannequin> Mannequin;
 };

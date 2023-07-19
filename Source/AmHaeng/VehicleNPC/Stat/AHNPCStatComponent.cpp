@@ -5,12 +5,6 @@
 #include "AmHaeng/Dictionary/AHMathFunctions.h"
 #include "AmHaeng/Prop/AHTypes.h"
 
-// Sets default values for this component's properties
-UAHNPCStatComponent::UAHNPCStatComponent()
-{
-}
-
-
 // Called when the game starts
 void UAHNPCStatComponent::BeginPlay()
 {
@@ -81,6 +75,7 @@ void UAHNPCStatComponent::SetGoodLicenseNumber()
 
 void UAHNPCStatComponent::SetBadLicenseNumber()
 {
+	UE_LOG(LogTemp, Log, TEXT("Set Bad LicenseNumber"));
 	int32 WrongPart = FMath::RandRange(0, 2); //Year, Month, Day 중에 하나만 Wrong
 	NPCLicenseNumber = AHMathFunctions::MakeBadLicenseNumber(WrongPart, NPCIDNumber);
 }
@@ -98,8 +93,10 @@ void UAHNPCStatComponent::SetGoodSpeed()
 
 void UAHNPCStatComponent::SetBadSpeed()
 {
+	UE_LOG(LogTemp, Log, TEXT("SetBadSpeed"));
 	NPCMinSpeed = AHMathFunctions::MakeRandInteger(70, 90);
 	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(NPCMinSpeed, 110);
+	MaxEngineTorqueUp.Execute(300);
 }
 
 const int32 UAHNPCStatComponent::GetNPCMinSpeed()
@@ -119,6 +116,7 @@ void UAHNPCStatComponent::SetGoodSway()
 
 void UAHNPCStatComponent::SetBadSway()
 {
+	UE_LOG(LogTemp, Log, TEXT("SetBadSway"));
 	NPCSway = AHMathFunctions::MakeRandInteger(31, 50);
 }
 
@@ -140,7 +138,7 @@ void UAHNPCStatComponent::SetNPCHP()
 void UAHNPCStatComponent::NPCHPDown()
 {
 	//todo: 공격력 셋팅
-	NPCHP -= 100;
+	NPCHP -= 20;
 	UE_LOG(LogTemp, Log, TEXT("HP Set : %d"), NPCHP);
 	if(NPCHP <= 0)
 	{

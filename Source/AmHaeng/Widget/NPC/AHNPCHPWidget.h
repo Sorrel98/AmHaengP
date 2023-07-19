@@ -17,11 +17,8 @@ class AMHAENG_API UAHNPCHPWidget : public UUserWidget
 public:
 	void SetNPCHP(float InHP);
 	void NativeConstruct();
-	/*virtual void NativeConstruct() override;*/
-
 
 private:
 	UPROPERTY(meta=(BindWidget, AllowPrivateAccess = true))
 	TObjectPtr<class UProgressBar> NPC_HPBar;
-
 };

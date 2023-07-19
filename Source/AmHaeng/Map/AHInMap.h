@@ -18,26 +18,11 @@ public:
 
 	void SetSpawner();
 
-	//bool IsHitActorOnSpawnActor(int32 TeleportLocationIndex);
-
-	//UFUNCTION()
-	//int32 SetRandomIndex();
-
-	void SpawnNewNPC();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 private:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = true))
-	class UAHNPCSpawner* Spawner;
-
-	
-
-	
+	TObjectPtr<class UAHNPCSpawner> Spawner;
 };

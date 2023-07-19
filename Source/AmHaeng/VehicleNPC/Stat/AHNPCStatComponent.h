@@ -8,21 +8,19 @@
 
 
 DECLARE_MULTICAST_DELEGATE(FNPCDeadDelegateToNPC)
+DECLARE_DELEGATE_OneParam(FMaxEngineTorqueUp, float);
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class AMHAENG_API UAHNPCStatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this component's properties
-	UAHNPCStatComponent();
-
 	FNPCDeadDelegateToNPC ZeroHPDelegateToNPC;
+	FMaxEngineTorqueUp MaxEngineTorqueUp;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
 
 public:
 	void StatsSetting(int32 InIDNumber, uint8 IsTarget);

@@ -3,17 +3,11 @@
 
 #include "AHChaseGimmickManager.h"
 
-#include "AfterChase/AHAfterChase.h"
+#include "AmHaeng/HUD/AHHUD.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
+#include "AmHaeng/Widget/Minimap/AHMinimapWidget.h"
 #include "BeforeChase/AHBeforeChase.h"
 #include "Chase/AHChase.h"
-
-// Sets default values
-AAHChaseGimmickManager::AAHChaseGimmickManager()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
 
 void AAHChaseGimmickManager::StartChaseGimmick(AAHNPCVehicleBase* NPCVehicle)
 {
@@ -30,22 +24,20 @@ void AAHChaseGimmickManager::ChaseStart()
 	MinimapWidget->SetNPCCursorRed(ChasedNPC);
 }
 
-void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC, UAHMinimapWidget* Minimap)
+void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC)
 {
 	UE_LOG(LogTemp, Log, TEXT("AAHChaseGimmickManager::Initialize"));
 	//GimmickManager 객체 셋팅(chase X)
-	MinimapWidget = Minimap;
+	MinimapWidget = Cast<AAHHUD>(PC->GetHUD())->GetMinimap();
 	PlayerController = PC;
+	
 	BeforeChase = NewObject<AAHBeforeChase>(this, BeforeChaseClass);
 	BeforeChase->Rename(TEXT("BeforeChase"), this);
-	Chase = NewObject<AAHChase>();
-	Chase->Rename(TEXT("Chase"), this);
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
 	BeforeChase->SettingChaseStartWidget();
-}
+	
+	Chase = NewObject<AAHChase>();
+	Chase->Rename(TEXT("Chase"), this);
+	
 
-/*void AAHChaseGimmickManager::DestroyChaseClasses()
-{
-	BeforeChase->Destroy();
-	Chase->Destroy();
-}*/
+}

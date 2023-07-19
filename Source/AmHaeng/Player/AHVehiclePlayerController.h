@@ -28,89 +28,80 @@ public:
 	void SetPlayerPawn();
 
 	//Static
-	static AAHPlayerPawn* PlayerPawn;
+	static TObjectPtr<AAHPlayerPawn> PlayerPawn;
 
-protected:
-	//Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-
-	//==============================
-	//사용자 지정 함수 및 변수들
-	//==============================	
-public:
-	//Called every frame;
-	virtual void Tick(float DeltaTime) override;
-	void DrawShpere(FHitResult HitResult);
-
-	void MouseScan();
-
-	void WidgetVisibleByMouseScan(AActor* HitActor);
-	void WidgetInVisibleByMouseScan(AActor* HitActor);
-
-	//mouse Click Binding Functions
-	virtual void SetupInputComponent() override;
-	UFUNCTION(BlueprintCallable)
-	FVector GetMouseLocation() { return MousePosition; }
-	void SetInitMousePrevActor();
-
-
-	//Input mapping
-	void PatrolMouseClick();
-	void PatrolMouseClickReleased();
-	UFUNCTION()
-	void ChaseMouseClick();
-	void ChaseMouseClickReleased();
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SetChaseIMC();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void SetPatrolIMC();
-	
-	UFUNCTION(BlueprintCallable)
-	AAHPlayerPawn* GetPlayerPawn(){ return PlayerPawn; }
-
-	//Chase Finish
-	void ChaseFinished();
-	
 	//Delegate
 	FPatrolMouseClickDelegate PatrolMouseClickDelegate;
 	FNowClickNPCToGameModeDelegate SendNowClickNPCToGameMode;
 	FChaseMouseClickDelegate ChaseMouseClickDelegate;
 
+protected:
+	//Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	//Called every frame;
+	virtual void Tick(float DeltaTime) override;
+
+	//사용하지 않음
+	void DrawShpere(FHitResult HitResult);
+
+	void MouseScan();
+	//Info Widget by Mouse Scan
+	void NPCMouseScaned(AActor* HitActor);
+	void NPCMouseUnscaned(AActor* HitActor);
+
+	//mouse Click Binding Functions
+	virtual void SetupInputComponent() override;
+	void SetInitMousePrevActor();
+	UFUNCTION(BlueprintCallable)
+	FVector GetMouseLocation() { return MousePosition; }
+	
+	//Input mapping
+	UFUNCTION()
+	void PatrolMouseClick();
+	UFUNCTION()
+	void PatrolMouseClickReleased();
+	UFUNCTION()
+	void ChaseMouseClick();
+	UFUNCTION()
+	void ChaseMouseClickReleased();
+
+	//IMC
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetChaseIMC();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void SetPatrolIMC();
+
+	//Player Pawn
+	UFUNCTION(BlueprintCallable)
+	AAHPlayerPawn* GetPlayerPawn(){ return PlayerPawn; }
+
+	//Chase Finish
+	void ChaseFinished();
+
 private:
-	UPROPERTY(EditAnywhere, Category = Scan)
-	float ScanDistance;
-
-	//FString MouseHitActorName;
-	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
-	uint8 IsNPCScanning = false;
-
-	AActor* MousePrevActor;
-
-
 	//mouse input system
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> PatrolClickAction;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> PatrolClickReleasedAction;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ChaseClickAction;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ChaseClickReleasedAction;
+	
+	UPROPERTY(EditAnywhere, Category = Scan)
+	float ScanDistance;
 
-
-
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
+	uint8 IsNPCScanning = false;
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess = "true"))
 	uint8 IsNPCClicking = false;
 
-	//click Circular Progressbar UI
 	FVector MousePosition;
-
-	AActor* NowHitActor;
-
-	class AAHNPCVehicleBase* ChasedNPC = nullptr;
+	TObjectPtr<AActor> MousePrevActor;
+	TObjectPtr<AActor> NowHitActor;
+	
+	TObjectPtr<AAHNPCVehicleBase> ChasedNPC = nullptr;
 };
