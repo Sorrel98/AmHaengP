@@ -4,6 +4,7 @@
 #include "AHChaseGimmickManager.h"
 
 #include "AfterChase/AHAfterChase.h"
+#include "AmHaeng/HUD/AHHUD.h"
 #include "AmHaeng/Player/AHVehiclePlayerController.h"
 #include "BeforeChase/AHBeforeChase.h"
 #include "Chase/AHChase.h"
@@ -30,11 +31,11 @@ void AAHChaseGimmickManager::ChaseStart()
 	MinimapWidget->SetNPCCursorRed(ChasedNPC);
 }
 
-void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC, UAHMinimapWidget* Minimap)
+void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC)
 {
 	UE_LOG(LogTemp, Log, TEXT("AAHChaseGimmickManager::Initialize"));
 	//GimmickManager 객체 셋팅(chase X)
-	MinimapWidget = Minimap;
+	MinimapWidget = Cast<AAHHUD>(PC->GetHUD())->GetMinimap();
 	PlayerController = PC;
 	BeforeChase = NewObject<AAHBeforeChase>(this, BeforeChaseClass);
 	BeforeChase->Rename(TEXT("BeforeChase"), this);

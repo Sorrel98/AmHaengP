@@ -20,7 +20,7 @@ public:
 
 	void ChaseStart();
 
-	void Initialize(AAHVehiclePlayerController* PC, UAHMinimapWidget* Minimap);
+	void Initialize(AAHVehiclePlayerController* PC);
 
 	//void DestroyChaseClasses();
 
