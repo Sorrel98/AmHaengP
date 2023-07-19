@@ -22,6 +22,7 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	//attachment 없어도 됨
 	NPCStat = CreateDefaultSubobject<UAHNPCStatComponent>(TEXT("NPCSTAT"));
 	NPCStat->ZeroHPDelegateToNPC.AddUObject(this, &AAHNPCVehicleBase::BroadCastNPCArrestedDelegate);
+	NPCStat->MaxEngineTorqueUp.BindUObject(this, &AAHNPCVehicleBase::JustMaxEngineTorque);
 	SetInfoWidget();
 	SetHPWidget();
 
@@ -60,6 +61,7 @@ bool AAHNPCVehicleBase::GetIsTargetNPC()
 
 void AAHNPCVehicleBase::SetIsTargetNPC(const uint8& IsTargetNPC)
 {
+	UE_LOG(LogTemp, Log, TEXT("%s Is Target : %d"), *this->GetName(), IsTargetNPC);
 	bIsTargetNPC = IsTargetNPC;
 }
 
@@ -189,6 +191,10 @@ void AAHNPCVehicleBase::TESTBadNPCInfoSetting()
 	NPCInfoWidget->SetNPCMinSpeed(NPCStat->GetNPCMinSpeed());
 	NPCInfoWidget->SetNPCMaxSpeed(NPCStat->GetNPCMaxSpeed());
 	NPCInfoWidget->SetNPCSway(NPCStat->GetNPCSway());
+}
+
+void AAHNPCVehicleBase::JustMaxEngineTorque_Implementation(float InMaxTorque)
+{
 }
 
 void AAHNPCVehicleBase::SetIsChased(bool IsChased)

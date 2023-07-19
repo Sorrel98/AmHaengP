@@ -100,6 +100,7 @@ void UAHNPCStatComponent::SetBadSpeed()
 {
 	NPCMinSpeed = AHMathFunctions::MakeRandInteger(70, 90);
 	NPCMaxSpeed = AHMathFunctions::MakeRandInteger(NPCMinSpeed, 110);
+	MaxEngineTorqueUp.Execute(300);
 }
 
 const int32 UAHNPCStatComponent::GetNPCMinSpeed()

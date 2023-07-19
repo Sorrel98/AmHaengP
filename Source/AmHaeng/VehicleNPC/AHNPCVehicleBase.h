@@ -62,6 +62,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void DetectNothing();
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void JustMaxEngineTorque(float InMaxTorque);
+
 	//Chase 기믹
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void AHSetMaxEngineTorque(float InMaxTorque);
@@ -75,8 +78,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void NPCHPDown();
-	UFUNCTION(BlueprintCallable)
-	int32 GetGroggyGage() { return NPCStat->GetNPCHP(); };
+	/*UFUNCTION(BlueprintCallable)
+	int32 GetGroggyGage() { return NPCStat->GetNPCHP(); };*/
 
 
 private:
