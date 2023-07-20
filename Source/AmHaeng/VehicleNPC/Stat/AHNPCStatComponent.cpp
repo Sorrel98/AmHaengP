@@ -4,6 +4,7 @@
 #include "AHNPCStatComponent.h"
 #include "AmHaeng/Dictionary/AHMathFunctions.h"
 #include "AmHaeng/Prop/AHTypes.h"
+#include "EntitySystem/MovieSceneComponentDebug.h"
 
 // Called when the game starts
 void UAHNPCStatComponent::BeginPlay()
@@ -59,8 +60,21 @@ void UAHNPCStatComponent::SetOwnerName()
 {
 	AHTypes MyTypes;
 	FString EnumName = "NPCOwnerNames";
-	FString OwnerName = GetNPCEnumName(GetRandomValue(MyTypes.GetNPCOwnerNameArray()), *EnumName);
-	NPCOwnerName = OwnerName;
+	TArray<FString> Names = MyTypes.GetNPCNames();
+	NPCOwnerName = Names[FMath::RandRange(0, Names.Num()-1)];
+	
+	/*
+	NPCOwnerNames RandomEnumValue = GetRandomValue(MyTypes.GetNPCOwnerNameArray());
+	FString TestName = "";
+	const UEnum* OwnerEnum = FindObject<UEnum>(ANY_PACKAGE, *EnumName, true);
+	if (OwnerEnum)
+	{
+		TestName = OwnerEnum->GetDisplayNameTextByIndex(FMath::RandRange(0, 7)).ToString();
+		UE_LOG(LogTemp, Log, TEXT("Test Name : %s"), *TestName);
+	}
+	FString OwnerName = GetNPCEnumName(RandomEnumValue, EnumName);
+	UE_LOG(LogTemp, Log, TEXT("OwnerName Name : %s"), *OwnerName);*/
+	//NPCOwnerName = TestName;
 }
 
 const FString UAHNPCStatComponent::GetOwnerName()

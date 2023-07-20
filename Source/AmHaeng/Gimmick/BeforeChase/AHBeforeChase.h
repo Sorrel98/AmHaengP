@@ -49,9 +49,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UCameraShakeBase> CameraShakeClass;
 	
-	AAHVehiclePlayerController* PlayerController;
+	TObjectPtr<AAHVehiclePlayerController> PlayerController;
 	TObjectPtr<AAHNPCVehicleBase> ChasedNPC;
 	
 	//Ragdoll Mannequin
-	TObjectPtr<class AAHMannequin> Mannequin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	TSubclassOf<class AAHMannequin> MannequinClass;
+	TObjectPtr<AAHMannequin> Mannequin;
 };
