@@ -121,7 +121,7 @@ void UAHNPCSpawner::ShuffleArray(TArray<int32>& Array)
 	}
 }
 
-UClass* UAHNPCSpawner::MakeNPCBPClass()
+/*UClass* UAHNPCSpawner::MakeNPCBPClass()
 {
 	//UE_LOG(LogTemp, Log, TEXT("Start Spawn"));
 	if (GetOuter() == nullptr) return nullptr;
@@ -136,7 +136,7 @@ UClass* UAHNPCSpawner::MakeNPCBPClass()
 	if (NPCBPClass == nullptr) return nullptr;
 	
 	return NPCBPClass;
-}
+}*/
 
 void UAHNPCSpawner::SetTargetNPCIndex(int32 BadNPCNumber)
 {
@@ -176,10 +176,19 @@ void UAHNPCSpawner::InitNPCSpawn(uint32 BadNPCNumber)
 	
 	for (int32 ix = 0; ix < SpawnLocations.Num(); ++ix)
 	{
-		AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(MakeNPCBPClass(), SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
+		AAHNPCVehicleBase* NPCVehicleSpawnActor = nullptr;
+		if(NPCClass)
+		{
+			NPCVehicleSpawnActor = World->SpawnActor<AAHNPCVehicleBase>(NPCClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("NPC Class Null"));
+		}
+		
 		if(NPCVehicleSpawnActor==nullptr) return;
 		//Minimap Icon
-		OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
+		OnNPCSpawnEnd.Execute(NPCVehicleSpawnActor);
 		
 		PossessController(NPCVehicleSpawnActor);
 		AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
@@ -210,7 +219,7 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(int32 Index, bool IsTarget)
 	UWorld* World = GetWorld();
 	if (World == nullptr) return;
 
-	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(MakeNPCBPClass(), SpawnLocations[Index], SpawnRotations[Index], SpawnParams);
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, SpawnLocations[Index], SpawnRotations[Index], SpawnParams);
 	if(NPCVehicleSpawnActor == nullptr) return;
 	OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
 	
@@ -230,7 +239,7 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(AActor* LocationActor, bool 
 	UWorld* World = GetWorld();
 	if (World == nullptr) return;
 
-	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(MakeNPCBPClass(), LocationActor->GetActorLocation(), LocationActor->GetActorRotation(), SpawnParams);
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, LocationActor->GetActorLocation(), LocationActor->GetActorRotation(), SpawnParams);
 	if(NPCVehicleSpawnActor == nullptr) return;
 	OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
 	
@@ -250,7 +259,7 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator R
 	UWorld* World = GetWorld();
 	if (World == nullptr)return;
 	
-	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(MakeNPCBPClass(), Location, Rotation, SpawnParams);
+	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, Location, Rotation, SpawnParams);
 	if(NPCVehicleSpawnActor)
 	{
 		OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));

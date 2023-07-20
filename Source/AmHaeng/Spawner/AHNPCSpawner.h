@@ -62,7 +62,7 @@ public:
 	void SpecificLocationNPCVehicleSpawn(int32 Index, bool IsTarget);
 	void SpecificLocationNPCVehicleSpawn(AActor* LocationActor, bool IsTarget);
 	void SpecificLocationNPCVehicleSpawn(FVector Location, FRotator Rotation, bool IsTarget);
-	UClass* MakeNPCBPClass();
+	//UClass* MakeNPCBPClass();
 
 	//Spawn Locaiton 중, RandomIndex를 만들어냅니다.
 	int32 RandomSpawnIndex();
@@ -71,6 +71,12 @@ public:
 	bool IsHitActorOnSpawnActor(int32 SpawnLocationIndex);
 
 private:
+	//NPC
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	TSubclassOf<class AAHNPCVehicleBase> NPCClass;
+	/*UPROPERTY()
+	TObjectPtr<AAHNPCVehicleBase> NPC;*/
+	
 	//Good, Bad NPC 갯수 관리
 	int32 MaxGoodNPCNumber;
 	int32 MaxBadNPCNumber;

@@ -32,6 +32,20 @@ void AAHPlayerPawn::ChaseMouseDelegate(bool IsClick)
 	}
 }
 
+void AAHPlayerPawn::ChaseMouseDelegateBind()
+{
+	if(AAHGameMode::PlayerController)
+	{
+		AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::ChaseMouseDelegate);
+		UE_LOG(LogTemp, Log, TEXT("Player Controller is there? : %s"), *AAHGameMode::PlayerController->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Player Controller 없음"));
+	}
+	
+}
+
 void AAHPlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
@@ -55,9 +69,10 @@ void AAHPlayerPawn::BeginPlay()
 	IsChickenRotating = false;
 	
 	SetMannequinDestMeshComponent();
-	AAHGameMode::PlayerController->ChaseMouseClickDelegate.AddUObject(this, &AAHPlayerPawn::ChaseMouseDelegate);
-
-	Reputation = 30;
+	/*UE_LOG(LogTemp, Log, TEXT("Chase Mouse Click Delegate Start"));
+	ChaseMouseDelegateBind();
+	UE_LOG(LogTemp, Log, TEXT("Chase Mouse Click Delegate End"));*/
+	AAHPlayerPawn::Reputation = 30;
 }
 
 void AAHPlayerPawn::SetNowSpeedFromBP_Implementation()
