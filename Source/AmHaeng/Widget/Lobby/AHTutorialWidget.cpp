@@ -5,5 +5,5 @@
 
 void UAHTutorialWidget::StartBtnClick()
 {
-	UE_LOG(LogTemp, Log, TEXT("Start Play Btn Clicked"));
+	StandardOfTargetDelegate.Execute();
 }

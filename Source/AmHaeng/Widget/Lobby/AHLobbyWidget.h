@@ -9,13 +9,13 @@
 /**
  * 
  */
-DECLARE_DELEGATE(FStartBtnClickedDelegate)
+DECLARE_DELEGATE(FTutorialBtnDelegate)
 UCLASS()
 class AMHAENG_API UAHLobbyWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	FStartBtnClickedDelegate StartBtnClickedDelegate;
+	FTutorialBtnDelegate TutorialBtnDelegate;
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void SetReputationTextValue(int32 InReputation);
@@ -33,5 +33,29 @@ public:
 	void VisibleKeyBindBox();
 
 	UFUNCTION(BlueprintCallable)
-	void StartBtnClicked();
+	void StandardOfTargetBtnClicked();
+
+	UFUNCTION(BlueprintCallable)
+	void StartPlayBtnClicked();
+
+	UFUNCTION()
+	void SettingWidgets();
+
+	void TutorialWidgetVisible(bool visible);
+	TObjectPtr<class UAHTutorialWidget> GetTutorialWidget();
+
+	void StandardOfTargetWidgetVisible(bool visible);
+	TObjectPtr<class UAHStandardOfTargetWidget> GetStandardOfTargetWidget();
+
+	UFUNCTION()
+	void OnStandardOfTargetWidget();
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	TSubclassOf<UAHTutorialWidget> TutorialWidgetClass;
+	TObjectPtr<UAHTutorialWidget> TutorialWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
+	TSubclassOf<class UAHStandardOfTargetWidget> StandardOfTargetWidgetClass;
+	TObjectPtr<UAHStandardOfTargetWidget> StandardOfTargetWidget;
 };

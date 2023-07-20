@@ -5,6 +5,8 @@
 
 #include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AmHaeng/Widget/Lobby/AHLobbyWidget.h"
+#include "AmHaeng/Widget/Lobby/AHStandardOfTargetWidget.h"
+#include "AmHaeng/Widget/Lobby/AHTutorialWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -22,7 +24,11 @@ void AAHLobbyGameMode::BeginPlay()
 	LobbyWidgetOnViewport();
 	
 	UE_LOG(LogTemp, Log, TEXT("Final Reputation : %d"), AAHPlayerPawn::Reputation);
-	LobbyWidget->StartBtnClickedDelegate.BindUObject(this, &AAHLobbyGameMode::OpenAHGameLevel);
+	LobbyWidget->SettingWidgets();
+	if(LobbyWidget->GetStandardOfTargetWidget())
+	{
+		LobbyWidget->GetStandardOfTargetWidget()->StartBtnClickedDelegate.BindUObject(this, &AAHLobbyGameMode::OpenAHGameLevel);
+	}
 }
 
 void AAHLobbyGameMode::LobbyWidgetOnViewport()

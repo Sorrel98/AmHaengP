@@ -9,12 +9,15 @@
 /**
  * 
  */
+DECLARE_DELEGATE(FStandardOfTargetDelegate)
 UCLASS()
 class AMHAENG_API UAHTutorialWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
+	FStandardOfTargetDelegate StandardOfTargetDelegate;
+	
 	UFUNCTION(BlueprintCallable)
 	void StartBtnClick();
 };

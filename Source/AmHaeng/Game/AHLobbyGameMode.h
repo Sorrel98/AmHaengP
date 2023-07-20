@@ -28,5 +28,8 @@ private:
 	TSubclassOf<UUserWidget> LobbyWidgetClass;
 	TObjectPtr<class UAHLobbyWidget> LobbyWidget;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> LobbyTutorialClass;
+
 	FString AHGameLevelName = "AmHaengLevel";
 };

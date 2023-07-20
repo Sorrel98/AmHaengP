@@ -107,7 +107,7 @@ FString AHMathFunctions::MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber)
 
 FString AHMathFunctions::RandomYear()
 {
-	return FString::FromInt(FMath::RandRange(1990, 2023));
+	return FString::FromInt(FMath::RandRange(1980, 2023));
 }
 
 FString AHMathFunctions::RandomMonth()
