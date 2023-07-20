@@ -29,15 +29,21 @@ void AAHChaseGimmickManager::Initialize(AAHVehiclePlayerController* PC)
 	UE_LOG(LogTemp, Log, TEXT("AAHChaseGimmickManager::Initialize"));
 	//GimmickManager 객체 셋팅(chase X)
 	MinimapWidget = Cast<AAHHUD>(PC->GetHUD())->GetMinimap();
+	UE_LOG(LogTemp, Log, TEXT("1"));
 	PlayerController = PC;
+	UE_LOG(LogTemp, Log, TEXT("2"));
 	
 	BeforeChase = NewObject<AAHBeforeChase>(this, BeforeChaseClass);
+	UE_LOG(LogTemp, Log, TEXT("3"));
 	BeforeChase->Rename(TEXT("BeforeChase"), this);
+	UE_LOG(LogTemp, Log, TEXT("4"));
 	BeforeChase->StartChaseDelegate.BindUObject(this, &AAHChaseGimmickManager::ChaseStart);
+	UE_LOG(LogTemp, Log, TEXT("5"));
 	BeforeChase->SettingChaseStartWidget();
-	
+	UE_LOG(LogTemp, Log, TEXT("6"));
 	Chase = NewObject<AAHChase>();
+	UE_LOG(LogTemp, Log, TEXT("7"));
 	Chase->Rename(TEXT("Chase"), this);
-	
+	UE_LOG(LogTemp, Log, TEXT("8"));
 
 }

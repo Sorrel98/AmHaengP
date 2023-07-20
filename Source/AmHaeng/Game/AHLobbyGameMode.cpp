@@ -51,5 +51,6 @@ void AAHLobbyGameMode::LobbyWidgetOnViewport()
 
 void AAHLobbyGameMode::OpenAHGameLevel()
 {
+	UE_LOG(LogTemp, Log, TEXT("OpenAhGameLevel"));
 	UGameplayStatics::OpenLevel(this, *AHGameLevelName);
 }

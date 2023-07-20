@@ -84,9 +84,19 @@ void AAHGameMode::BeginPlay()
 	NowGimmickMode = EGimmickMode::Patrol;
 	
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
-	PlayerController->SetPlayerPawn();
 	
-	Spawner = NewObject<UAHNPCSpawner>();
+	PlayerController->SetPlayerPawn();
+	PlayerController->GetPlayerPawn()->ChaseMouseDelegateBind();
+
+	if(SpawnerClass)
+	{
+		Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("SpawnerClass null"));
+	}
+	
 
 	//Widgets
 	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
@@ -102,22 +112,26 @@ void AAHGameMode::BeginPlay()
 	
 	//Mouse
 	MouseActorSpawn();
-	
+	UE_LOG(LogTemp, Log, TEXT("9"));
 	//Bind Delegate
 	BindingDelegates();
+	UE_LOG(LogTemp, Log, TEXT("10"));
 
 	//Spawner Setting
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
+	UE_LOG(LogTemp, Log, TEXT("11"));
 	Spawner->SetSpawnActorsLocation();
 
+	UE_LOG(LogTemp, Log, TEXT("12"));
 	//Spawn NPC
 	InitSpawnNPC();
 	//Spawner->TestSpawnNPC();
-
+	UE_LOG(LogTemp, Log, TEXT("13"));
 	//TimerSetting
 	SetWorldTimer();
-	
+	UE_LOG(LogTemp, Log, TEXT("14"));
 	MakeSpline();
+	UE_LOG(LogTemp, Log, TEXT("15"));
 }
 
 /*void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
@@ -136,12 +150,24 @@ void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingDelegates()
 {
-	MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
+	if(MouseActor)
+	{
+		MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Mouse Actor 없음"));
+	}
+	
 	if(PlayerController)
 	{
 		//CP Timer 시작할 때 Scan 중인 Actor 정보 가져옴
 		//Timer 실행될 때마다 갈아끼우게 됨
 		PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("PlayerController 없음"));
 	}
 	if(AHHUD)
 	{
@@ -150,17 +176,24 @@ void AAHGameMode::BindingDelegates()
 			//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
 			AHHUD->GetMinimap()->MinimapSettingEnd();
 		}
+	}else
+	{
+		UE_LOG(LogTemp, Log, TEXT("AHHUD 없음"));
 	}
 
 	if(Spawner)
 	{
 		Spawner->SendNPCNumber.BindUObject(this, &AAHGameMode::SetNPCNumber);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Spawner 없음"));
+	}
 }
 
 void AAHGameMode::MouseActorSpawn()
 {
-	if (GetOuter() == nullptr)
+	/*if (GetOuter() == nullptr)
 	{
 		return;
 	}
@@ -169,28 +202,45 @@ void AAHGameMode::MouseActorSpawn()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
 		return;
-	}
+	}*/
 
-	FSoftObjectPath MouseBPRef(
+	/*FSoftObjectPath MouseBPRef(
 		TEXT("/Script/Engine.Blueprint'/Game/Player/Widget/BP_CursorLocation.BP_CursorLocation'"));
 	if (!MouseBPRef.IsValid())
 	{
+		UE_LOG(LogTemp, Log, TEXT("MouseBPRef == nullptr"));
 		return;
 	}
 	UBlueprint* MouseBPObj = Cast<UBlueprint>(MouseBPRef.TryLoad());
 	if (MouseBPObj == nullptr)
 	{
+		UE_LOG(LogTemp, Log, TEXT("MouseBPObj == nullptr"));
 		return;
 	}
 	UClass* MouseBPClass = MouseBPObj->GeneratedClass;
 	if (MouseBPClass == nullptr)
 	{
+		UE_LOG(LogTemp, Log, TEXT("MouseBPClass nullptr"));
 		return;
 	}
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
+	*/
 
-	MouseActor = World->SpawnActor<AAHMouseActor>(MouseBPClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	UWorld* World = GetWorld();
+	if(World)
+	{
+		if(MouseActorClass)
+		{
+			MouseActor = World->SpawnActor<AAHMouseActor>(MouseActorClass, FVector::ZeroVector, FRotator::ZeroRotator);
+			if(MouseActor)
+			{
+				UE_LOG(LogTemp, Log, TEXT("mouse Actor 스폰완료"));
+			}
+		}
+	}
+	
+	
 }
 
 UAHNPCSpawner* AAHGameMode::GetSpawner()
@@ -270,7 +320,7 @@ void AAHGameMode::SetAllNPCNumber()
 
 void AAHGameMode::SetBadNPCNumber()
 {
-	BadNPCNumber = InitAllNPCNumber/3;
+	BadNPCNumber = InitAllNPCNumber;
 	UE_LOG(LogTemp, Log, TEXT("BadNPCNumber : %d"), BadNPCNumber);
 }
 
@@ -369,18 +419,7 @@ void AAHGameMode::MakeSpline()
 		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
 		return;
 	}
-	FSoftObjectPath SplineRef(
-		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/AH_BP_MannequinSpline.AH_BP_MannequinSpline'"));
-	if (!SplineRef.IsValid())
-	{
-		return;
-	}
-	UBlueprint* SplineBP = Cast<UBlueprint>(SplineRef.TryLoad());
-	if (SplineBP == nullptr)
-	{
-		return;
-	}
-	TSubclassOf<UObject> SplineClass = SplineBP->GeneratedClass;
+	
 	if(SplineClass)
 	{
 		SplineActor = World->SpawnActor<AAHSpline>(SplineClass);

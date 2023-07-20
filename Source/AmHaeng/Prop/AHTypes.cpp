@@ -11,10 +11,15 @@ AHTypes::~AHTypes()
 {
 }
 
-const TArray<NPCOwnerNames>& AHTypes::GetNPCOwnerNameArray() const
+const TArray<FString>& AHTypes::GetNPCNames() const
+{
+	return NPCNames;
+}
+
+/*const TArray<NPCOwnerNames>& AHTypes::GetNPCOwnerNameArray() const
 {
 	return NPCOwnerNamesArray;
-}
+}*/
 
 
 /*const FString AHTypes::GetNPCEnumName(NPCOwnerNames InNPCOwnerName) const

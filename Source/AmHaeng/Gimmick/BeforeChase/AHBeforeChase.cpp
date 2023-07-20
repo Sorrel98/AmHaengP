@@ -61,12 +61,6 @@ void AAHBeforeChase::FinishChaseStartWidget()
 	ThrowMannequin();
 }
 
-/*
-void AAHBeforeChase::SetPause(bool InPause)
-{
-	PlayerController->SetPause(InPause);
-}*/
-
 void AAHBeforeChase::RagdollMannequinSpawn()
 {
 	if (GetOuter() == nullptr)
@@ -79,25 +73,15 @@ void AAHBeforeChase::RagdollMannequinSpawn()
 		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
 		return;
 	}
-
-	FSoftObjectPath RagdollMannequinBPRef(
-		TEXT("/Script/Engine.Blueprint'/Game/Gimmick/ThrowMannequin/RagdollMannequin.RagdollMannequin'"));
-	if (!RagdollMannequinBPRef.IsValid())
+	if(MannequinClass)
 	{
-		return;
+		Mannequin = World->SpawnActor<AAHMannequin>(MannequinClass, ChasedNPC->GetActorLocation(), ChasedNPC->GetActorRotation());
 	}
-	UBlueprint* RagdollMannequinBP = Cast<UBlueprint>(RagdollMannequinBPRef.TryLoad());
-	if (RagdollMannequinBP == nullptr)
+	else
 	{
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("MannequinClass Is not Valid"));
 	}
-	UClass* RagdollMannequinClass;
-	RagdollMannequinClass = RagdollMannequinBP->GeneratedClass;
-	if (RagdollMannequinClass == nullptr)
-	{
-		return;
-	}
-	Mannequin = World->SpawnActor<AAHMannequin>(RagdollMannequinClass, ChasedNPC->GetActorLocation(), ChasedNPC->GetActorRotation());
+	
 }
 
 void AAHBeforeChase::ThrowMannequin()

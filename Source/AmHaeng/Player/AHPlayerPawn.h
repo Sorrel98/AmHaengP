@@ -31,7 +31,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void MouseClick();
 	void MouseClickReleased();
+	UFUNCTION()
 	void ChaseMouseDelegate(bool IsClick);
+	void ChaseMouseDelegateBind();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Brake();

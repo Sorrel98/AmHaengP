@@ -45,6 +45,7 @@ void AAHChickenBlade::SetChickenBladeCapsuleComponent_Implementation()
 
 void AAHChickenBlade::SetChickenVisible(bool Visible)
 {
+	//여기까지 log 찍힘
 	UE_LOG(LogTemp, Log, TEXT("SetChickenVisible : %d"), Visible);
 	if(Visible == false)
 	{
