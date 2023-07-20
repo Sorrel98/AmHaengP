@@ -138,7 +138,7 @@ void UAHNPCStatComponent::SetNPCHP()
 void UAHNPCStatComponent::NPCHPDown()
 {
 	//todo: 공격력 셋팅
-	NPCHP -= 20;
+	NPCHP -= 34;
 	UE_LOG(LogTemp, Log, TEXT("HP Set : %d"), NPCHP);
 	if(NPCHP <= 0)
 	{
