@@ -22,10 +22,6 @@ public:
 	void MouseClickDelegate(bool IsClick);
 	
 	void InitChickenBlade(AAHNPCVehicleBase* ChasedNPC);
-	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChickenAttackTimeline(AAHChickenBlade* ChickenBlade);
-	UFUNCTION(BlueprintCallable)
-	void ChickenAttackTimelineFinish();*/
 
 	//Capsule Component
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
@@ -41,10 +37,6 @@ public:
 
 	//Sound
 	void ChickenAttackSound();
-
-	//Attack
-	/*UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void ChickenAttackDetect();*/
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess= true))

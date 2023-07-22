@@ -25,14 +25,6 @@ AAHGameMode::AAHGameMode()
 	SpawnedNPCNumber = 0; //0부터 시작
 }
 
-/*void AAHGameMode::PlayPause(bool IsPause)
-{
-	if(PlayerController)
-	{
-		PlayerController->SetPause(IsPause);
-	}
-}*/
-
 void AAHGameMode::SetWorldTimer()
 {
 	if(AHHUD->GetWorldWidget())
@@ -112,35 +104,19 @@ void AAHGameMode::BeginPlay()
 	
 	//Mouse
 	MouseActorSpawn();
-	UE_LOG(LogTemp, Log, TEXT("9"));
 	//Bind Delegate
 	BindingDelegates();
-	UE_LOG(LogTemp, Log, TEXT("10"));
 
 	//Spawner Setting
 	Spawner->Rename(TEXT("SpawnerOuter"), this);
-	UE_LOG(LogTemp, Log, TEXT("11"));
 	Spawner->SetSpawnActorsLocation();
 
-	UE_LOG(LogTemp, Log, TEXT("12"));
 	//Spawn NPC
 	InitSpawnNPC();
-	//Spawner->TestSpawnNPC();
-	UE_LOG(LogTemp, Log, TEXT("13"));
 	//TimerSetting
 	SetWorldTimer();
-	UE_LOG(LogTemp, Log, TEXT("14"));
 	MakeSpline();
-	UE_LOG(LogTemp, Log, TEXT("15"));
 }
-
-/*void AAHGameMode::PlayChaseStartWidgetAnimation_Implementation()
-{
-}
-
-void AAHGameMode::PlayCrashGlassAnimation_Implementation()
-{
-}*/
 
 void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 {
@@ -193,40 +169,6 @@ void AAHGameMode::BindingDelegates()
 
 void AAHGameMode::MouseActorSpawn()
 {
-	/*if (GetOuter() == nullptr)
-	{
-		return;
-	}
-	UWorld* World = GetWorld();
-	if (World == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("World Is not Valid"));
-		return;
-	}*/
-
-	/*FSoftObjectPath MouseBPRef(
-		TEXT("/Script/Engine.Blueprint'/Game/Player/Widget/BP_CursorLocation.BP_CursorLocation'"));
-	if (!MouseBPRef.IsValid())
-	{
-		UE_LOG(LogTemp, Log, TEXT("MouseBPRef == nullptr"));
-		return;
-	}
-	UBlueprint* MouseBPObj = Cast<UBlueprint>(MouseBPRef.TryLoad());
-	if (MouseBPObj == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("MouseBPObj == nullptr"));
-		return;
-	}
-	UClass* MouseBPClass = MouseBPObj->GeneratedClass;
-	if (MouseBPClass == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("MouseBPClass nullptr"));
-		return;
-	}
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
-	*/
-
 	UWorld* World = GetWorld();
 	if(World)
 	{
@@ -239,8 +181,6 @@ void AAHGameMode::MouseActorSpawn()
 			}
 		}
 	}
-	
-	
 }
 
 UAHNPCSpawner* AAHGameMode::GetSpawner()
@@ -320,8 +260,7 @@ void AAHGameMode::SetAllNPCNumber()
 
 void AAHGameMode::SetBadNPCNumber()
 {
-	BadNPCNumber = InitAllNPCNumber;
-	UE_LOG(LogTemp, Log, TEXT("BadNPCNumber : %d"), BadNPCNumber);
+	BadNPCNumber = InitAllNPCNumber/3;
 }
 
 void AAHGameMode::SetGimmickMode(EGimmickMode InGimmickMode)
@@ -352,7 +291,7 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 		//평판 update
 		PlayerController->PlayerPawn->RaisingReputation();
 		//chase 제한 시간 timer clear
-		ChaseGimmickManager->GetChase()->EndChaseTimer();
+		//ChaseGimmickManager->GetChase()->EndChaseTimer();
 	}
 	else
 	{
@@ -370,11 +309,9 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 
 void AAHGameMode::IsPlayerSpeedZero()
 {
-	UE_LOG(LogTemp, Log, TEXT("IsPlayerSpeedZero function"));
 	PlayerController->GetPlayerPawn()->SetNowSpeedFromBP();
 	if(PlayerController->GetPlayerPawn()->GetNowSpeed() < 5)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Speed 거의 zero입니다."));
 		//play pause
 		PlayerController->SetPause(true);
 		UE_LOG(LogTemp, Log, TEXT("Pause"));

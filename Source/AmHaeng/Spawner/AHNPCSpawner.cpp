@@ -150,7 +150,6 @@ void UAHNPCSpawner::SetTargetNPCIndex(int32 BadNPCNumber)
 	ShuffleArray(RandomIndex);
 	for(int32 i = 0; i<BadNPCNumber; ++i)
 	{
-		//UE_LOG(LogTemp, Log, TEXT("NPC Target Index : %d"), RandomIndex[i]);
 		TargetNPCIndex[i] = RandomIndex[i];
 	}
 }
@@ -320,7 +319,7 @@ bool UAHNPCSpawner::IsHitActorOnSpawnActor(int32 InSpawnIndex)
 			{
 				UE_LOG(LogTemp, Log, TEXT("There is Something : %s"), *OutHitResult.GetActor()->GetName());
 			}
-			DrawDebugBox(GetWorld(), Start, SpawnActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 1.f);
+			//DrawDebugBox(GetWorld(), Start, SpawnActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 1.f);
 			//무엇인가 있었다면 true
 		}
 	}
