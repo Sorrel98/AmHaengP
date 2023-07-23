@@ -14,13 +14,11 @@ FString AHMathFunctions::MakeRandString(int32 Length)
 	const FString Characters = TEXT("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
 	FString RandomString;
 	RandomString.Reserve(Length);
-
 	for (int32 ix = 0; ix < Length; ++ix)
 	{
 		int32 RandomIdx = FMath::RandRange(0, Characters.Len() - 1);
 		RandomString.AppendChar(Characters[RandomIdx]);
 	}
-
 	return RandomString;
 }
 
