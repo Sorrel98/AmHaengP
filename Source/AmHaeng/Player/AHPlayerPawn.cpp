@@ -46,8 +46,10 @@ void AAHPlayerPawn::ChaseMouseDelegateBind()
 	
 }
 
-void AAHPlayerPawn::SpawnChickenBlade()
+void AAHPlayerPawn::BeginPlay()
 {
+	Super::BeginPlay();
+	PlayerNowSpeed = 0;
 	if(ChickenBladeClass)
 	{
 		ChickenBlade = GetWorld()->SpawnActor<AAHChickenBlade>(ChickenBladeClass);
@@ -64,13 +66,6 @@ void AAHPlayerPawn::SpawnChickenBlade()
 			ChickenBlade->SetChickenVisible(false);
 		}
 	}
-}
-
-void AAHPlayerPawn::BeginPlay()
-{
-	Super::BeginPlay();
-	PlayerNowSpeed = 0;
-	SpawnChickenBlade();
 	IsChickenRotating = false;
 	
 	SetMannequinDestMeshComponent();

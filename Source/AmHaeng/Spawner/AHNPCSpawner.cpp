@@ -48,20 +48,18 @@ void UAHNPCSpawner::DecreaseGoodNPC()
 	CheckNPCNumber(false);
 }
 
-void UAHNPCSpawner::DecreaseBadNPC()
-{
-	UE_LOG(LogTemp, Log, TEXT("DecreaseBadNPC"));
-	NowBadNPCNumber-=1;
-	CheckNPCNumber(true);
-}
-
 void UAHNPCSpawner::IncreaseGoodNPC()
 {
 	UE_LOG(LogTemp, Log, TEXT("IncreaseGoodNPC"));
 	NowGoodNPCNumber+=1;
 }
 
-
+void UAHNPCSpawner::DecreaseBadNPC()
+{
+	UE_LOG(LogTemp, Log, TEXT("DecreaseBadNPC"));
+	NowBadNPCNumber-=1;
+	CheckNPCNumber(true);
+}
 
 void UAHNPCSpawner::IncreaseBadNPC()
 {

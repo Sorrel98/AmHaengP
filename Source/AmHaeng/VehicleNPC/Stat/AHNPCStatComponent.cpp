@@ -15,11 +15,22 @@ void UAHNPCStatComponent::BeginPlay()
 void UAHNPCStatComponent::StatsSetting(int32 InIDNumber, uint8 IsTarget)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Setting NPC ID : %d"), InIDNumber);
+	//NPC Id Setting
 	SetIDNumber(InIDNumber);
+	
+	//NPCOwnerNameSetting
 	SetOwnerName();
+
+	//LicenseNumberSetting
 	SetGoodLicenseNumber();
+
+	//NPCSpeedSetting
 	SetGoodSpeed();
+
+	//NPC Groggy Setting
 	SetNPCHP();
+
+	//NPCSwaySetting
 	SetGoodSway();
 	if(IsTarget)
 	{
@@ -42,6 +53,7 @@ void UAHNPCStatComponent::StatsSetting(int32 InIDNumber, uint8 IsTarget)
 			return;	
 		}
 	}
+	
 }
 
 void UAHNPCStatComponent::SetOwnerName()
@@ -65,7 +77,10 @@ void UAHNPCStatComponent::SetOwnerName()
 	//NPCOwnerName = TestName;
 }
 
-
+const FString UAHNPCStatComponent::GetOwnerName()
+{
+	return NPCOwnerName;
+}
 
 void UAHNPCStatComponent::SetGoodLicenseNumber()
 {
@@ -77,6 +92,11 @@ void UAHNPCStatComponent::SetBadLicenseNumber()
 	UE_LOG(LogTemp, Log, TEXT("Set Bad LicenseNumber"));
 	int32 WrongPart = FMath::RandRange(0, 2); //Year, Month, Day 중에 하나만 Wrong
 	NPCLicenseNumber = AHMathFunctions::MakeBadLicenseNumber(WrongPart, NPCIDNumber);
+}
+
+const FString UAHNPCStatComponent::GetLicenseNumber()
+{
+	return NPCLicenseNumber;
 }
 
 void UAHNPCStatComponent::SetGoodSpeed()
@@ -93,6 +113,16 @@ void UAHNPCStatComponent::SetBadSpeed()
 	MaxEngineTorqueUp.Execute(300);
 }
 
+const int32 UAHNPCStatComponent::GetNPCMinSpeed()
+{
+	return NPCMinSpeed;
+}
+
+const int32 UAHNPCStatComponent::GetNPCMaxSpeed()
+{
+	return NPCMaxSpeed;
+}
+
 void UAHNPCStatComponent::SetGoodSway()
 {
 	NPCSway = AHMathFunctions::MakeRandInteger(10, 30);
@@ -104,6 +134,10 @@ void UAHNPCStatComponent::SetBadSway()
 	NPCSway = AHMathFunctions::MakeRandInteger(31, 50);
 }
 
+const int32 UAHNPCStatComponent::GetNPCSway()
+{
+	return NPCSway;
+}
 
 void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
 {
@@ -113,32 +147,6 @@ void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
 void UAHNPCStatComponent::SetNPCHP()
 {
 	NPCHP = 100;
-}
-
-const FString UAHNPCStatComponent::GetOwnerName()
-{
-	return NPCOwnerName;
-}
-
-
-const int32 UAHNPCStatComponent::GetNPCSway()
-{
-	return NPCSway;
-}
-
-const int32 UAHNPCStatComponent::GetNPCMinSpeed()
-{
-	return NPCMinSpeed;
-}
-
-const int32 UAHNPCStatComponent::GetNPCMaxSpeed()
-{
-	return NPCMaxSpeed;
-}
-
-const FString UAHNPCStatComponent::GetLicenseNumber()
-{
-	return NPCLicenseNumber;
 }
 
 void UAHNPCStatComponent::NPCHPDown()
