@@ -310,7 +310,7 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 void AAHGameMode::IsPlayerSpeedZero()
 {
 	PlayerController->GetPlayerPawn()->SetNowSpeedFromBP();
-	if(PlayerController->GetPlayerPawn()->GetNowSpeed() < 5)
+	if(PlayerController->GetPlayerPawn()->GetNowSpeed() < 1)
 	{
 		//play pause
 		PlayerController->SetPause(true);

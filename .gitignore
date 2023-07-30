@@ -84,6 +84,7 @@ Content/Assets/ProceduralBuildingGenerator/*
 !Content/Assets/ProceduralBuildingGenerator/.gitkeep
 /Content/Assets/InfinityBladeWeapons/*
 Content/MSPresets/*
+Content/StylizedProvencal/*
 
 #package
 Package/*

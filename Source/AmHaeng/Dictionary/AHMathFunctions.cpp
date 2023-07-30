@@ -38,34 +38,6 @@ FString AHMathFunctions::CombineString(int32 WordsNumber)
 	return CombinedString;
 }
 
-int AHMathFunctions::MakeRandInteger(int32 num1, int32 num2)
-{
-	return FMath::RandRange(num1, num2);
-}
-
-FString AHMathFunctions::MakeGoodLicenseNumber(int32 IDNumber)
-{
-	FString Year = RandomYear();
-	FString Month = RandomMonth();
-	FString Day = RandomDay(FCString::Atoi(*Year), FCString::Atoi(*Month));
-	
-	FString CombinedString;
-	FString Hyphen = "-";
-	//Year
-	CombinedString.Append(Year);
-	CombinedString.Append(Hyphen);
-	//Month
-	CombinedString.Append(Month);
-	CombinedString.Append(Hyphen);
-	//Day
-	CombinedString.Append(Day);
-	CombinedString.Append(Hyphen);
-	//OwnNumber
-	CombinedString.Append(FString::FromInt(IDNumber));
-	
-	return CombinedString;
-}
-
 FString AHMathFunctions::MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber)
 {
 	FString Year = RandomYear();
@@ -105,21 +77,6 @@ FString AHMathFunctions::MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber)
 	return CombinedString;
 }
 
-FString AHMathFunctions::RandomYear()
-{
-	return FString::FromInt(FMath::RandRange(1980, 2023));
-}
-
-FString AHMathFunctions::RandomMonth()
-{
-	return FString::FromInt(FMath::RandRange(1, 12));
-}
-
-FString AHMathFunctions::RandomDay(int32 Year, int32 Month)
-{
-	return FString::FromInt(FDateTime::DaysInMonth(Year, Month));
-}
-
 FString AHMathFunctions::WrongRandomYear()
 {
 	int32 random = FMath::RandRange(1, 3);
@@ -136,6 +93,59 @@ FString AHMathFunctions::WrongRandomYear()
 	}
 }
 
+FString AHMathFunctions::WrongRandomDay()
+{
+	bool random = FMath::RandBool();
+	if(random)
+	{
+		return FString::FromInt(FMath::RandRange(1, 30))+"0";
+	}
+	else
+	{
+		return FString::FromInt(FMath::RandRange(32, 40));
+	}
+}
+
+FString AHMathFunctions::MakeGoodLicenseNumber(int32 IDNumber)
+{
+	FString Year = RandomYear();
+	FString Month = RandomMonth();
+	FString Day = RandomDay(FCString::Atoi(*Year), FCString::Atoi(*Month));
+	
+	FString CombinedString;
+	FString Hyphen = "-";
+	//Year
+	CombinedString.Append(Year);
+	CombinedString.Append(Hyphen);
+	//Month
+	CombinedString.Append(Month);
+	CombinedString.Append(Hyphen);
+	//Day
+	CombinedString.Append(Day);
+	CombinedString.Append(Hyphen);
+	//OwnNumber
+	CombinedString.Append(FString::FromInt(IDNumber));
+	
+	return CombinedString;
+}
+
+FString AHMathFunctions::RandomYear()
+{
+	return FString::FromInt(FMath::RandRange(1980, 2023));
+}
+
+FString AHMathFunctions::RandomMonth()
+{
+	return FString::FromInt(FMath::RandRange(1, 12));
+}
+
+FString AHMathFunctions::RandomDay(int32 Year, int32 Month)
+{
+	return FString::FromInt(FDateTime::DaysInMonth(Year, Month));
+}
+
+
+
 FString AHMathFunctions::WrongRandomMonth()
 {
 	bool random = FMath::RandBool();
@@ -149,15 +159,9 @@ FString AHMathFunctions::WrongRandomMonth()
 	}
 }
 
-FString AHMathFunctions::WrongRandomDay()
+
+
+int AHMathFunctions::MakeRandInteger(int32 num1, int32 num2)
 {
-	bool random = FMath::RandBool();
-	if(random)
-	{
-		return FString::FromInt(FMath::RandRange(1, 30))+"0";
-	}
-	else
-	{
-		return FString::FromInt(FMath::RandRange(32, 40));
-	}
+	return FMath::RandRange(num1, num2);
 }

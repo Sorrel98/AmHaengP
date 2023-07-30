@@ -56,25 +56,28 @@ void UAHNPCSpawner::IncreaseGoodNPC()
 
 void UAHNPCSpawner::DecreaseBadNPC()
 {
-	UE_LOG(LogTemp, Log, TEXT("DecreaseBadNPC"));
+	UE_LOG(LogTemp, Warning, TEXT("DecreaseBadNPC"));
 	NowBadNPCNumber-=1;
 	CheckNPCNumber(true);
 }
 
 void UAHNPCSpawner::IncreaseBadNPC()
 {
-	UE_LOG(LogTemp, Log, TEXT("IncreaseBadNPC"));
+	UE_LOG(LogTemp, Warning, TEXT("IncreaseBadNPC"));
 	NowBadNPCNumber+=1;
 }
 
 void UAHNPCSpawner::CheckNPCNumber(bool IsTarget)
 {
-	if(MaxBadNPCNumber != NowBadNPCNumber || NowGoodNPCNumber != MaxGoodNPCNumber)
+	UE_LOG(LogTemp, Warning, TEXT("CheckNPCnumber"));
+	UE_LOG(LogTemp, Warning, TEXT("Max Bad NPC : %d, NowBadNPCNumber: %d, NowGoodNPCNumber: %d, MaxGoodNPCNumber: %d"), MaxBadNPCNumber, NowBadNPCNumber, NowGoodNPCNumber, MaxGoodNPCNumber);
+
+	if(NowBadNPCNumber < MaxBadNPCNumber || NowGoodNPCNumber < MaxGoodNPCNumber)
 	{
 		// spawn 시도
 		SpawnNewNPC(IsTarget);
 		//3초 뒤에 다시 check
-		GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, FTimerDelegate::CreateUObject(this, &UAHNPCSpawner::CheckNPCNumber, IsTarget), 3.f, false);
+		GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, FTimerDelegate::CreateUObject(this, &UAHNPCSpawner::CheckNPCNumber, IsTarget), 1.f, false);
 	}
 }
 

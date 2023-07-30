@@ -20,7 +20,7 @@ void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 	{
 		SetSpawner();
 	}
-	Spawner->SpawnNewNPC(OutNPC->GetIsTargetNPC());
+	//Spawner->SpawnNewNPC(OutNPC->GetIsTargetNPC());
 	OutNPC->Destroy();
 }
 

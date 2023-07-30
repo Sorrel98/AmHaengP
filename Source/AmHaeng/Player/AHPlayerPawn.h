@@ -34,6 +34,7 @@ public:
 	UFUNCTION()
 	void ChaseMouseDelegate(bool IsClick);
 	void ChaseMouseDelegateBind();
+	void SpawnChickenBlade();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Brake();
