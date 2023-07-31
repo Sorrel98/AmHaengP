@@ -180,20 +180,15 @@ void UAHNPCSpawner::InitNPCSpawn(uint32 BadNPCNumber)
 		{
 			NPCVehicleSpawnActor = World->SpawnActor<AAHNPCVehicleBase>(NPCClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("NPC Class Null"));
-		}
 		
 		if(NPCVehicleSpawnActor==nullptr) return;
 		//Minimap Icon
 		OnNPCSpawnEnd.Execute(NPCVehicleSpawnActor);
 		
 		PossessController(NPCVehicleSpawnActor);
-		AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
 		//여기서 해당 NPC가 Bad일지 Good일지 선택합니다.
-		NPCActor->SetIsTargetNPC(IsTargetNPCIndex(ix));
-		NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
+		NPCVehicleSpawnActor->SetIsTargetNPC(IsTargetNPCIndex(ix));
+		NPCVehicleSpawnActor->SetNPCStatAndInfoWidget(NPCNumber);
 
 		++NPCNumber;
 		SendNPCNumber.Execute(NPCNumber);
@@ -220,13 +215,12 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(int32 Index, bool IsTarget)
 
 	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, SpawnLocations[Index], SpawnRotations[Index], SpawnParams);
 	if(NPCVehicleSpawnActor == nullptr) return;
-	OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
-	
-	PossessController(NPCVehicleSpawnActor);
-	AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
-	NPCActor->SetIsTargetNPC(IsTarget);
-	NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
+	PostSpawnNPC(IsTarget, NPCVehicleSpawnActor);
+	SetNPCNumber(IsTarget);
+}
 
+void UAHNPCSpawner::SetNPCNumber(bool IsTarget)
+{
 	++NPCNumber;
 	SendNPCNumber.Execute(NPCNumber);
 	IsTarget? ++NowBadNPCNumber : ++NowGoodNPCNumber;
@@ -234,23 +228,25 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(int32 Index, bool IsTarget)
 
 void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(AActor* LocationActor, bool IsTarget)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Specific 위치에서 spawn 합니다"));
 	UWorld* World = GetWorld();
 	if (World == nullptr) return;
 
 	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, LocationActor->GetActorLocation(), LocationActor->GetActorRotation(), SpawnParams);
 	if(NPCVehicleSpawnActor == nullptr) return;
-	OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
-	
-	PossessController(NPCVehicleSpawnActor);
+	PostSpawnNPC(IsTarget, NPCVehicleSpawnActor);
+	SetNPCNumber(IsTarget);
+}
 
+void UAHNPCSpawner::PostSpawnNPC(bool IsTarget, AActor* NPCVehicleSpawnActor)
+{
 	AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
-	NPCActor->SetIsTargetNPC(IsTarget);
-	NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
-
-	++NPCNumber;
-	SendNPCNumber.Execute(NPCNumber);
-	IsTarget? ++NowBadNPCNumber : ++NowGoodNPCNumber;
+	if(NPCActor)
+	{
+		OnNPCSpawnEnd.Execute(NPCActor);
+		PossessController(NPCVehicleSpawnActor);
+		NPCActor->SetIsTargetNPC(IsTarget);
+		NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
+	}
 }
 
 void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator Rotation, bool IsTarget)
@@ -259,19 +255,8 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator R
 	if (World == nullptr) return;
 	
 	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, Location, Rotation, SpawnParams);
-	if(NPCVehicleSpawnActor)
-	{
-		OnNPCSpawnEnd.Execute(Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor));
-	}
-	
-	PossessController(NPCVehicleSpawnActor);
-	AAHNPCVehicleBase* NPCActor = Cast<AAHNPCVehicleBase>(NPCVehicleSpawnActor);
-	NPCActor->SetIsTargetNPC(IsTarget);
-	NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
-
-	++NPCNumber;
-	SendNPCNumber.Execute(NPCNumber);
-	IsTarget? ++NowBadNPCNumber : ++NowGoodNPCNumber;
+	PostSpawnNPC(IsTarget, NPCVehicleSpawnActor);
+	SetNPCNumber(IsTarget);
 }
 
 int32 UAHNPCSpawner::RandomSpawnIndex()
@@ -289,17 +274,12 @@ void UAHNPCSpawner::SpawnNewNPC(bool IsTarget)
 		UE_LOG(LogTemp, Log, TEXT("Spawn 가능한 위치입니다"));
 		SpecificLocationNPCVehicleSpawn(GetSpawnLocationActor(SpawnLocationIndex), IsTarget);
 	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Something On Spawn Location Actor"));
-	}
 }
 
 //해당 index teleport 위치에 무엇인가 올려져 있는지 판별
 bool UAHNPCSpawner::IsHitActorOnSpawnActor(int32 InSpawnIndex)
 {
 	AActor* SpawnActor = this->GetSpawnLocationActor(InSpawnIndex);
-	UE_LOG(LogTemp, Log, TEXT("Spawn Actor Name : %s"), *SpawnActor->GetName());
 	TArray<UActorComponent*> Components = SpawnActor->GetComponentsByTag(UActorComponent::StaticClass(), FName(TEXT("NPCCollision")));
 	
 	UBoxComponent* SpawnActorCollision = nullptr;
@@ -309,16 +289,11 @@ bool UAHNPCSpawner::IsHitActorOnSpawnActor(int32 InSpawnIndex)
 		SpawnActorCollision = Cast<UBoxComponent>(Components[0]);
 		if(GetWorld() && SpawnActorCollision)
 		{
-			UE_LOG(LogTemp, Log, TEXT("검사 시작"));
 			FHitResult OutHitResult;
 			FVector Start = SpawnActorCollision->GetComponentLocation();
 			FCollisionShape Box = FCollisionShape::MakeBox(SpawnActorCollision->GetScaledBoxExtent()/2);
 			FVector End = Start;
 			bResult = GetWorld()->SweepSingleByProfile(OutHitResult, Start, End, SpawnActorCollision->GetComponentRotation().Quaternion(), FName(TEXT("NPCBody")), Box);
-			if(OutHitResult.GetActor())
-			{
-				UE_LOG(LogTemp, Log, TEXT("There is Something : %s"), *OutHitResult.GetActor()->GetName());
-			}
 			//DrawDebugBox(GetWorld(), Start, SpawnActorCollision->GetScaledBoxExtent(), bResult ? FColor::Red : FColor::Yellow, false, 1.f);
 			//무엇인가 있었다면 true
 		}

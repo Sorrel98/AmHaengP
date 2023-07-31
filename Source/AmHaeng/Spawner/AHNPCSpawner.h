@@ -60,7 +60,9 @@ public:
 
 	//특정 위치에 spawn 할 수 있는 함수입니다
 	void SpecificLocationNPCVehicleSpawn(int32 Index, bool IsTarget);
+	void SetNPCNumber(bool IsTarget);
 	void SpecificLocationNPCVehicleSpawn(AActor* LocationActor, bool IsTarget);
+	void PostSpawnNPC(bool IsTarget, AActor* NPCVehicleSpawnActor);
 	void SpecificLocationNPCVehicleSpawn(FVector Location, FRotator Rotation, bool IsTarget);
 	//UClass* MakeNPCBPClass();
 
