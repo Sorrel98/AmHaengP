@@ -7,7 +7,7 @@
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Algo/Sort.h"
+//#include "Algo/Sort.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -69,9 +69,6 @@ void UAHNPCSpawner::IncreaseBadNPC()
 
 void UAHNPCSpawner::CheckNPCNumber(bool IsTarget)
 {
-	UE_LOG(LogTemp, Warning, TEXT("CheckNPCnumber"));
-	UE_LOG(LogTemp, Warning, TEXT("Max Bad NPC : %d, NowBadNPCNumber: %d, NowGoodNPCNumber: %d, MaxGoodNPCNumber: %d"), MaxBadNPCNumber, NowBadNPCNumber, NowGoodNPCNumber, MaxGoodNPCNumber);
-
 	if(NowBadNPCNumber < MaxBadNPCNumber || NowGoodNPCNumber < MaxGoodNPCNumber)
 	{
 		// spawn 시도
@@ -259,7 +256,7 @@ void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(AActor* LocationActor, bool 
 void UAHNPCSpawner::SpecificLocationNPCVehicleSpawn(FVector Location, FRotator Rotation, bool IsTarget)
 {
 	UWorld* World = GetWorld();
-	if (World == nullptr)return;
+	if (World == nullptr) return;
 	
 	AActor* NPCVehicleSpawnActor = World->SpawnActor<AActor>(NPCClass, Location, Rotation, SpawnParams);
 	if(NPCVehicleSpawnActor)

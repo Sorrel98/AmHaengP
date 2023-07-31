@@ -20,7 +20,7 @@ class AMHAENG_API UAHMinimapWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	void MinimapSettingEnd();
+	//void MinimapSettingEnd();
 
 	UFUNCTION(BlueprintNativeEvent, Category="NPCIcon")
 	void AddNPCIcon(AAHNPCVehicleBase* InNPCVehicleBase);
@@ -32,9 +32,6 @@ public:
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	TMap<AAHNPCVehicleBase*, UAHNPCMinimapCursor*> NPCCursorMap;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
-	TObjectPtr<class UAHNPCSpawner> Spawner;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess = true))
 	TObjectPtr<AAHNPCVehicleBase> NPCActor;

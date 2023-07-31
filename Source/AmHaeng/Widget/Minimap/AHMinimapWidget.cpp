@@ -3,8 +3,6 @@
 
 #include "AHMinimapWidget.h"
 
-#include "AmHaeng/Game/AHGameMode.h"
-#include "AmHaeng/Spawner/AHNPCSpawner.h"
 #include "Containers/Map.h"
 #include "AmHaeng/Widget/Minimap/AHNPCMinimapCursor.h"
 #include "AmHaeng/VehicleNPC/AHNPCVehicleBase.h"
@@ -12,24 +10,6 @@
 void UAHMinimapWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-}
-
-void UAHMinimapWidget::MinimapSettingEnd()
-{
-	AAHGameMode* GameMode = GetWorld()->GetAuthGameMode<AAHGameMode>();
-	if(GameMode)
-	{
-		Spawner = GameMode->GetSpawner();
-		if(Spawner)
-		{
-			Spawner->OnNPCSpawnEnd.BindUObject(this, &UAHMinimapWidget::CallAddNPCIcon);
-		}
-		else
-		{
-			UE_LOG(LogTemp,Warning, TEXT("spawner가 없습니다"));
-		}
-		
-	}
 }
 
 void UAHMinimapWidget::AddNPCIcon_Implementation(AAHNPCVehicleBase* InNPCVehicleBase)

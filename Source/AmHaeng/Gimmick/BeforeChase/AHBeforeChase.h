@@ -21,9 +21,6 @@ public:
 	UFUNCTION()
 	void FinishChaseStartWidget();
 
-	//Pause
-	//void SetPause(bool InPause);
-	
 	//Mannequin
 	void RagdollMannequinSpawn();
 	void ThrowMannequin();

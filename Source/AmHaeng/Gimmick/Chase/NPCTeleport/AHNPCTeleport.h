@@ -21,7 +21,7 @@ public:
 	AActor* GetFarTeleportActor(FVector InPlayerLocation);
 	
 private:
-	TArray<AActor*> NPCTeleportLocationActors;
+	TArray<TObjectPtr<AActor>> NPCTeleportLocationActors;
 	
 	TArray<FVector> TeleportLocations;
 	TArray<FRotator> TeleportRotations;

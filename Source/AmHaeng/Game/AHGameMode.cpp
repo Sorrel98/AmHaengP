@@ -63,44 +63,51 @@ void AAHGameMode::InCorrectSound_Implementation()
 {
 }
 
-void AAHGameMode::BeginPlay()
+void AAHGameMode::SetNPCNumber()
 {
-	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
-
 	SetAllNPCNumber();
 	SetBadNPCNumber();
-	
-	
-	//Gimmick Mode Setting
-	NowGimmickMode = EGimmickMode::Patrol;
-	
+}
+
+void AAHGameMode::InitPlayerController()
+{
 	PlayerController = Cast<AAHVehiclePlayerController>(GetGameInstance()->GetFirstLocalPlayerController());
 	
 	PlayerController->SetPlayerPawn();
 	PlayerController->GetPlayerPawn()->ChaseMouseDelegateBind();
+}
 
-	if(SpawnerClass)
-	{
-		Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("SpawnerClass null"));
-	}
-	
-
-	//Widgets
-	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
-	AHHUD->HUDOnViewport(InitReputationValue, PastSecond);
-	
-	//Chase Gimmick Setting
+void AAHGameMode::InitChaseGimmickManager()
+{
 	ChaseGimmickManager = NewObject<AAHChaseGimmickManager>(this, ChaseGimmickManagerClass);
 	ChaseGimmickManager->Rename(TEXT("ChaseGimmick"), this);
 	if(PlayerController)
 	{
 		ChaseGimmickManager->Initialize(PlayerController);
 	}
+}
+
+void AAHGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
+
+	SetNPCNumber();
+	
+	//Gimmick Mode Setting
+	SetGimmickMode(EGimmickMode::Patrol);
+	InitPlayerController();
+	if(SpawnerClass)
+	{
+		Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
+	}
+	
+	//Widgets
+	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
+	AHHUD->HUDOnViewport(InitReputationValue, PastSecond);
+	
+	//Chase Gimmick Setting
+	InitChaseGimmickManager();
 	
 	//Mouse
 	MouseActorSpawn();
@@ -126,70 +133,28 @@ void AAHGameMode::SetHitVehicleBase(AAHNPCVehicleBase* InHitVehicleBase)
 //Delegate와 Button을 Binding
 void AAHGameMode::BindingDelegates()
 {
-	if(MouseActor)
-	{
-		MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Mouse Actor 없음"));
-	}
-	
-	if(PlayerController)
-	{
-		//CP Timer 시작할 때 Scan 중인 Actor 정보 가져옴
-		//Timer 실행될 때마다 갈아끼우게 됨
-		PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("PlayerController 없음"));
-	}
-	if(AHHUD)
-	{
-		if(AHHUD->GetMinimap())
-		{
-			//spawn 할 때 widget 생성되는 delegate를 미리 바인딩
-			AHHUD->GetMinimap()->MinimapSettingEnd();
-		}
-	}else
-	{
-		UE_LOG(LogTemp, Log, TEXT("AHHUD 없음"));
-	}
-
+	if(MouseActor) MouseActor->ClickCPLoadingDelegate.AddUObject(this, &AAHGameMode::CPLoadingFinished);
+	if(PlayerController) PlayerController->SendNowClickNPCToGameMode.BindUObject(this, &AAHGameMode::SetHitVehicleBase);
+	//if(AHHUD && AHHUD->GetMinimap()) AHHUD->GetMinimap()->MinimapSettingEnd();
 	if(Spawner)
 	{
 		Spawner->SendNPCNumber.BindUObject(this, &AAHGameMode::SetNPCNumber);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("Spawner 없음"));
+		Spawner->OnNPCSpawnEnd.BindUObject(AHHUD->GetMinimap(), &UAHMinimapWidget::CallAddNPCIcon);
 	}
 }
 
 void AAHGameMode::MouseActorSpawn()
 {
 	UWorld* World = GetWorld();
-	if(World)
+	if(World && MouseActorClass)
 	{
-		if(MouseActorClass)
-		{
-			MouseActor = World->SpawnActor<AAHMouseActor>(MouseActorClass, FVector::ZeroVector, FRotator::ZeroRotator);
-			if(MouseActor)
-			{
-				UE_LOG(LogTemp, Log, TEXT("mouse Actor 스폰완료"));
-			}
-		}
+		MouseActor = World->SpawnActor<AAHMouseActor>(MouseActorClass, FVector::ZeroVector, FRotator::ZeroRotator);
 	}
 }
 
 UAHNPCSpawner* AAHGameMode::GetSpawner()
 {
-	if(Spawner)
-	{
-		return Spawner;
-	}
-	return nullptr;
+	return Spawner;
 }
 
 void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
@@ -197,35 +162,48 @@ void AAHGameMode::SetNPCNumber(int32 InNPCNumber)
 	SpawnedNPCNumber = InNPCNumber;
 }
 
+void AAHGameMode::SettingChasedNPC()
+{
+	ChasedNPC = HitVehicleBase;
+	ChasedNPC->SetIsChased(true);
+	ChasedNPC->AHDestroyFrontSphere();
+	ChasedNPC->NPCArrestedDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+}
+
+void AAHGameMode::PlayerInputEnabled()
+{
+	PlayerController->FlushPressedKeys();
+	PlayerController->DisableInput(PlayerController);
+}
+
+void AAHGameMode::DecreaseReputation()
+{
+	PlayerController->PlayerPawn->DecreasingReputation();
+	if(AHHUD->GetWorldWidget())
+	{
+		AHHUD->GetWorldWidget()->SetReputation(AAHPlayerPawn::Reputation);
+	}
+}
+
 void AAHGameMode::CPLoadingFinished()
 {
-	UE_LOG(LogTemp, Log, TEXT("CP Loading Finished"));
-
-	
 	//CP가 끝났을 때
-	if(HitVehicleBase==nullptr)
-	{
-		return;
-	}
+	if(HitVehicleBase == nullptr) return;
 	if(NowGimmickMode ==EGimmickMode::Patrol)
 	{
 		//Chase
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
 			//ChasedNPC Setting
-			ChasedNPC = HitVehicleBase;
-			ChasedNPC->SetIsChased(true);
-			ChasedNPC->AHDestroyFrontSphere();
-			ChasedNPC->NPCArrestedDelegate.AddUObject(this, &AAHGameMode::FinishChase);
+			SettingChasedNPC();
 
 			//Input 막고
-			PlayerController->FlushPressedKeys();
-			PlayerController->DisableInput(PlayerController);
+			PlayerInputEnabled();
 			
 			//ChaseMode Setting
 			SetGimmickMode(EGimmickMode::Chase);
+			
 			AAHVehiclePlayerController::PlayerPawn->Brake();
-			UE_LOG(LogTemp, Log, TEXT("Player Pawn Speed : "));
 			//타이머 돌려서 플레이어가 멈추면 SetPause
 			IsPlayerSpeedZero();
 		}
@@ -234,11 +212,7 @@ void AAHGameMode::CPLoadingFinished()
 			InCorrectSound();
 			//target이 아니었다면
 			//평판 하락
-			PlayerController->PlayerPawn->DecreasingReputation();
-			if(AHHUD->GetWorldWidget())
-			{
-				AHHUD->GetWorldWidget()->SetReputation(AAHPlayerPawn::Reputation);
-			}
+			DecreaseReputation();
 			//해당 npc destroy
 			HitVehicleBase->Destroy();
 			//good npc respawn
