@@ -58,6 +58,14 @@ void AAHVehiclePlayerController::SetInitMousePrevActor()
 	MousePrevActor = GetPawn();
 }
 
+void AAHVehiclePlayerController::SetMousePrevActor()
+{
+	//MousePrevActor update
+	MousePrevActor = NowHitActor;
+	NPCMouseScaned(NowHitActor);
+	IsNPCScanning = true;
+}
+
 void AAHVehiclePlayerController::MouseScan()
 {
 	if (this)
@@ -104,10 +112,7 @@ void AAHVehiclePlayerController::MouseScan()
 					float Distance = FVector::Distance(VehiclePawn->GetActorLocation(), NowHitActor->GetActorLocation());
 					if (Distance < ScanDistance)
 					{
-						//MousePrevActor update
-						MousePrevActor = NowHitActor;
-						NPCMouseScaned(NowHitActor);
-						IsNPCScanning = true;
+						SetMousePrevActor();
 					}
 				}
 			}
@@ -160,13 +165,13 @@ void AAHVehiclePlayerController::PatrolMouseClick()
 		PatrolMouseClickDelegate.Broadcast(true);
 		if (NowHitActor)
 		{
-			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-			if (HitActorBase)
+			AAHNPCVehicleBase* HitNPC = Cast<AAHNPCVehicleBase>(NowHitActor);
+			if (HitNPC)
 			{
-				HitActorBase->AHSetTooltipVisible(false);
-				ChasedNPC = HitActorBase;
+				HitNPC->AHSetTooltipVisible(false);
+				ChasedNPC = HitNPC;
 				//얘는 Chase 시작할 때
-				SendNowClickNPCToGameMode.Execute(HitActorBase);
+				SendNowClickNPCToGameMode.Execute(HitNPC);
 			}
 		}
 	}
@@ -182,10 +187,10 @@ void AAHVehiclePlayerController::PatrolMouseClickReleased()
 		
 		if (NowHitActor)
 		{
-			AAHNPCVehicleBase* HitActorBase = Cast<AAHNPCVehicleBase>(NowHitActor);
-			if (HitActorBase)
+			AAHNPCVehicleBase* HitNPC = Cast<AAHNPCVehicleBase>(NowHitActor);
+			if (HitNPC)
 			{
-				HitActorBase->AHSetTooltipVisible(false);
+				HitNPC->AHSetTooltipVisible(false);
 			}
 		}
 	}

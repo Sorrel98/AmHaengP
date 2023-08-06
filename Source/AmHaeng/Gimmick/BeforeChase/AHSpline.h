@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/Player/AHPlayerPawn.h"
 #include "GameFramework/Actor.h"
 #include "AHSpline.generated.h"
 

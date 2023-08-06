@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AmHaeng/Gimmick/BeforeChase/AHBeforeChase.h"
 #include "AmHaeng/Player/Weapon/AHChickenBlade.h"
 #include "AmHaeng/Prop/AHTypes.h"
 #include "GameFramework/Actor.h"

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "InputMappingQuery.h"
-#include "AmHaeng/Game/AHGameMode.h"
 #include "GameFramework/PlayerController.h"
 #include "AmHaeng/Player/AHPlayerPawn.h"
 #include "AHVehiclePlayerController.generated.h"
@@ -54,6 +53,7 @@ public:
 	//mouse Click Binding Functions
 	virtual void SetupInputComponent() override;
 	void SetInitMousePrevActor();
+	void SetMousePrevActor();
 	UFUNCTION(BlueprintCallable)
 	FVector GetMouseLocation() { return MousePosition; }
 	

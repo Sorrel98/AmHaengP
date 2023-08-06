@@ -17,7 +17,6 @@ UCLASS()
 class AMHAENG_API AAHPlayerPawn : public AWheeledVehiclePawn
 {
 	GENERATED_BODY()
-
 public:
 	virtual void BeginPlay() override;
 

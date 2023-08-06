@@ -87,41 +87,55 @@ void AAHGameMode::InitChaseGimmickManager()
 	}
 }
 
+void AAHGameMode::InitAHHUD()
+{
+	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
+	AHHUD->HUDOnViewport(InitReputationValue, PastSecond);
+}
+
+void AAHGameMode::CreateSpawner()
+{
+	if(SpawnerClass)
+	{
+		Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
+		//Spawner Setting
+		Spawner->Rename(TEXT("SpawnerOuter"), this);
+	}
+}
+
 void AAHGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("GameMode Start"));
 
 	SetNPCNumber();
 	
 	//Gimmick Mode Setting
 	SetGimmickMode(EGimmickMode::Patrol);
+	
 	InitPlayerController();
-	if(SpawnerClass)
-	{
-		Spawner = NewObject<UAHNPCSpawner>(this, SpawnerClass);
-	}
+	
+	CreateSpawner();
 	
 	//Widgets
-	AHHUD = Cast<AAHHUD>(PlayerController->GetHUD());
-	AHHUD->HUDOnViewport(InitReputationValue, PastSecond);
+	InitAHHUD();
 	
 	//Chase Gimmick Setting
 	InitChaseGimmickManager();
 	
 	//Mouse
 	MouseActorSpawn();
+	
 	//Bind Delegate
 	BindingDelegates();
-
-	//Spawner Setting
-	Spawner->Rename(TEXT("SpawnerOuter"), this);
+	
 	Spawner->SetSpawnActorsLocation();
-
+	
 	//Spawn NPC
-	InitSpawnNPC();
+	InitSpawnNPCs();
+	
 	//TimerSetting
 	SetWorldTimer();
+	
 	MakeSpline();
 }
 
@@ -185,6 +199,23 @@ void AAHGameMode::DecreaseReputation()
 	}
 }
 
+void AAHGameMode::ChaseStartPlayerSetting()
+{
+	//Input 막고
+	PlayerInputEnabled();
+	AAHVehiclePlayerController::PlayerPawn->Brake();
+	//타이머 돌려서 플레이어가 멈추면 SetPause
+	IsPlayerSpeedZero();
+}
+
+void AAHGameMode::RemoveGoodNPC()
+{
+	//해당 npc destroy
+	HitVehicleBase->Destroy();
+	//good npc respawn
+	Spawner->DecreaseGoodNPC();
+}
+
 void AAHGameMode::CPLoadingFinished()
 {
 	//CP가 끝났을 때
@@ -194,29 +225,19 @@ void AAHGameMode::CPLoadingFinished()
 		//Chase
 		if(HitVehicleBase->GetIsTargetNPC())
 		{
-			//ChasedNPC Setting
-			SettingChasedNPC();
-
-			//Input 막고
-			PlayerInputEnabled();
-			
 			//ChaseMode Setting
 			SetGimmickMode(EGimmickMode::Chase);
-			
-			AAHVehiclePlayerController::PlayerPawn->Brake();
-			//타이머 돌려서 플레이어가 멈추면 SetPause
-			IsPlayerSpeedZero();
+			//ChasedNPC Setting
+			SettingChasedNPC();
+			ChaseStartPlayerSetting();
 		}
 		else
 		{
-			InCorrectSound();
 			//target이 아니었다면
+			InCorrectSound();
 			//평판 하락
 			DecreaseReputation();
-			//해당 npc destroy
-			HitVehicleBase->Destroy();
-			//good npc respawn
-			Spawner->DecreaseGoodNPC();
+			RemoveGoodNPC();
 		}
 		if(AHHUD->GetIsTargetWidget())
 		{
@@ -248,6 +269,13 @@ const EGimmickMode AAHGameMode::GetGimmickMode()
 	return NowGimmickMode;
 }
 
+void AAHGameMode::RemoveBadNPC()
+{
+	ChasedNPC->Destroy();
+	//Respawn
+	Spawner->DecreaseBadNPC();
+}
+
 void AAHGameMode::FinishChase(bool IsChaseSuccess)
 {
 	UE_LOG(LogTemp, Log, TEXT("Chase 결과 : %d"), IsChaseSuccess);
@@ -275,10 +303,7 @@ void AAHGameMode::FinishChase(bool IsChaseSuccess)
 	{
 		AHHUD->GetWorldWidget()->SetReputation(AAHPlayerPawn::Reputation);
 	}
-	ChasedNPC->Destroy();
-	
-	//Respawn
-	Spawner->DecreaseBadNPC();
+	RemoveBadNPC();
 }
 
 void AAHGameMode::IsPlayerSpeedZero()
@@ -306,7 +331,7 @@ void AAHGameMode::SetNPCSpawningState(uint8 NowState)
 	bIsNPCSpawning = !NowState;
 }
 
-void AAHGameMode::InitSpawnNPC()
+void AAHGameMode::InitSpawnNPCs()
 {
 	if(Spawner!=nullptr)
 	{

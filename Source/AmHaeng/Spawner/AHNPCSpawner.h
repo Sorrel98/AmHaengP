@@ -107,4 +107,5 @@ private:
 	//기타
 	TObjectPtr<AHMathFunctions> MathFunctions;
 	FActorSpawnParameters SpawnParams;
+	
 };
