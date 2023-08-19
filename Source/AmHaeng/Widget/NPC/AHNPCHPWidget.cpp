@@ -6,6 +6,7 @@
 
 void UAHNPCHPWidget::SetNPCHP(float InHP)
 {
+	if(InHP < KINDA_SMALL_NUMBER) return;
 	UE_LOG(LogTemp, Log, TEXT("NPC HP Widget NPC Setup"));
 	if(NPC_HPBar!=nullptr)
 	{

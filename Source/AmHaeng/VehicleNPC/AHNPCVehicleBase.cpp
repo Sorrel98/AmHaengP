@@ -18,11 +18,6 @@ AAHNPCVehicleBase::AAHNPCVehicleBase()
 	NPCStat->MaxEngineTorqueUp.BindUObject(this, &AAHNPCVehicleBase::JustMaxEngineTorque);
 	SetInfoWidget();
 	SetHPWidget();
-
-	/*DetectionDistance = 1000.f;
-	bIsAnotherNPCForward = false;
-	BrakeDistance = 10000.f;
-	bIsDetected = false;*/
 	bIsChased = false;
 }
 
@@ -36,7 +31,7 @@ void AAHNPCVehicleBase::BroadCastNPCArrestedDelegate()
 {
 	UE_LOG(LogTemp, Log, TEXT("NPCVehicleBase : NPC Arresting"));
 	//NPC 체포 성공 GameMode에게 알림
-	NPCArrestedDelegate.Broadcast(true);
+	NPCArrested.Broadcast(true);
 }
 
 void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
@@ -45,6 +40,22 @@ void AAHNPCVehicleBase::AHSetMaxEngineTorque_Implementation(float InMaxTorque)
 
 void AAHNPCVehicleBase::AHDestroyFrontSphere_Implementation()
 {
+}
+
+void AAHNPCVehicleBase::DestroyNPC()
+{
+	if(!OnNPCRemoved.IsBound())
+	{
+		UE_LOG(LogTemp, Log, TEXT("on npc removed IS NOT BOUND"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("on npc removed BOUND"));
+	}
+	
+	OnNPCRemoved.Broadcast();
+	//OnNPCRemoved.Clear();
+	this->Destroy();
 }
 
 bool AAHNPCVehicleBase::GetIsTargetNPC()

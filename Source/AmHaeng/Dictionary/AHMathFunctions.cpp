@@ -38,6 +38,25 @@ FString AHMathFunctions::CombineString(int32 WordsNumber)
 	return CombinedString;
 }
 
+FString AHMathFunctions::MakeLicenseString(int32 IDNumber, FString Year, FString Month, FString Day)
+{
+	FString CombinedString;
+	const FString Hyphen = "-";
+	//Year
+	CombinedString.Append(Year);
+	CombinedString.Append(Hyphen);
+	//Month
+	CombinedString.Append(Month);
+	CombinedString.Append(Hyphen);
+	//Day
+	CombinedString.Append(Day);
+	CombinedString.Append(Hyphen);
+	//OwnNumber
+	CombinedString.Append(FString::FromInt(IDNumber));
+	
+	return CombinedString;
+}
+
 FString AHMathFunctions::MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber)
 {
 	FString Year = RandomYear();
@@ -59,22 +78,7 @@ FString AHMathFunctions::MakeBadLicenseNumber(int32 WrongPart, int32 IDNumber)
 		UE_LOG(LogTemp, Warning, TEXT("Wrong Part Number"));
 		return "";
 	}
-
-	FString CombinedString;
-	FString Hyphen = "-";
-	//Year
-	CombinedString.Append(Year);
-	CombinedString.Append(Hyphen);
-	//Month
-	CombinedString.Append(Month);
-	CombinedString.Append(Hyphen);
-	//Day
-	CombinedString.Append(Day);
-	CombinedString.Append(Hyphen);
-	//OwnNumber
-	CombinedString.Append(FString::FromInt(IDNumber));
-	
-	return CombinedString;
+	return MakeLicenseString(IDNumber, Year, Month, Day);
 }
 
 FString AHMathFunctions::WrongRandomYear()
@@ -111,22 +115,7 @@ FString AHMathFunctions::MakeGoodLicenseNumber(int32 IDNumber)
 	FString Year = RandomYear();
 	FString Month = RandomMonth();
 	FString Day = RandomDay(FCString::Atoi(*Year), FCString::Atoi(*Month));
-	
-	FString CombinedString;
-	FString Hyphen = "-";
-	//Year
-	CombinedString.Append(Year);
-	CombinedString.Append(Hyphen);
-	//Month
-	CombinedString.Append(Month);
-	CombinedString.Append(Hyphen);
-	//Day
-	CombinedString.Append(Day);
-	CombinedString.Append(Hyphen);
-	//OwnNumber
-	CombinedString.Append(FString::FromInt(IDNumber));
-	
-	return CombinedString;
+	return MakeLicenseString(IDNumber, Year, Month, Day);
 }
 
 FString AHMathFunctions::RandomYear()

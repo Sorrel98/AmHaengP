@@ -38,9 +38,13 @@ public:
 
 	//NPC 갯수
 	FORCEINLINE int32 GetNPCNumber(){return NPCNumber;}
+	UFUNCTION()
 	void DecreaseGoodNPC();
+	UFUNCTION()
 	void IncreaseGoodNPC();
+	UFUNCTION()
 	void DecreaseBadNPC();
+	UFUNCTION()
 	void IncreaseBadNPC();
 	void CheckNPCNumber(bool IsTarget);
 

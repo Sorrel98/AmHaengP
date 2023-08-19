@@ -146,7 +146,7 @@ void UAHNPCStatComponent::SetIDNumber(int32 InNumber)
 
 void UAHNPCStatComponent::SetNPCHP()
 {
-	NPCHP = 100;
+	NPCHP = 1;
 }
 
 void UAHNPCStatComponent::NPCHPDown()
