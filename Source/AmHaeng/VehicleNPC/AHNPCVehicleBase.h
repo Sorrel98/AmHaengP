@@ -13,7 +13,8 @@
 /**
  * 
  */
-DECLARE_MULTICAST_DELEGATE_OneParam(FDeadNPCDelegate, bool)
+DECLARE_MULTICAST_DELEGATE_OneParam(FDeadNPCDelegate, bool);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNPCRemovedDelegate);
 UCLASS()
 class AMHAENG_API AAHNPCVehicleBase : public AWheeledVehiclePawn, public IAHScannable, public IAHTargetNPC
 {
@@ -24,8 +25,13 @@ public:
 	virtual void BeginPlay() override;
 
 	void BroadCastNPCArrestedDelegate();
-	FDeadNPCDelegate NPCArrestedDelegate;
+	FDeadNPCDelegate NPCArrested;
+	FOnNPCRemovedDelegate OnNPCRemoved;
 
+	//Destroy
+	UFUNCTION()
+	void DestroyNPC();
+	
 	//NPC info - bIsTargetNPC
 	virtual bool GetIsTargetNPC() override;
 	virtual void SetIsTargetNPC(const uint8& IsTarget) override;

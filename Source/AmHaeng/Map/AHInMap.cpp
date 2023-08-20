@@ -11,7 +11,7 @@ class UBoxComponent;
 
 void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 {
-	if(OutNPC->GetIsChased())
+	/*if(OutNPC->GetIsChased())
 	{
 		UE_LOG(LogTemp, Log, TEXT("Out of Map이지만 chased npc라 무시합니다"));
 		return;
@@ -21,7 +21,7 @@ void AAHInMap::NPCIsOutOfMap(AAHNPCVehicleBase* OutNPC)
 		SetSpawner();
 	}
 	//Spawner->SpawnNewNPC(OutNPC->GetIsTargetNPC());
-	OutNPC->Destroy();
+	OutNPC->Destroy();*/
 }
 
 void AAHInMap::SetSpawner()

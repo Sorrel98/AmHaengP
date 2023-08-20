@@ -181,13 +181,16 @@ void UAHNPCSpawner::InitNPCSpawn(uint32 BadNPCNumber)
 			NPCVehicleSpawnActor = World->SpawnActor<AAHNPCVehicleBase>(NPCClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		}
 		
-		if(NPCVehicleSpawnActor==nullptr) return;
+		if(NPCVehicleSpawnActor == nullptr) return;
 		//Minimap Icon
 		OnNPCSpawnEnd.Execute(NPCVehicleSpawnActor);
 		
 		PossessController(NPCVehicleSpawnActor);
-		//여기서 해당 NPC가 Bad일지 Good일지 선택합니다.
-		NPCVehicleSpawnActor->SetIsTargetNPC(IsTargetNPCIndex(ix));
+		//여기서 해당 NPC가 Bad일지 Good일지 저장됩니다.
+		const bool bIsNPCTarget = IsTargetNPCIndex(ix);
+		NPCVehicleSpawnActor->SetIsTargetNPC(bIsNPCTarget);
+		bIsNPCTarget ? NPCVehicleSpawnActor->OnNPCRemoved.AddDynamic(this,&UAHNPCSpawner::DecreaseBadNPC)
+			: NPCVehicleSpawnActor->OnNPCRemoved.AddDynamic(this,&UAHNPCSpawner::DecreaseGoodNPC);
 		NPCVehicleSpawnActor->SetNPCStatAndInfoWidget(NPCNumber);
 
 		++NPCNumber;
@@ -245,6 +248,8 @@ void UAHNPCSpawner::PostSpawnNPC(bool IsTarget, AActor* NPCVehicleSpawnActor)
 		OnNPCSpawnEnd.Execute(NPCActor);
 		PossessController(NPCVehicleSpawnActor);
 		NPCActor->SetIsTargetNPC(IsTarget);
+		IsTarget ? NPCActor->OnNPCRemoved.AddDynamic(this,&UAHNPCSpawner::DecreaseBadNPC)
+			: NPCActor->OnNPCRemoved.AddDynamic(this,&UAHNPCSpawner::DecreaseGoodNPC);
 		NPCActor->SetNPCStatAndInfoWidget(NPCNumber);
 	}
 }
