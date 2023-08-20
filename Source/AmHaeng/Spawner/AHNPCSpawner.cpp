@@ -181,7 +181,7 @@ void UAHNPCSpawner::InitNPCSpawn(uint32 BadNPCNumber)
 			NPCVehicleSpawnActor = World->SpawnActor<AAHNPCVehicleBase>(NPCClass, SpawnLocations[ix], SpawnRotations[ix], SpawnParams);
 		}
 		
-		if(NPCVehicleSpawnActor==nullptr) return;
+		if(NPCVehicleSpawnActor == nullptr) return;
 		//Minimap Icon
 		OnNPCSpawnEnd.Execute(NPCVehicleSpawnActor);
 		

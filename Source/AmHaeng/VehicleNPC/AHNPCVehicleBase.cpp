@@ -44,17 +44,7 @@ void AAHNPCVehicleBase::AHDestroyFrontSphere_Implementation()
 
 void AAHNPCVehicleBase::DestroyNPC()
 {
-	if(!OnNPCRemoved.IsBound())
-	{
-		UE_LOG(LogTemp, Log, TEXT("on npc removed IS NOT BOUND"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Log, TEXT("on npc removed BOUND"));
-	}
-	
 	OnNPCRemoved.Broadcast();
-	//OnNPCRemoved.Clear();
 	this->Destroy();
 }
 
